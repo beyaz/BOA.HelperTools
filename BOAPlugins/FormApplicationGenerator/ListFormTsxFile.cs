@@ -33,7 +33,7 @@ import " + Model.RequestNameForList + @" = " + Model.NamespaceNameForType + @"."
 
 class CommandName
 {
-    static readonly Clear   = ""Clear"";
+    static readonly Clean   = ""Clean"";
     static readonly GetInfo = ""GetInfo"";
     static readonly Open    = ""Open"";
 }
@@ -76,7 +76,7 @@ class " + Model.FormName + @"ListForm extends BrowsePage
     {
         switch (command.commandName)
         {
-            case CommandName.Clear:
+            case CommandName.Clean:
             {
                 this.assistant.evaluateInitialState();
                 break;

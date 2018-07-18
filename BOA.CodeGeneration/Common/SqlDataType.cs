@@ -180,6 +180,7 @@ namespace BOA.CodeGeneration.Common
 
             if (dataType.StartsWith("VARCHAR", StringComparison.Ordinal) ||
                 dataType.StartsWith("CHAR(", StringComparison.Ordinal) ||
+                dataType.StartsWith("CHAR", StringComparison.Ordinal) ||
                 dataType.StartsWith("NCHAR(", StringComparison.Ordinal) ||
                 dataType.StartsWith("NVARCHAR(", StringComparison.Ordinal))
             {

@@ -31,7 +31,7 @@
     </Window.Resources>
 
 
-    <TabControl>
+    <TabControl x:Name="_tabControl">
         <TabItem Header="Sql">
             <Grid>
                 <Grid.RowDefinitions>
@@ -71,94 +71,98 @@
 
         </TabItem>
         <TabItem Header="Form Detail">
-            <StackPanel Margin = "20" >
+            <ScrollViewer >
+                <StackPanel Margin = "20" CanVerticallyScroll="True" >
 
-                <Label  Content = "Form Name ( Örn: CardInfo , Clearing , UserPayment )"
+                    <Label  Content = "Form Name ( Örn: CardInfo , Clearing , UserPayment )"
                HorizontalAlignment = "Left"
                FontStyle = "Italic"
                FontSize = "11"
                FontWeight = "Light" />
 
 
-                <TextBox HorizontalAlignment = "Stretch"
+                    <TextBox HorizontalAlignment = "Stretch"
                  Text = "{Binding FormName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
 
                   />
 
 
-                <Label   Content = "Data Fields (Definition formdaki alanlar)" Margin = "0,10,0,0"
+                    <Label   Content = "Data Fields (Definition formdaki alanlar)" Margin = "0,10,0,0"
                HorizontalAlignment = "Left"
                FontStyle = "Italic"
                FontSize = "11"
                FontWeight = "Light" />
 
-                <DataGrid ItemsSource = "{Binding FormDataFields}" CanUserAddRows = "True" AutoGenerateColumns = "False"
+                    <DataGrid ItemsSource = "{Binding FormDataFields}" CanUserAddRows = "True" AutoGenerateColumns = "False"
                   CanUserDeleteRows = "True" Margin = "0,10,0,0" >
 
-                    <DataGrid.Columns>
+                        <DataGrid.Columns>
 
-                        <DataGridComboBoxColumn Header = ".Net Type Name"
+                            <DataGridComboBoxColumn Header = ".Net Type Name"
                                         ItemsSource = "{Binding Source={StaticResource DotNetTypeName}}"
                                         SelectedValueBinding = "{Binding TypeName}" />
 
 
-                        <DataGridTextColumn Header = "Property Name" Binding = "{Binding Name}" />
-                        <DataGridComboBoxColumn Header = "Component Name"
+                            <DataGridTextColumn Header = "Property Name" Binding = "{Binding Name}" />
+                            <DataGridComboBoxColumn Header = "Component Name"
                                         ItemsSource = "{Binding Source={StaticResource componentNames}}"
                                         SelectedValueBinding = "{Binding ComponentName}" />
 
 
 
-                        <DataGridTextColumn Header = "Param Type (Only for Parameter Component)"   Binding = "{Binding ParamType}" />
+                            <DataGridTextColumn Header = "Param Type (Only for Parameter Component)"   Binding = "{Binding ParamType}" />
 
-                    </DataGrid.Columns>
-
-
-                </DataGrid>
+                        </DataGrid.Columns>
 
 
+                    </DataGrid>
 
 
 
 
-                <Label  Content = "List Form Search Fields (Listeleme formundaki sol tarafda gözükecek olan kriterler)" Margin = "0,10,0,0"
+
+
+                    <Label  Content = "List Form Search Fields (Listeleme formundaki sol tarafda gözükecek olan kriterler)" Margin = "0,10,0,0"
                HorizontalAlignment = "Left"
                
                FontStyle = "Italic"
                FontSize = "11"
                FontWeight = "Light" />
 
-                <DataGrid ItemsSource = "{Binding ListFormSearchFields}" CanUserAddRows = "True" AutoGenerateColumns = "False"
+                    <DataGrid ItemsSource = "{Binding ListFormSearchFields}" CanUserAddRows = "True" AutoGenerateColumns = "False"
                   CanUserDeleteRows = "True" Margin = "0,10,0,0" >
 
-                    <DataGrid.Columns>
+                        <DataGrid.Columns>
 
-                        <DataGridComboBoxColumn Header = ".Net Type Name"
+                            <DataGridComboBoxColumn Header = ".Net Type Name"
                                         ItemsSource = "{Binding Source={StaticResource DotNetTypeName}}"
                                         SelectedValueBinding = "{Binding TypeName}" />
 
 
-                        <DataGridTextColumn Header = "Property Name" Binding = "{Binding Name}" />
-                        <DataGridComboBoxColumn Header = "Component Name"
+                            <DataGridTextColumn Header = "Property Name" Binding = "{Binding Name}" />
+                            <DataGridComboBoxColumn Header = "Component Name"
                                         ItemsSource = "{Binding Source={StaticResource componentNames}}"
                                         SelectedValueBinding = "{Binding ComponentName}" />
 
 
-                        <DataGridTextColumn Header = "Param Type (Only for Parameter Component)"   Binding = "{Binding ParamType}" />
+                            <DataGridTextColumn Header = "Param Type (Only for Parameter Component)"   Binding = "{Binding ParamType}" />
 
-                    </DataGrid.Columns>
-
-
-                </DataGrid>
+                        </DataGrid.Columns>
 
 
+                    </DataGrid>
 
 
 
-                <Button Margin = "0,20,0,0"  HorizontalAlignment="Right"   Click = "GenerateCode" >Generate Code</Button>
 
 
-            </StackPanel>
+                    <Button Margin = "0,20,0,0"  HorizontalAlignment="Right"   Click = "GenerateCode" >Generate Code</Button>
+
+
+                </StackPanel>
+
+            </ScrollViewer>
+            
         </TabItem>
     </TabControl>
 </Window>

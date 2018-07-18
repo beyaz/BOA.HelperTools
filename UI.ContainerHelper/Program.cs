@@ -14,23 +14,26 @@ namespace UI.ContainerHelper
         [STAThread]
         public static void Main(string[] args)
         {
-            if (args == null)
-            {
-                throw new ArgumentException(nameof(args));
-            }
 
-            if (args.First() == typeof(View).FullName)
-            {
-                new Application().Run(View.Create());
-                return;
-            }
+            new Application().Run(new BOAPlugins.FormApplicationGenerator.View());
 
-            if (args.First() == typeof(BOAPlugins.PropertyGeneration.View).FullName)
-            {
-                new Application().Run(BOAPlugins.PropertyGeneration.View.Create());
-                return;
-            }
-            throw new InvalidOperationException(args.First());
+            //if (args == null)
+            //{
+            //    throw new ArgumentException(nameof(args));
+            //}
+
+            //if (args.First() == typeof(View).FullName)
+            //{
+            //    new Application().Run(View.Create());
+            //    return;
+            //}
+
+            //if (args.First() == typeof(BOAPlugins.PropertyGeneration.View).FullName)
+            //{
+            //    new Application().Run(BOAPlugins.PropertyGeneration.View.Create());
+            //    return;
+            //}
+            //throw new InvalidOperationException(args.First());
         }
         #endregion
     }

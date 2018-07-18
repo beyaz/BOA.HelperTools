@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -68,6 +69,10 @@ namespace BOAPlugins.FormApplicationGenerator
         #region Constructors
         public View()
         {
+
+            
+
+
             this.Connections = DatabaseConnectionStrings.Connections;
 
             InitializeComponent();
@@ -146,6 +151,43 @@ namespace BOAPlugins.FormApplicationGenerator
                     ComponentName = ComponentName.BBranchComponent
                 }
             };
+
+
+
+            selectSqlRichTextBox.SetText(@"
+
+-- drop table #tmp
+
+	---------------Örnek Kullanım -----------
+
+SELECT T.* INTO #tmp FROM 
+(
+		 SELECT vaTranDate         AS TransactionDate,
+		 	    vaSourceAmount     AS SourceAmount,
+		 	    vaDestAmount       AS DestinationAmount,
+		 	    vaSourceCurrency   AS SourceCurrencyCode,
+		 	    vaDestCurrency     AS DestinationCurrencyCode,
+		 	    vaAuthCode         AS ProvisionNumber,
+		 	    vaCATIndicator     AS CATIndicator
+		 
+		   FROM kkVISAAcq  WITH(NOLOCK)
+LEFT OUTER JOIN iccVISAAcq WITH(NOLOCK) ON vaAcqNo = cvaAcqNo 
+LEFT OUTER JOIN kkVISATCR4 WITH(NOLOCK) ON vaAcqNo = vtIssAcqNo and vtIssAcq = 'A' 
+          WHERE vaAcqNo = 1204 
+		    AND vaAccountNo='4051480000011126 ' 
+			AND vaFilmLocator = 06003026237
+
+) AS T
+
+
+	
+	SELECT c.name AS ColumnName , ty.name AS DataType 
+	  FROM tempdb.sys.columns  c 
+INNER JOIN sys.types  ty ON c.system_type_id = ty.system_type_id
+     WHERE [object_id] = OBJECT_ID(N'tempdb..#tmp')
+	
+
+");
         }
 
         public IReadOnlyList<DatabaseConnectionInfo> Connections { get; set; }
@@ -245,16 +287,25 @@ namespace BOAPlugins.FormApplicationGenerator
             };
 
 
-            var columnInfos = sql.ExecuteReader().ToList<ColumnInfo>().ToList();
+            List<ColumnInfo> columnInfos = null;
 
-
-            columnInfos.ConvertAll(x => new FieldInfo
+            try
             {
-                
-            });
+                columnInfos = sql.ExecuteReader().ToList<ColumnInfo>().ToList();
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.ToString());
+                return;
+            }
 
 
-            columnInfos.ToString();
+
+            FormDataFields =  new ObservableCollection<FieldInfo>(columnInfos.ConvertAll(ConvertFrom));
+
+            NamingHelper.InitializeFieldComponentTypes(FormDataFields.ToList());
+
+            Dispatcher.BeginInvoke((Action)(() => _tabControl.SelectedIndex = 1));
         }
 
         static FieldInfo ConvertFrom(ColumnInfo x)
@@ -280,6 +331,10 @@ namespace BOAPlugins.FormApplicationGenerator
             {
                 fi.TypeName = DotNetTypeName.DateTime;
             }
+
+            fi.Name = x.ColumnName;
+            fi.ComponentName = null;
+            
 
 
             return fi;

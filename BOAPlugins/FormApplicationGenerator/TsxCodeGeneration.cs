@@ -83,7 +83,7 @@ namespace BOAPlugins.FormApplicationGenerator
                 if (dataField.ComponentName == ComponentName.BDateTimePicker)
                 {
                     renderCodes.AppendLine("<BDateTimePicker format = \"DDMMYYYY\"");
-                    renderCodes.AppendLine("                 value = {data." + Exporter.GetResolvedPropertyName(dataField.Name) + "}");
+                    renderCodes.AppendLine("                 value = {data." + valueAccessPath + "}");
                     renderCodes.AppendLine("                 dateOnChange = {(e: any, value: Date) => data." + valueAccessPath + " = value}");
                     renderCodes.AppendLine("                 floatingLabelTextDate = {Message." + dataField.Name + "}");
                     renderCodes.AppendLine("                 context = {context}/>");

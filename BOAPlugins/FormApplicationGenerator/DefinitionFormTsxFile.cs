@@ -22,6 +22,9 @@ import { BDateTimePicker } from ""b-datetime-picker""
 import { BBranchComponent } from ""b-branch-component""
 import { BParameterComponent } from ""b-parameter-component""
 import { BInputNumeric } from ""b-input-numeric"";
+import { BCard } from ""b-card""
+import { BCardSection } from ""b-card-section""
+
 import { Helper } from ""../utils/Helper"";
 import { FormAssistant } from ""../utils/FormAssistant"";
 import { Message } from ""../utils/Message"";

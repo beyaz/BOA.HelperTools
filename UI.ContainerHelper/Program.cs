@@ -5,12 +5,15 @@ using BOA.Tools.Translator.UI.TranslateHelper;
 
 namespace UI.ContainerHelper
 {
+    /// <summary>
+    /// The program
+    /// </summary>
     class Program
     {
         #region Public Methods
         [STAThread]
         public static void Main(string[] args)
-        {
+        {  
             if (args == null)
             {
                 throw new ArgumentException(nameof(args));

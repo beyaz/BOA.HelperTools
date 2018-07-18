@@ -12,7 +12,7 @@ namespace BOAPlugins.FormApplicationGenerator
             return $"{dataField.ComponentName.ToString().RemoveFromStart("B").MakeLowerCaseFirstChar()}{dataField.Name}";
         }
 
-        public static string MakeLowerCaseFirstChar(this string value)
+        static string MakeLowerCaseFirstChar(this string value)
         {
             if (value.IsNullOrEmpty())
             {

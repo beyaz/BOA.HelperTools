@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BOA.Common.Helpers;
+using BOAPlugins.ExportingModel;
 
 namespace BOAPlugins.FormApplicationGenerator
 {
@@ -17,7 +18,7 @@ namespace BOAPlugins.FormApplicationGenerator
     static class TsxCodeGeneration
     {
         #region Public Methods
-        public static TsxCodeInfo EvaluateTSCodeInfo(List<FieldInfo> FormDataClassFields,bool isDefinitionForm)
+        public static TsxCodeInfo EvaluateTSCodeInfo(List<FieldInfo> FormDataClassFields, bool isDefinitionForm)
         {
             var renderInGroupBox = isDefinitionForm;
 
@@ -29,8 +30,6 @@ namespace BOAPlugins.FormApplicationGenerator
             };
 
             var snapDefinitionCode = new PaddedStringBuilder();
-
-            
 
             result.HasSnap = FormDataClassFields.Any(x => x.HasSnapName());
             if (result.HasSnap)
@@ -67,7 +66,7 @@ namespace BOAPlugins.FormApplicationGenerator
             {
                 renderCodes.AppendLine("<BGridSection context={context}>");
             }
-            
+
             renderCodes.PaddingCount++;
 
             foreach (var dataField in FormDataClassFields)
@@ -76,30 +75,32 @@ namespace BOAPlugins.FormApplicationGenerator
                 {
                     renderCodes.AppendLine("<BGridRow context={context}>");
                 }
-                    
+
                 renderCodes.PaddingCount++;
+
+                var valueAccessPath = Exporter.GetResolvedPropertyName(dataField.Name);
 
                 if (dataField.ComponentName == ComponentName.BDateTimePicker)
                 {
                     renderCodes.AppendLine("<BDateTimePicker format = \"DDMMYYYY\"");
-                    renderCodes.AppendLine("                 value = {data." + dataField.Name.MakeLowerCaseFirstChar() + "}");
-                    renderCodes.AppendLine("                 dateOnChange = {(e: any, value: Date) => data." + dataField.Name.MakeLowerCaseFirstChar() + " = value}");
+                    renderCodes.AppendLine("                 value = {data." + Exporter.GetResolvedPropertyName(dataField.Name) + "}");
+                    renderCodes.AppendLine("                 dateOnChange = {(e: any, value: Date) => data." + valueAccessPath + " = value}");
                     renderCodes.AppendLine("                 floatingLabelTextDate = {Message." + dataField.Name + "}");
                     renderCodes.AppendLine("                 context = {context}/>");
                 }
                 else if (dataField.ComponentName == ComponentName.BInput)
                 {
-                    renderCodes.AppendLine("<BInput value = {data." + dataField.Name.MakeLowerCaseFirstChar() + "}");
-                    renderCodes.AppendLine("        onChange = {(e: any, value: string) => data." + dataField.Name.MakeLowerCaseFirstChar() + " = value}");
+                    renderCodes.AppendLine("<BInput value = {data." + valueAccessPath + "}");
+                    renderCodes.AppendLine("        onChange = {(e: any, value: string) => data." + valueAccessPath + " = value}");
                     renderCodes.AppendLine("        floatingLabelText = {Message." + dataField.Name + "}");
                     renderCodes.AppendLine("        context = {context}/>");
                 }
                 else if (dataField.ComponentName == ComponentName.BInputNumeric)
                 {
-                    renderCodes.AppendLine("<BInputNumeric value = {data." + dataField.Name.MakeLowerCaseFirstChar() + "}");
-                    renderCodes.AppendLine("               onChange = {(e: any, value: any) => data." + dataField.Name.MakeLowerCaseFirstChar() + " = value}");
+                    renderCodes.AppendLine("<BInputNumeric value = {data." + valueAccessPath + "}");
+                    renderCodes.AppendLine("               onChange = {(e: any, value: any) => data." + valueAccessPath + " = value}");
                     renderCodes.AppendLine("               floatingLabelText = {Message." + dataField.Name + "}");
-                    if (dataField.TypeName == DotNetTypeName.Decimal )
+                    if (dataField.TypeName == DotNetTypeName.Decimal)
                     {
                         renderCodes.AppendLine("               format = {\"D\"}");
                         renderCodes.AppendLine("               maxLength = {22}");
@@ -113,19 +114,19 @@ namespace BOAPlugins.FormApplicationGenerator
                 }
                 else if (dataField.ComponentName == ComponentName.BAccountComponent)
                 {
-                    renderCodes.AppendLine("<BAccountComponent accountNumber = {data." + dataField.Name.MakeLowerCaseFirstChar() + "}");
-                    renderCodes.AppendLine("                   onAccountSelect = {(selectedAccount: any) => data." + dataField.Name.MakeLowerCaseFirstChar() + " = selectedAccount ? selectedAccount.accountNumber : null}");
+                    renderCodes.AppendLine("<BAccountComponent accountNumber = {data." + valueAccessPath + "}");
+                    renderCodes.AppendLine("                   onAccountSelect = {(selectedAccount: any) => data." + valueAccessPath + " = selectedAccount ? selectedAccount.accountNumber : null}");
                     renderCodes.AppendLine("                   isVisibleBalance={false}");
                     renderCodes.AppendLine("                   isVisibleAccountSuffix={false}");
                     renderCodes.AppendLine("                   enableShowDialogMessagesInCallback={false}");
                     renderCodes.AppendLine("                   isVisibleIBAN={false}");
-                    renderCodes.AppendLine("                   ref={(r: any) => this.snaps."+ dataField.GetSnapName() + " = r}");
+                    renderCodes.AppendLine("                   ref={(r: any) => this.snaps." + dataField.GetSnapName() + " = r}");
                     renderCodes.AppendLine("                   context = {context}/>");
                 }
                 else if (dataField.ComponentName == ComponentName.BCheckBox)
                 {
-                    renderCodes.AppendLine("<BCheckBox checked = {data." + dataField.Name.MakeLowerCaseFirstChar() + "}");
-                    renderCodes.AppendLine("           onCheck = {(e: Object, isChecked: boolean) => data." + dataField.Name.MakeLowerCaseFirstChar() + " = isChecked}");
+                    renderCodes.AppendLine("<BCheckBox checked = {data." + valueAccessPath + "}");
+                    renderCodes.AppendLine("           onCheck = {(e: Object, isChecked: boolean) => data." + valueAccessPath + " = isChecked}");
                     renderCodes.AppendLine("           label   = {Message." + dataField.Name + "}");
                     renderCodes.AppendLine("           context = {context}/>");
                 }
@@ -134,13 +135,13 @@ namespace BOAPlugins.FormApplicationGenerator
                 {
                     if (dataField.TypeName == DotNetTypeName.Int32)
                     {
-                        renderCodes.AppendLine("<BParameterComponent selectedParamCode = {Helper.numberToString(data." + dataField.Name.MakeLowerCaseFirstChar() + ")}");
-                        renderCodes.AppendLine("                     onParameterSelect = {(selectedParameter: BOA.Types.Kernel.General.ParameterContract) => data." + dataField.Name.MakeLowerCaseFirstChar() + " = selectedParameter ? Helper.stringToNumber(selectedParameter.paramCode) : null}");
+                        renderCodes.AppendLine("<BParameterComponent selectedParamCode = {Helper.numberToString(data." + valueAccessPath + ")}");
+                        renderCodes.AppendLine("                     onParameterSelect = {(selectedParameter: BOA.Types.Kernel.General.ParameterContract) => data." + valueAccessPath + " = selectedParameter ? Helper.stringToNumber(selectedParameter.paramCode) : null}");
                     }
                     else
                     {
-                        renderCodes.AppendLine("<BParameterComponent selectedParamCode = {data." + dataField.Name.MakeLowerCaseFirstChar() + "}");
-                        renderCodes.AppendLine("                     onParameterSelect = {(selectedParameter: BOA.Types.Kernel.General.ParameterContract) => data." + dataField.Name.MakeLowerCaseFirstChar() + " = selectedParameter ? selectedParameter.paramCode : null}");
+                        renderCodes.AppendLine("<BParameterComponent selectedParamCode = {data." + valueAccessPath + "}");
+                        renderCodes.AppendLine("                     onParameterSelect = {(selectedParameter: BOA.Types.Kernel.General.ParameterContract) => data." + valueAccessPath + " = selectedParameter ? selectedParameter.paramCode : null}");
                     }
 
                     if (dataField.ParamType.IsNullOrWhiteSpace())
@@ -149,9 +150,9 @@ namespace BOAPlugins.FormApplicationGenerator
                     }
                     else
                     {
-                        renderCodes.AppendLine("                     paramType=\""+ dataField.ParamType + "\"");
+                        renderCodes.AppendLine("                     paramType=\"" + dataField.ParamType + "\"");
                     }
-                    
+
                     renderCodes.AppendLine("                     hintText = {Message." + dataField.Name + "}");
                     renderCodes.AppendLine("                     labelText = {Message." + dataField.Name + "}");
                     renderCodes.AppendLine("                     isAllOptionIncluded={true}");
@@ -165,15 +166,13 @@ namespace BOAPlugins.FormApplicationGenerator
 
                 else if (dataField.ComponentName == ComponentName.BBranchComponent)
                 {
-                    renderCodes.AppendLine("<BBranchComponent selectedBranchId = {data." + dataField.Name.MakeLowerCaseFirstChar() + "}");
-                    renderCodes.AppendLine("                  onBranchSelect = {(selectedBranch: BOA.Common.Types.BranchContract) => data." + dataField.Name.MakeLowerCaseFirstChar() + " = selectedBranch ? selectedBranch.branchId : null}");
+                    renderCodes.AppendLine("<BBranchComponent selectedBranchId = {data." + valueAccessPath + "}");
+                    renderCodes.AppendLine("                  onBranchSelect = {(selectedBranch: BOA.Common.Types.BranchContract) => data." + valueAccessPath + " = selectedBranch ? selectedBranch.branchId : null}");
                     renderCodes.AppendLine("                  mode={\"horizontal\"}");
                     renderCodes.AppendLine("                  labelText = {Message." + dataField.Name + "}");
                     renderCodes.AppendLine("                  sortOption={BBranchComponent.name}");
                     renderCodes.AppendLine("                  context = {context}/>");
                 }
-
-
 
                 renderCodes.PaddingCount--;
 
@@ -181,12 +180,9 @@ namespace BOAPlugins.FormApplicationGenerator
                 {
                     renderCodes.AppendLine("</BGridRow>");
                 }
-                
             }
 
             renderCodes.PaddingCount--;
-
-
 
             if (renderInGroupBox)
             {
@@ -197,7 +193,6 @@ namespace BOAPlugins.FormApplicationGenerator
             {
                 renderCodes.AppendLine("</BGridSection>");
             }
-            
 
             result.RenderCodeForJsx = renderCodes.ToString();
 

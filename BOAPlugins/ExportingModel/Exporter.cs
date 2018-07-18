@@ -1,21 +1,30 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using BOA.CodeGeneration.Generators;
 using BOA.Common.Helpers;
 using Mono.Cecil;
+using Newtonsoft.Json.Serialization;
 using WhiteStone.Services;
 
 namespace BOAPlugins.ExportingModel
 {
     class Exporter
     {
+        #region Static Fields
+        static readonly CamelCasePropertyNamesContractResolver CamelCasePropertyNamesContractResolver = new CamelCasePropertyNamesContractResolver();
+        #endregion
+
         #region Public Methods
         public static ExportContract Export(string configFilePath)
         {
             var jsonSerializer = new JsonSerializer();
             var config         = jsonSerializer.Deserialize<ExportContract>(File.ReadAllText(configFilePath));
             return Export(config);
+        }
+
+        public static string GetResolvedPropertyName(string propertyName)
+        {
+            return CamelCasePropertyNamesContractResolver.GetResolvedPropertyName(propertyName);
         }
         #endregion
 
@@ -48,8 +57,6 @@ namespace BOAPlugins.ExportingModel
 
         static ExportContract Export(ExportContract data)
         {
-            
-
             var sb = new PaddedStringBuilder();
 
             foreach (var info in data.ExportInfoList)
@@ -78,8 +85,6 @@ namespace BOAPlugins.ExportingModel
 
             data.GeneratedTSCode = sb.ToString();
 
-            
-
             return data;
         }
 
@@ -96,11 +101,6 @@ namespace BOAPlugins.ExportingModel
             }
 
             return null;
-        }
-
-        static string FixName(string value)
-        {
-            return ContractBodyGenerator.GetPropertyFieldName("", value);
         }
 
         static void GenerateType(TypeDefinition typeDefinition, PaddedStringBuilder sb)
@@ -160,7 +160,7 @@ namespace BOAPlugins.ExportingModel
                 {
                     var typeName = GetTSTypeName(propertyDefinition.PropertyType, containerNamespace);
 
-                    var name = FixName(propertyDefinition.Name);
+                    var name = GetResolvedPropertyName(propertyDefinition.Name);
                     // if (IsNullableType(propertyDefinition.DeclaringType))
                     {
                         name += "?";

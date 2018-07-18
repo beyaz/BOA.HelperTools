@@ -13,7 +13,7 @@ namespace UI.ContainerHelper
         #region Public Methods
         [STAThread]
         public static void Main(string[] args)
-        {  
+        {
             if (args == null)
             {
                 throw new ArgumentException(nameof(args));

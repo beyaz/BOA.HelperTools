@@ -17,20 +17,21 @@ using WhiteStone.Helpers;
 
 namespace BOAPlugins.FormApplicationGenerator
 {
-
     public static class Ext
     {
-        public static void SetText(this RichTextBox richTextBox, string text)
-        {
-            richTextBox.Document.Blocks.Clear();
-            richTextBox.Document.Blocks.Add(new Paragraph(new Run(text)));
-        }
-
+        #region Public Methods
         public static string GetText(this RichTextBox richTextBox)
         {
             return new TextRange(richTextBox.Document.ContentStart,
                                  richTextBox.Document.ContentEnd).Text;
         }
+
+        public static void SetText(this RichTextBox richTextBox, string text)
+        {
+            richTextBox.Document.Blocks.Clear();
+            richTextBox.Document.Blocks.Add(new Paragraph(new Run(text)));
+        }
+        #endregion
     }
 
     /// <summary>
@@ -38,29 +39,15 @@ namespace BOAPlugins.FormApplicationGenerator
     /// </summary>
     public partial class View
     {
-
-
-
-
         #region Static Fields
         public static readonly DependencyProperty FormDataFieldsProperty = DependencyProperty.Register("FormDataFields", typeof(ObservableCollection<FieldInfo>), typeof(View), new PropertyMetadata(default(ObservableCollection<FieldInfo>)));
+        public static readonly DependencyProperty FormNameProperty       = DependencyProperty.Register("FormName", typeof(string), typeof(View), new PropertyMetadata(default(string), OnFormNameChanged));
 
-        public static readonly DependencyProperty FormNameProperty = DependencyProperty.Register("FormName", typeof(string), typeof(View), new PropertyMetadata(default(string), OnFormNameChanged));
+        public static readonly DependencyProperty ConnectionStringProperty = DependencyProperty.Register(
+                                                                                                         "ConnectionString", typeof(string), typeof(View), new PropertyMetadata(default(string)));
 
         public static readonly DependencyProperty ListFormSearchFieldsProperty = DependencyProperty.Register("ListFormSearchFields", typeof(ObservableCollection<FieldInfo>), typeof(View), new PropertyMetadata(default(ObservableCollection<FieldInfo>)));
         #endregion
-
-        public static readonly DependencyProperty ConnectionStringProperty = DependencyProperty.Register(
-                                                        "ConnectionString", typeof(string), typeof(View), new PropertyMetadata(default(string)));
-
-        public string ConnectionString
-        {
-            get { return (string) GetValue(ConnectionStringProperty); }
-            set { SetValue(ConnectionStringProperty, value); }
-        }
-
-
-       
 
         #region Fields
         readonly Controller Controller = new Controller();
@@ -69,11 +56,7 @@ namespace BOAPlugins.FormApplicationGenerator
         #region Constructors
         public View()
         {
-
-            
-
-
-            this.Connections = DatabaseConnectionStrings.Connections;
+            Connections = DatabaseConnectionStrings.Connections;
 
             InitializeComponent();
 
@@ -152,8 +135,6 @@ namespace BOAPlugins.FormApplicationGenerator
                 }
             };
 
-
-
             selectSqlRichTextBox.SetText(@"
 
 -- drop table #tmp
@@ -189,11 +170,17 @@ INNER JOIN sys.types  ty ON c.system_type_id = ty.system_type_id
 
 ");
         }
-
-        public IReadOnlyList<DatabaseConnectionInfo> Connections { get; set; }
         #endregion
 
         #region Public Properties
+        public IReadOnlyList<DatabaseConnectionInfo> Connections { get; set; }
+
+        public string ConnectionString
+        {
+            get { return (string) GetValue(ConnectionStringProperty); }
+            set { SetValue(ConnectionStringProperty, value); }
+        }
+
         public ObservableCollection<FieldInfo> FormDataFields
         {
             get { return (ObservableCollection<FieldInfo>) GetValue(FormDataFieldsProperty); }
@@ -223,97 +210,12 @@ INNER JOIN sys.types  ty ON c.system_type_id = ty.system_type_id
         #endregion
 
         #region Methods
-        static void OnFormNameChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var view        = (View) d;
-            var cachedModel = view.GetCachedModel();
-            if (cachedModel != null)
-            {
-                view.Controller.Model = cachedModel;
-
-                view.FormDataFields       = new ObservableCollection<FieldInfo>(cachedModel.FormDataClassFields);
-                view.ListFormSearchFields = new ObservableCollection<FieldInfo>(cachedModel.ListFormSearchFields);
-            }
-        }
-
-        void GenerateCode(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(FormName))
-            {
-                MessageBox.Show(Label.FormName + " must have value.");
-                return;
-            }
-
-            if (FormName.EndsWith("Form") || FormName.EndsWith("ListForm"))
-            {
-                MessageBox.Show("Suffix Form veya ListForm olamaz.");
-                return;
-            }
-
-            Controller.CreateModel(SolutionFilePath, FormName);
-
-            Controller.Model.FormDataClassFields  = FormDataFields.ToList();
-            Controller.Model.ListFormSearchFields = ListFormSearchFields.ToList();
-
-            Controller.ExportFiles();
-
-            VisualStudio.UpdateStatusbarText("Files generated successfully. Include files into project.");
-
-            SaveModelToCache();
-
-            Close();
-        }
-
-        void AutoGenerateFieldsFromSql(object sender, RoutedEventArgs e)
-        {
-            if (ConnectionString.IsNullOrWhiteSpace())
-            {
-                MessageBox.Show("ConnectionString seçilmeli");
-                return;
-            }
-
-            var sqlCommandText = selectSqlRichTextBox.GetText();
-
-            if (sqlCommandText.IsNullOrWhiteSpace())
-            {
-                MessageBox.Show("Select sql yazılmalı");
-                return;
-            }
-
-
-            var sql = new SqlDatabase(ConnectionString)
-            {
-                CommandText = sqlCommandText
-            };
-
-
-            List<ColumnInfo> columnInfos = null;
-
-            try
-            {
-                columnInfos = sql.ExecuteReader().ToList<ColumnInfo>().ToList();
-            }
-            catch (Exception exception)
-            {
-                MessageBox.Show(exception.ToString());
-                return;
-            }
-
-
-
-            FormDataFields =  new ObservableCollection<FieldInfo>(columnInfos.ConvertAll(ConvertFrom));
-
-            NamingHelper.InitializeFieldComponentTypes(FormDataFields.ToList());
-
-            Dispatcher.BeginInvoke((Action)(() => _tabControl.SelectedIndex = 1));
-        }
-
         static FieldInfo ConvertFrom(ColumnInfo x)
         {
-            var fi = new FieldInfo();
+            var fi       = new FieldInfo();
             var dataType = x.DataType.ToUpperEN();
 
-            var dotNetType = SqlDataType.GetDotNetType(dataType,false);
+            var dotNetType = SqlDataType.GetDotNetType(dataType, false);
             if (dotNetType == Names.DotNetStringName)
             {
                 fi.TypeName = DotNetTypeName.String;
@@ -336,21 +238,99 @@ INNER JOIN sys.types  ty ON c.system_type_id = ty.system_type_id
                 fi.TypeName = DotNetTypeName.Boolean;
             }
 
-            fi.Name = x.ColumnName;
+            fi.Name          = x.ColumnName;
             fi.ComponentName = null;
-            
-
 
             return fi;
         }
 
-
-         class ColumnInfo
+        static void OnFormNameChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            public string ColumnName { get; set; }
-            public string DataType { get; set; }
+            var view        = (View) d;
+            var cachedModel = view.GetCachedModel();
+            if (cachedModel != null)
+            {
+                view.Controller.Model = cachedModel;
+
+                view.FormDataFields       = new ObservableCollection<FieldInfo>(cachedModel.FormDataClassFields);
+                view.ListFormSearchFields = new ObservableCollection<FieldInfo>(cachedModel.ListFormSearchFields);
+            }
         }
-        
+
+        void AutoGenerateFieldsFromSql(object sender, RoutedEventArgs e)
+        {
+            if (ConnectionString.IsNullOrWhiteSpace())
+            {
+                MessageBox.Show("ConnectionString seçilmeli");
+                return;
+            }
+
+            var sqlCommandText = selectSqlRichTextBox.GetText();
+
+            if (sqlCommandText.IsNullOrWhiteSpace())
+            {
+                MessageBox.Show("Select sql yazılmalı");
+                return;
+            }
+
+            var sql = new SqlDatabase(ConnectionString)
+            {
+                CommandText = sqlCommandText
+            };
+
+            List<ColumnInfo> columnInfos = null;
+
+            try
+            {
+                columnInfos = sql.ExecuteReader().ToList<ColumnInfo>().ToList();
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.ToString());
+                return;
+            }
+
+            FormDataFields = new ObservableCollection<FieldInfo>(columnInfos.ConvertAll(ConvertFrom));
+
+            NamingHelper.InitializeFieldComponentTypes(FormDataFields.ToList());
+
+            Dispatcher.BeginInvoke((Action) (() => _tabControl.SelectedIndex = 1));
+        }
+
+        void GenerateCode(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(FormName))
+                {
+                    MessageBox.Show(Label.FormName + " must have value.");
+                    return;
+                }
+
+                if (FormName.EndsWith("Form") || FormName.EndsWith("ListForm"))
+                {
+                    MessageBox.Show("Suffix Form veya ListForm olamaz.");
+                    return;
+                }
+
+                Controller.CreateModel(SolutionFilePath, FormName);
+
+                Controller.Model.FormDataClassFields  = FormDataFields.ToList();
+                Controller.Model.ListFormSearchFields = ListFormSearchFields.ToList();
+
+                Controller.ExportFiles();
+
+                VisualStudio.UpdateStatusbarText("Files generated successfully. Include files into project.");
+
+                SaveModelToCache();
+
+                Close();
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.ToString());
+            }
+        }
 
         Model GetCachedModel()
         {
@@ -369,5 +349,13 @@ INNER JOIN sys.types  ty ON c.system_type_id = ty.system_type_id
             FileHelper.WriteAllText(cacheFilePath, JsonHelper.Serialize(Controller.Model));
         }
         #endregion
+
+        class ColumnInfo
+        {
+            #region Public Properties
+            public string ColumnName { get; set; }
+            public string DataType   { get; set; }
+            #endregion
+        }
     }
 }

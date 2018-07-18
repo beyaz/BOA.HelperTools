@@ -11,7 +11,7 @@ using BOA.Base;
 using BOA.Common.Extensions;
 using BOA.Common.Types;
 using BOA.Common.Helpers;
-using BOA.Types.CardGeneral.DebitCard;
+using " + Model.NamespaceNameForType + @";
 
 namespace " + Model.NamespaceNameForOrch + @"
 {    

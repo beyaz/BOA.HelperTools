@@ -122,6 +122,13 @@ namespace BOAPlugins.FormApplicationGenerator
                     renderCodes.AppendLine("                   ref={(r: any) => this.snaps."+ dataField.GetSnapName() + " = r}");
                     renderCodes.AppendLine("                   context = {context}/>");
                 }
+                else if (dataField.ComponentName == ComponentName.BCheckBox)
+                {
+                    renderCodes.AppendLine("<BCheckBox checked = {data." + dataField.Name.MakeLowerCaseFirstChar() + "}");
+                    renderCodes.AppendLine("           onCheck = {(e: Object, isChecked: boolean) => data." + dataField.Name.MakeLowerCaseFirstChar() + " = isChecked}");
+                    renderCodes.AppendLine("           label   = {Message." + dataField.Name + "}");
+                    renderCodes.AppendLine("           context = {context}/>");
+                }
 
                 else if (dataField.ComponentName == ComponentName.BParameterComponent)
                 {

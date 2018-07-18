@@ -92,7 +92,8 @@ namespace BOAPlugins.FormApplicationGenerator
         BInput,
         BInputNumeric,
         BParameterComponent,
-        BBranchComponent
+        BBranchComponent,
+        BCheckBox
     }
 
 

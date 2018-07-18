@@ -331,6 +331,10 @@ INNER JOIN sys.types  ty ON c.system_type_id = ty.system_type_id
             {
                 fi.TypeName = DotNetTypeName.DateTime;
             }
+            else if (dotNetType == Names.DotNetBool)
+            {
+                fi.TypeName = DotNetTypeName.Boolean;
+            }
 
             fi.Name = x.ColumnName;
             fi.ComponentName = null;

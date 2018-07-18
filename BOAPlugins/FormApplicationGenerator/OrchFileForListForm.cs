@@ -71,6 +71,7 @@ namespace " + Model.NamespaceNameForOrch + @"
                 var returnObject = CreateResponse(Request);
 
                 Request.DataSource.DataGridInfo = GetDataGridInfo();
+                Request.DataSource.Records      = new List<" + Model.DefinitionFormDataClassName + @">();
              
                 return returnObject;
             }

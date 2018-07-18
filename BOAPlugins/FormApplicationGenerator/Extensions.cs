@@ -1,4 +1,5 @@
 ﻿using System;
+using BOA.CodeGeneration.Generators;
 using BOA.Common.Helpers;
 
 namespace BOAPlugins.FormApplicationGenerator
@@ -13,7 +14,12 @@ namespace BOAPlugins.FormApplicationGenerator
 
         public static string MakeLowerCaseFirstChar(this string value)
         {
-            return value?[0].ToString().ToLower() + value?.Substring(1);
+            if (value.IsNullOrEmpty())
+            {
+                return value;
+            }
+
+            return ContractBodyGenerator.GetPropertyFieldName("", value);
         }
 
         public static bool HasSnapName(this FieldInfo dataField)

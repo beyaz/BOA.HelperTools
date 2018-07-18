@@ -383,7 +383,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /y "$(TargetDir)$(TargetName).dll"      "$(SolutionDir)bin\"
+    <PostBuildEvent>
 
 </PostBuildEvent>
   </PropertyGroup>

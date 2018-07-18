@@ -1,0 +1,37 @@
+﻿        public GenericResponse<List<DebitCardKMHInfoContract>> SelectKMHLimitByDebitCard(string cardNumber)
+        {
+            var returnObject = CreateResponse<List<DebitCardKMHInfoContract>>();
+
+            var command = DBLayer.GetDBCommand(Databases.Boa, "DBT.sel_KMHLimitByDebitCard");
+
+            // Parameters
+            DBLayer.AddInParameter(command, "CardNumber", SqlDbType.VarChar, cardNumber);
+
+            var sp = DBLayer.ExecuteReader(command);
+            if (!sp.Success)
+            {
+                return returnObject.Add(sp);
+            }
+
+            var listOfDataContract = new List<DebitCardKMHInfoContract>();
+
+            var reader = sp.Value;
+            while (reader.Read())
+            {
+                var dataContract = new DebitCardKMHInfoContract();
+                dataContract.KMHPackageId = SQLDBHelper.GetInt32Value(reader["KMHPackageId"]);
+                dataContract.MinimumBalance = SQLDBHelper.GetDecimalValue(reader["MinimumBalance"]);
+                dataContract.KMHLimit = SQLDBHelper.GetDecimalValue(reader["KMHLimit"]);
+                dataContract.KMHBalance = SQLDBHelper.GetDecimalValue(reader["KMHBalance"]);
+                dataContract.CreditAccountSuffix = SQLDBHelper.GetInt16Value(reader["CreditAccountSuffix"]);
+                dataContract.CardNumber = SQLDBHelper.GetStringValue(reader["CardNumber"]);
+                dataContract.BranchId = SQLDBHelper.GetInt16Value(reader["BranchId"]);
+                dataContract.LedgerId = SQLDBHelper.GetInt32Value(reader["LedgerId"]);
+                listOfDataContract.Add(dataContract);
+            }
+            reader.Close();
+
+            returnObject.Value = listOfDataContract;
+
+            return returnObject;
+        }

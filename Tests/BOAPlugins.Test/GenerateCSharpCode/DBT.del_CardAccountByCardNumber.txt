@@ -1,0 +1,16 @@
+﻿        /// <summary>
+        ///     Delete CardAccount by cardnumber
+        /// </summary>
+        public GenericResponse<int> DeleteCardAccountByCardNumber(string cardNumber, int accountNumber)
+        {
+            var command = DBLayer.GetDBCommand(Databases.BOA, "DBT.del_CardAccountByCardNumber");
+
+            // Parameters
+            DBLayer.AddInParameter(command, "CardNumber", SqlDbType.VarChar, cardNumber);
+            DBLayer.AddInParameter(command, "AccountNumber", SqlDbType.Int, accountNumber);
+            DBLayer.AddInParameter(command, "ChannelId", SqlDbType.TinyInt, Context.ApplicationContext.Authentication.Channel);
+            DBLayer.AddInParameter(command, "UserName", SqlDbType.VarChar, Context.ApplicationContext.Authentication.UserName);
+            DBLayer.AddInParameter(command, "HostName", SqlDbType.VarChar, Context.ApplicationContext.Authentication.MachineName);
+
+            return DBLayer.ExecuteNonQuery(command);
+        }

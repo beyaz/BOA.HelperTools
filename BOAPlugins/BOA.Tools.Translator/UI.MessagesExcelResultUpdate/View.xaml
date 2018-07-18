@@ -1,0 +1,41 @@
+﻿<Window
+    x:Class="BOA.Tools.Translator.UI.MessagesExcelResultUpdate.View"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mainCard="clr-namespace:BOA.Tools.Translator"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:messagesExcelResultUpdate="clr-namespace:BOA.Tools.Translator.UI.MessagesExcelResultUpdate"
+    Title="MainWindow"
+    Width="525"
+    Height="350"
+    d:DataContext="{d:DesignInstance messagesExcelResultUpdate:Model, IsDesignTimeCreatable=True}"
+    mc:Ignorable="d">
+    <Window.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5*" />
+                <RowDefinition Height="24*" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Horizontal">
+                <Button
+                    Width="60"
+                    Click="Button_Click"
+                    Content="Excel Seç" />
+                <Button
+                    Width="170"
+                    Click="WriteToExcel"
+                    Content="PropertyName için Excele Yaz" />
+                <Button
+                    Width="170"
+                    Click="UpdateEnglishColumns"
+                    Content="İngilizce için script üret&#xD;&#xA;GroupId:" />
+                <TextBox Width="50" Text="{Binding GroupId, Mode=TwoWay}" />
+            </StackPanel>
+
+
+            <DataGrid Grid.Row="1" ItemsSource="{Binding list, Mode=TwoWay}" />
+        </Grid>
+    </Window.Content>
+</Window>

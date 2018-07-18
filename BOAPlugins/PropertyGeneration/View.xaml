@@ -1,0 +1,29 @@
+﻿<boaPlugins:UserControlBase
+    x:Class="BOAPlugins.PropertyGeneration.View"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:PropertyGeneration="clr-namespace:BOAPlugins.PropertyGeneration"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:boaPlugins="clr-namespace:BOAPlugins"
+    d:DesignWidth="300"
+    d:DesignHeight="300"
+    d:DataContext="{d:DesignInstance PropertyGeneration:Model, IsDesignTimeCreatable=True}"
+    mc:Ignorable="d">
+  
+        <UniformGrid Columns="2">
+
+            <GroupBox Header="Property (type - name)">
+                <TextBox Text="{Binding Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True"  />
+            </GroupBox>
+
+            <GroupBox Header="C# Code">
+            <TextBox Text="{Binding Output, Mode=TwoWay}" />
+            </GroupBox>
+
+           
+
+        </UniformGrid>
+
+   
+</boaPlugins:UserControlBase>

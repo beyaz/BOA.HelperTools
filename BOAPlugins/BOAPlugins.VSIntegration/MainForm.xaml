@@ -1,0 +1,18 @@
+﻿<Window x:Class = "BOAPlugins.VSIntegration.MainForm"
+        xmlns = "http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x = "http://schemas.microsoft.com/winfx/2006/xaml"
+        WindowStartupLocation = "CenterScreen"
+        Width = "300"
+        Title = "Close - ESC"
+        Height = "400" >
+    <StackPanel>
+        <Button x:Name = "buttonUpdateMessageCs" Margin = "10" Click = "UpdateMessageCs" >Update Message.cs</Button>
+        <Button  Margin = "10" Click = "UpdateMessageTsx" >Update Message.tsx</Button>
+        <Button Margin = "10" Click = "UpdateTypeScriptModels" >Update TypeScript Models</Button>
+
+        <Button Margin = "10" Click = "GenerateForm" >Generate Form</Button>
+        <Button x:Name = "buttonViewMethodCallGraph" Margin = "10" Click = "ViewMethodCallGraph" >View Method Call Graph</Button>
+        <Button Margin = "10" Click = "OpenPluginDirectory" >Open Plugin Directory</Button>
+        <Button Margin = "10" Click = "Reload_Config_File" >Reload Config File</Button>
+    </StackPanel>
+</Window>

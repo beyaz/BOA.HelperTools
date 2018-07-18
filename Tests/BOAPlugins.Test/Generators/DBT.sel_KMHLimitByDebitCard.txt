@@ -1,0 +1,24 @@
+﻿
+CREATE PROC [DBT].[sel_KMHLimitByDebitCard]
+	@CardNumber VARCHAR(19)
+AS
+
+SELECT dca.KMHPackageId,
+	dca.MinimumBalance,
+	d.Limit KMHLimit,
+	d.Limit - ov.LimitUsed as KMHBalance,
+	ov.CreditAccountSuffix,
+	ci.CardNumber,
+	a.BranchId,
+	a.LedgerId
+FROM [DBT].[CardInfo] AS ci WITH(NOLOCK)
+INNER JOIN [CUS].[DebitCardApplication] AS dca WITH(NOLOCK) ON ci.CardNumber = dca.CardNo
+INNER JOIN KMH.OverdraftAccount ov WITH(NOLOCK) on ov.DefinitionId = dca.KMHPackageId and ov.AccountNumber = ci.AccountNumber
+INNER JOIN KMH.Definition AS d WITH (NOLOCK) on d.Id= dca.KMHPackageId	
+INNER JOIN COR.Account a WITH(nolock) on a.AccountNumber = ci.AccountNumber and a.AccountSuffix = ov.CreditAccountSuffix
+WHERE ci.CardNumber = @CardNumber 
+	and ci.IsRowActive = 1 
+	AND ci.ProductCode = 'ALTINKART'
+	AND dca.StateId = 1
+	and dca.KMHPackageId is not null
+	and ov.CurrentState=1 

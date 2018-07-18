@@ -1,0 +1,14 @@
+﻿/// <summary>
+///     Aloha
+/// </summary>
+public GenericResponse<decimal?> SelectTotalUsedAmountOfAccount(int? accountNumber,string externalTransactionCode,DateTime? transactionDate)
+{
+    var command = DBLayer.GetDBCommand(Databases.Boa, "DBT.sel_DebitTransactionTotalUsedAmountOfAccount");
+
+    // Parameters
+    DBLayer.AddInParameter(command, "accountNumber", SqlDbType.Int, accountNumber);
+    DBLayer.AddInParameter(command, "externalTransactionCode", SqlDbType.VarChar, externalTransactionCode);
+    DBLayer.AddInParameter(command, "transactionDate", SqlDbType.SmallDateTime, transactionDate);
+
+    return DBLayer.ExecuteScalar<decimal?>(command);
+}

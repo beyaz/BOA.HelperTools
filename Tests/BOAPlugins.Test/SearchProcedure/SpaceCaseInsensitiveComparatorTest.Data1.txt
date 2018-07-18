@@ -1,0 +1,34 @@
+﻿
+Name                   | Owner            | Type       | Created_datetime   
+-----------------------+------------------+------------+--------------------
+CertificateInformation | KUVEYTTURK\suBCP | user table | 11/10/2016 08:03:01
+
+
+Column_name  | Type          | Computed | Length | Prec  | Scale | Nullable | TrimTrailingBlanks | FixedLenNullInSource | Collation                      
+-------------+---------------+----------+--------+-------+-------+----------+--------------------+----------------------+--------------------------------
+MerchantId   | int           | no       | 4      | 10    | 0     | yes      | (n/a)              | (n/a)                |                                
+URL          | varchar       | no       | 1000   |       |       | yes      | no                 | yes                  | SQL_Latin1_General_CP1254_CI_AS
+BeginDate    | smalldatetime | no       | 4      |       |       | yes      | (n/a)              | (n/a)                |                                
+EndDate      | smalldatetime | no       | 4      |       |       | yes      | (n/a)              | (n/a)                |                                
+PrivateKey   | varchar       | no       | 500    |       |       | yes      | no                 | yes                  | SQL_Latin1_General_CP1254_CI_AS
+PublicKey    | varchar       | no       | 500    |       |       | yes      | no                 | yes                  | SQL_Latin1_General_CP1254_CI_AS
+SerialNumber | varchar       | no       | 50     |       |       | yes      | no                 | yes                  | SQL_Latin1_General_CP1254_CI_AS
+ThumbPrint   | varchar       | no       | 500    |       |       | yes      | no                 | yes                  | SQL_Latin1_General_CP1254_CI_AS
+IsMailSend   | tinyint       | no       | 1      | 3     | 0     | yes      | (n/a)              | (n/a)                |                                
+IsActive     | tinyint       | no       | 1      | 3     | 0     | yes      | (n/a)              | (n/a)                |                                
+
+
+Identity                    | Seed | Increment | Not For Replication
+----------------------------+------+-----------+--------------------
+No identity column defined. |      |           |                    
+
+
+RowGuidCol                   
+-----------------------------
+No rowguidcol column defined.
+
+
+Data_located_on_filegroup
+-------------------------
+BOA_DATA                 
+

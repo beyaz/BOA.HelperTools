@@ -1,0 +1,57 @@
+﻿/// <summary>
+        ///     Selects records from table 'DBT.Bkm3DSecureNotify' by Id column.
+        /// </summary>
+        public GenericResponse<List<Bkm3DSecureContract>> SelectBkm3DSecureNotifyById(int id)
+        {
+            var returnObject = CreateResponse<List<Bkm3DSecureContract>>();
+
+            var command = DBLayer.GetDBCommand(Databases.Boa, "DBT.sel_Bkm3DSecureNotifyById");
+
+            // Parameters
+            DBLayer.AddInParameter(command, "Id", SqlDbType.Int, id);
+
+            var sp = DBLayer.ExecuteReader(command);
+            if (!sp.Success)
+            {
+                return returnObject.Add(sp);
+            }
+
+            var listOfDataContract = new List<Bkm3DSecureContract>();
+
+            var reader = sp.Value;
+            while (reader.Read())
+            {
+                var dataContract = new Bkm3DSecureContract();
+                dataContract.Id = SQLDBHelper.GetInt32NullableValue(reader["Id"]);
+                dataContract.CardNumber = SQLDBHelper.GetStringValue(reader["CardNumber"]);
+                dataContract.CustomerId = SQLDBHelper.GetInt32NullableValue(reader["CustomerId"]);
+                dataContract.EmbossName = SQLDBHelper.GetStringValue(reader["EmbossName"]);
+                dataContract.FileName = SQLDBHelper.GetStringValue(reader["FileName"]);
+                dataContract.LastFileName = SQLDBHelper.GetStringValue(reader["LastFileName"]);
+                dataContract.DESKey = SQLDBHelper.GetStringValue(reader["DESKey"]);
+                dataContract.ReasonCode = SQLDBHelper.GetByteNullableValue(reader["ReasonCode"]);
+                dataContract.Status = SQLDBHelper.GetByteNullableValue(reader["Status"]);
+                dataContract.ResultCode = SQLDBHelper.GetInt16NullableValue(reader["ResultCode"]);
+                dataContract.UserName = SQLDBHelper.GetStringValue(reader["UserName"]);
+                dataContract.HostName = SQLDBHelper.GetStringValue(reader["HostName"]);
+                dataContract.SystemDate = SQLDBHelper.GetDateTimeNullableValue(reader["SystemDate"]);
+                dataContract.UpdateUserName = SQLDBHelper.GetStringValue(reader["UpdateUserName"]);
+                dataContract.UpdateHostName = SQLDBHelper.GetStringValue(reader["UpdateHostName"]);
+                dataContract.UpdateSystemDate = SQLDBHelper.GetDateTimeNullableValue(reader["UpdateSystemDate"]);
+                dataContract.IsOnlineNotify = SQLDBHelper.GetByteNullableValue(reader["IsOnlineNotify"]);
+                dataContract.ExpireDate = SQLDBHelper.GetStringValue(reader["ExpireDate"]);
+                dataContract.Email = SQLDBHelper.GetStringValue(reader["Email"]);
+                dataContract.TaxNumber = SQLDBHelper.GetStringValue(reader["TaxNumber"]);
+                dataContract.ReasonCodeDesc = SQLDBHelper.GetStringValue(reader["ReasonCodeDesc"]);
+				dataContract.MothersMaidenSurname = SQLDBHelper.GetStringValue(reader["MothersMaidenSurname"]);
+                dataContract.GSMAreaCode = SQLDBHelper.GetStringValue(reader["GSMAreaCode"]);
+                dataContract.GSMNumber = SQLDBHelper.GetStringValue(reader["GSMNumber"]);
+                dataContract.Citizenship = SQLDBHelper.GetStringValue(reader["Citizenship"]);
+                listOfDataContract.Add(dataContract);
+            }
+            reader.Close();
+
+            returnObject.Value = listOfDataContract;
+
+            return returnObject;
+        }

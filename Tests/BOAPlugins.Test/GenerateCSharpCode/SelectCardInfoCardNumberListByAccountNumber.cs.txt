@@ -1,0 +1,31 @@
+﻿        /// <summary>
+        ///     Selects only @CardNumber column from table DBT.CardInfo by using given parameter @AccountNumber.
+        /// </summary>
+        public GenericResponse<IList<string>> SelectCardInfoCardNumberListByAccountNumber(int accountNumber)
+        {
+            var returnObject = CreateResponse<IList<string>>();
+
+            var command = DBLayer.GetDBCommand(Databases.Boa, "DBT.sel_CardInfoCardNumberListByAccountNumber");
+
+            // Parameters
+            DBLayer.AddInParameter(command, "AccountNumber", SqlDbType.Int, accountNumber);
+
+            var sp = DBLayer.ExecuteReader(command);
+            if (!sp.Success)
+            {
+                return returnObject.Add(sp);
+            }
+
+            var list = new List<string>();
+
+            var reader = sp.Value;
+            while (reader.Read())
+            {
+                list.Add(SQLDBHelper.GetStringValue(reader["CardNumber"]));
+            }
+            reader.Close();
+
+            returnObject.Value = list;
+
+            return returnObject;
+        }

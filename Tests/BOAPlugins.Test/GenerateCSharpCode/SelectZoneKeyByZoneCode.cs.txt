@@ -1,0 +1,42 @@
+﻿        public GenericResponse<List<ZoneKeyContract>> SelectZoneKeyByZoneCode(string zoneCode)
+        {
+            var returnObject = CreateResponse<List<ZoneKeyContract>>();
+
+            var command = DBLayer.GetDBCommand(Databases.Boa, "DBT.sel_ZoneKeyByZoneCode");
+
+            // Parameters
+            DBLayer.AddInParameter(command, "ZoneCode", SqlDbType.VarChar, zoneCode);
+
+            var sp = DBLayer.ExecuteReader(command);
+            if (!sp.Success)
+            {
+                return returnObject.Add(sp);
+            }
+
+            var listOfDataContract = new List<ZoneKeyContract>();
+
+            var reader = sp.Value;
+            while (reader.Read())
+            {
+                var dataContract = new ZoneKeyContract();
+                dataContract.ZoneCode = SQLDBHelper.GetStringValue(reader["ZoneCode"]);
+                dataContract.ZmkULmk = SQLDBHelper.GetStringValue(reader["ZmkULmk"]);
+                dataContract.ZmkULmkKcv = SQLDBHelper.GetStringValue(reader["ZmkULmkKcv"]);
+                dataContract.ZpkULmk = SQLDBHelper.GetStringValue(reader["ZpkULmk"]);
+                dataContract.ZpkULmkKcv = SQLDBHelper.GetStringValue(reader["ZpkULmkKcv"]);
+                dataContract.ZpkUZmk = SQLDBHelper.GetStringValue(reader["ZpkUZmk"]);
+                dataContract.ZpkUZmkKcv = SQLDBHelper.GetStringValue(reader["ZpkUZmkKcv"]);
+                dataContract.UserName = SQLDBHelper.GetStringValue(reader["UserName"]);
+                dataContract.SystemDate = SQLDBHelper.GetDateTimeValue(reader["SystemDate"]);
+                dataContract.HostName = SQLDBHelper.GetStringValue(reader["HostName"]);
+                dataContract.UpdateUserName = SQLDBHelper.GetStringValue(reader["UpdateUserName"]);
+                dataContract.UpdateSystemDate = SQLDBHelper.GetDateTimeNullableValue(reader["UpdateSystemDate"]);
+                dataContract.UpdateHostName = SQLDBHelper.GetStringValue(reader["UpdateHostName"]);
+                listOfDataContract.Add(dataContract);
+            }
+            reader.Close();
+
+            returnObject.Value = listOfDataContract;
+
+            return returnObject;
+        }

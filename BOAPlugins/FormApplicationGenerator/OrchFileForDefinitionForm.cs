@@ -1,0 +1,114 @@
+﻿namespace BOAPlugins.FormApplicationGenerator
+{
+    static class OrchFileForDefinitionForm
+    {
+        #region Public Methods
+        public static string GenerateCode(Model Model)
+        {
+            return @"
+
+using BOA.Base;
+using BOA.Common.Extensions;
+using BOA.Common.Types;
+using BOA.Common.Helpers;
+using BOA.Types.CardGeneral.DebitCard;
+
+namespace " + Model.NamespaceNameForOrch + @"
+{    
+    public class " + Model.FormName + @"Form
+    {
+        #region Public Methods
+        /// <summary>
+        ///     Ends the of workflow.
+        /// </summary>
+        public WorkflowResponse<" + Model.RequestNameForDefinition + @"> EndOfWorkflow(" + Model.RequestNameForDefinition + @" request, ObjectHelper objectHelper)
+        {
+            return GetService(request, objectHelper).EndOfWorkflow();
+        }
+
+        /// <summary>
+        ///     Evaluates the initial state.
+        /// </summary>
+        public WorkflowResponse<" + Model.RequestNameForDefinition + @"> EvaluateInitialState(" + Model.RequestNameForDefinition + @" request, ObjectHelper objectHelper)
+        {
+            return GetService(request, objectHelper).EvaluateInitialState();
+        }
+        
+        #endregion
+
+        #region Methods
+        /// <summary>
+        ///     Gets the service.
+        /// </summary>
+        static Service GetService(" + Model.RequestNameForDefinition + @" request, ObjectHelper objectHelper)
+        {
+            return new Service
+            {
+                Request = request,
+                Context = objectHelper.Context
+            };
+        }
+        #endregion
+
+        /// <summary>
+        ///     The service
+        /// </summary>
+        class Service : ProcessBase
+        {
+            #region Public Properties
+            /// <summary>
+            ///     Gets or sets the request.
+            /// </summary>
+            public " + Model.RequestNameForDefinition + @" Request { get; set; }
+            #endregion
+
+            #region Public Methods
+            /// <summary>
+            ///     Ends the of workflow.
+            /// </summary>
+            public WorkflowResponse<" + Model.RequestNameForDefinition + @"> EndOfWorkflow()
+            {
+                var returnObject = CreateWorkflowResponse(Request);
+
+                // TODO: Expects code. ( workflow işleminin en sonunda yapılması gereken işlem burada yazılabilir)
+
+                return returnObject;
+            }
+
+            /// <summary>
+            ///     Evaluates the initial state.
+            /// </summary>
+            public WorkflowResponse<" + Model.RequestNameForDefinition + @"> EvaluateInitialState()
+            {
+                var returnObject = CreateWorkflowResponse(Request);
+                 
+                if (Request.State.IsOpenByWorkflow)
+                {
+                    return returnObject;
+                }
+
+                #region TODO: Expects code
+                //      default atanması gereken form değerleri 
+                //      enable readonly gibi state işlemleri
+                //      data source ların dolsurulması mesela özel bir combonun datasource bilgisi
+                //      gibi bilgiler burada doldurulmalıdır.
+
+                Request.Data = RandomValue.Object<" + Model.DefinitionFormDataClassName + @">();
+                Request.MethodName = nameof(EndOfWorkflow);
+                #endregion
+            
+                return returnObject;
+            }            
+            #endregion
+
+           
+        }
+    }
+}
+
+
+";
+        }
+        #endregion
+    }
+}

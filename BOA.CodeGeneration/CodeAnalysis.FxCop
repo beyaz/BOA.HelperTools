@@ -1,0 +1,408 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FxCopProject Version="10.0" Name="My FxCop Project">
+ <ProjectOptions>
+  <SharedProject>True</SharedProject>
+  <Stylesheet Apply="False">$(FxCopDir)\Xml\FxCopReport.xsl</Stylesheet>
+  <SaveMessages>
+   <Project Status="Active, Excluded, Good, Noise" NewOnly="False" />
+   <Report Status="Active, Good, Noise" NewOnly="False" />
+  </SaveMessages>
+  <ProjectFile Compress="True" DefaultTargetCheck="True" DefaultRuleCheck="True" SaveByRuleGroup="" Deterministic="True" />
+  <EnableMultithreadedLoad>True</EnableMultithreadedLoad>
+  <EnableMultithreadedAnalysis>True</EnableMultithreadedAnalysis>
+  <SourceLookup>True</SourceLookup>
+  <AnalysisExceptionsThreshold>10</AnalysisExceptionsThreshold>
+  <RuleExceptionsThreshold>1</RuleExceptionsThreshold>
+  <Spelling Locale="en-US" />
+  <OverrideRuleVisibilities>False</OverrideRuleVisibilities>
+  <CustomDictionaries SearchFxCopDir="True" SearchUserProfile="True" SearchProjectDir="True" />
+  <SearchGlobalAssemblyCache>False</SearchGlobalAssemblyCache>
+  <DeadlockDetectionTimeout>120</DeadlockDetectionTimeout>
+  <IgnoreGeneratedCode>False</IgnoreGeneratedCode>
+ </ProjectOptions>
+ <Targets>
+  <Target Name="$(ProjectDir)/bin/Debug/BoaCodeGenerator.exe" Analyze="True" AnalyzeAllChildren="True" />
+ </Targets>
+ <Rules>
+  <RuleFiles>
+   <RuleFile Name="$(FxCopDir)\Rules\DesignRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\GlobalizationRules.dll" Enabled="True" AllRulesEnabled="False">
+    <Rule Name="AvoidDuplicateAccelerators" Enabled="True" />
+    <Rule Name="DoNotHardcodeLocaleSpecificStrings" Enabled="True" />
+    <Rule Name="NormalizeStringsToUppercase" Enabled="True" />
+    <Rule Name="SetLocaleForDataTypes" Enabled="True" />
+    <Rule Name="SpecifyCultureInfo" Enabled="True" />
+    <Rule Name="SpecifyIFormatProvider" Enabled="True" />
+    <Rule Name="SpecifyMarshalingForPInvokeStringArguments" Enabled="True" />
+    <Rule Name="SpecifyMessageBoxOptions" Enabled="True" />
+    <Rule Name="UseOrdinalStringComparison" Enabled="True" />
+   </RuleFile>
+   <RuleFile Name="$(FxCopDir)\Rules\InteroperabilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\MobilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\NamingRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\PerformanceRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\PortabilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\SecurityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\SecurityTransparencyRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\UsageRules.dll" Enabled="True" AllRulesEnabled="True" />
+  </RuleFiles>
+  <Groups />
+  <Settings />
+ </Rules>
+ <FxCopReport Version="10.0">
+  <Targets>
+   <Target Name="$(ProjectDir)/bin/Debug/BoaCodeGenerator.exe">
+    <Modules>
+     <Module Name="boacodegenerator.exe">
+      <Messages>
+       <Message TypeName="AssembliesShouldHaveValidStrongNames" Category="Microsoft.Design" CheckId="CA2210" Status="Excluded" Created="2015-07-08 08:01:12Z">
+        <Issue Name="NoStrongName">
+         <Item>'BoaCodeGenerator.exe'</Item>
+        </Issue>
+        <Notes>
+         <User Name="beyaztas">
+          <Note Id="0" />
+         </User>
+        </Notes>
+       </Message>
+       <Message TypeName="MarkAssembliesWithClsCompliant" Category="Microsoft.Design" CheckId="CA1014" Status="Excluded" Created="2015-11-11 07:16:13Z">
+        <Issue>
+         <Item>'BoaCodeGenerator.exe'</Item>
+        </Issue>
+       </Message>
+       <Message TypeName="MarkAssembliesWithNeutralResourcesLanguage" Category="Microsoft.Performance" CheckId="CA1824" Status="Excluded" Created="2015-07-08 08:01:12Z">
+        <Issue>
+         <Item>'BoaCodeGenerator.exe'</Item>
+        </Issue>
+        <Notes>
+         <User Name="beyaztas">
+          <Note Id="1" />
+         </User>
+        </Notes>
+       </Message>
+      </Messages>
+      <Namespaces>
+       <Namespace Name="BoaCodeGenerator.Generators">
+        <Types>
+         <Type Name="InsertSql">
+          <Members>
+           <Member Name="#GetProcedureParameterColumns(BoaCodeGenerator.Model.TableInfo,System.Collections.Generic.IReadOnlyList`1&lt;BoaCodeGenerator.Model.ColumnInfo&gt;)">
+            <Messages>
+             <Message Id="table" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2016-07-13 12:12:29Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'table'</Item>
+               <Item>'InsertSql.GetProcedureParameterColumns(TableInfo, IReadOnlyList&lt;ColumnInfo&gt;)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ReadContractGenerator">
+          <Members>
+           <Member Name="#GetSecureColumnReadMethod(BoaCodeGenerator.Model.ColumnInfo)">
+            <Messages>
+             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2016-07-13 12:12:29Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'ReadContractGenerator.GetSecureColumnReadMethod(ColumnInfo)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="SelectByColumnsCs">
+          <Members>
+           <Member Name="#Generate()">
+            <Messages>
+             <Message TypeName="DoNotRaiseReservedExceptionTypes" Category="Microsoft.Usage" CheckId="CA2201" Created="2016-07-13 12:12:29Z">
+              <Issue Name="TooGeneric">
+               <Item>'SelectByColumnsCs.Generate()'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="SelectByColumnsSql">
+          <Members>
+           <Member Name="#GetWhereParameterAppliedLine(System.String,System.String)">
+            <Messages>
+             <Message TypeName="DoNotRaiseReservedExceptionTypes" Category="Microsoft.Usage" CheckId="CA2201" Created="2016-07-13 12:12:29Z">
+              <Issue Name="TooGeneric">
+               <Item>'SelectByColumnsSql.GetWhereParameterAppliedLine(string, string)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="BoaCodeGenerator.Model">
+        <Types>
+         <Type Name="CustomSelectMethod">
+          <Members>
+           <Member Name="#MustBeReturnReadonlyContract">
+            <Messages>
+             <Message Id="Readonly" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Created="2016-07-13 12:12:29Z">
+              <Issue Name="MemberShouldBeCompoundWord">
+               <Item>Readonly</Item>
+               <Item>'CustomSelectMethod.MustBeReturnReadonlyContract'</Item>
+               <Item>ReadOnly</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Parameters">
+            <Messages>
+             <Message TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227" Status="Excluded" Created="2015-07-08 08:01:12Z">
+              <Issue>
+               <Item>'CustomSelectMethod.Parameters'</Item>
+              </Issue>
+              <Notes>
+               <User Name="beyaztas">
+                <Note Id="3" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="DoNotExposeGenericLists" Category="Microsoft.Design" CheckId="CA1002" Status="Excluded" Created="2015-07-08 08:01:12Z">
+              <Issue>
+               <Item>'List&lt;Where&gt;'</Item>
+               <Item>'CustomSelectMethod.Parameters'</Item>
+              </Issue>
+              <Notes>
+               <User Name="beyaztas">
+                <Note Id="3" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="CustomUpdateMethod">
+          <Members>
+           <Member Name="#MethodAccessiblity">
+            <Messages>
+             <Message Id="Accessiblity" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2016-07-13 12:12:29Z">
+              <Issue Name="Member">
+               <Item>Accessiblity</Item>
+               <Item>'CustomUpdateMethod.MethodAccessiblity'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="TableConfig">
+          <Members>
+           <Member Name="#CustomExecutions">
+            <Messages>
+             <Message TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227" Created="2016-07-13 12:12:29Z">
+              <Issue>
+               <Item>'TableConfig.CustomExecutions'</Item>
+              </Issue>
+             </Message>
+             <Message TypeName="DoNotExposeGenericLists" Category="Microsoft.Design" CheckId="CA1002" Created="2016-07-13 12:12:29Z">
+              <Issue>
+               <Item>'List&lt;CustomMethod&gt;'</Item>
+               <Item>'TableConfig.CustomExecutions'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#CustomExists">
+            <Messages>
+             <Message TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227" Status="Excluded" Created="2015-07-08 08:01:12Z">
+              <Issue>
+               <Item>'TableConfig.CustomExists'</Item>
+              </Issue>
+              <Notes>
+               <User Name="beyaztas">
+                <Note Id="3" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="DoNotExposeGenericLists" Category="Microsoft.Design" CheckId="CA1002" Status="Excluded" Created="2015-07-08 08:01:12Z">
+              <Issue>
+               <Item>'List&lt;CustomSelectMethod&gt;'</Item>
+               <Item>'TableConfig.CustomExists'</Item>
+              </Issue>
+              <Notes>
+               <User Name="beyaztas">
+                <Note Id="2" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#CustomSelects">
+            <Messages>
+             <Message TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227" Status="Excluded" Created="2015-07-08 08:01:12Z">
+              <Issue>
+               <Item>'TableConfig.CustomSelects'</Item>
+              </Issue>
+              <Notes>
+               <User Name="beyaztas">
+                <Note Id="3" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="DoNotExposeGenericLists" Category="Microsoft.Design" CheckId="CA1002" Status="Excluded" Created="2015-07-08 08:01:12Z">
+              <Issue>
+               <Item>'List&lt;CustomSelectMethod&gt;'</Item>
+               <Item>'TableConfig.CustomSelects'</Item>
+              </Issue>
+              <Notes>
+               <User Name="beyaztas">
+                <Note Id="3" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#CustomUpdates">
+            <Messages>
+             <Message TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227" Status="Excluded" Created="2015-07-08 08:01:12Z">
+              <Issue>
+               <Item>'TableConfig.CustomUpdates'</Item>
+              </Issue>
+              <Notes>
+               <User Name="beyaztas">
+                <Note Id="3" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="DoNotExposeGenericLists" Category="Microsoft.Design" CheckId="CA1002" Status="Excluded" Created="2015-07-08 08:01:12Z">
+              <Issue>
+               <Item>'List&lt;CustomUpdateMethod&gt;'</Item>
+               <Item>'TableConfig.CustomUpdates'</Item>
+              </Issue>
+              <Notes>
+               <User Name="beyaztas">
+                <Note Id="3" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ReadContractSpecificReads">
+            <Messages>
+             <Message TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227" Created="2016-07-13 12:12:29Z">
+              <Issue>
+               <Item>'TableConfig.ReadContractSpecificReads'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SelectByKeyMustBeReturnReadonlyContract">
+            <Messages>
+             <Message Id="Readonly" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Created="2016-07-13 12:12:29Z">
+              <Issue Name="MemberShouldBeCompoundWord">
+               <Item>Readonly</Item>
+               <Item>'TableConfig.SelectByKeyMustBeReturnReadonlyContract'</Item>
+               <Item>ReadOnly</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="BoaCodeGenerator.Util">
+        <Types>
+         <Type Name="Extensions">
+          <Members>
+           <Member Name="#FindColum(BoaCodeGenerator.Model.Where,System.Collections.Generic.IReadOnlyList`1&lt;BoaCodeGenerator.Model.ColumnInfo&gt;)">
+            <Messages>
+             <Message TypeName="DoNotRaiseReservedExceptionTypes" Category="Microsoft.Usage" CheckId="CA2201" Created="2016-07-13 12:12:29Z">
+              <Issue Name="TooGeneric">
+               <Item>'Extensions.FindColum(this Where, IReadOnlyList&lt;ColumnInfo&gt;)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetPropertyName(BoaCodeGenerator.Model.Where,System.Collections.Generic.IReadOnlyList`1&lt;BoaCodeGenerator.Model.ColumnInfo&gt;)">
+            <Messages>
+             <Message TypeName="DoNotRaiseReservedExceptionTypes" Category="Microsoft.Usage" CheckId="CA2201" Created="2016-07-13 12:12:29Z">
+              <Issue Name="TooGeneric">
+               <Item>'Extensions.GetPropertyName(this Where, IReadOnlyList&lt;ColumnInfo&gt;)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="SqlDataType">
+          <Members>
+           <Member Name="#GetSqlDbType(System.String)">
+            <Messages>
+             <Message Id="Db" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2016-07-13 12:12:29Z">
+              <Issue Name="Member">
+               <Item>Db</Item>
+               <Item>'SqlDataType.GetSqlDbType(string)'</Item>
+               <Item>DB</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+  </Targets>
+  <Notes>
+   <User Name="beyaztas">
+    <Note Id="0" Modified="2015-07-08 08:02:39Z">.</Note>
+    <Note Id="1" Modified="2015-07-08 08:02:42Z">.</Note>
+    <Note Id="2" Modified="2015-07-08 08:05:29Z">.</Note>
+    <Note Id="3" Modified="2015-07-08 08:05:39Z">.</Note>
+   </User>
+  </Notes>
+  <Rules>
+   <Rule TypeName="AssembliesShouldHaveValidStrongNames" Category="Microsoft.Design" CheckId="CA2210">
+    <Resolution Name="NoStrongName">Sign {0} with a strong name key.</Resolution>
+   </Rule>
+   <Rule TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227">
+    <Resolution Name="Default">Change {0} to be read-only by removing the property setter.</Resolution>
+   </Rule>
+   <Rule TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702">
+    <Resolution Name="MemberShouldBeCompoundWord">The discrete term '{0}' in member name {1} should be expressed as a compound word, '{2}'.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotExposeGenericLists" Category="Microsoft.Design" CheckId="CA1002">
+    <Resolution Name="Default">Change {0} in {1} to use Collection&lt;T&gt;, ReadOnlyCollection&lt;T&gt; or KeyedCollection&lt;K,V&gt;</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotRaiseReservedExceptionTypes" Category="Microsoft.Usage" CheckId="CA2201">
+    <Resolution Name="TooGeneric">{0} creates an exception of type {1}, an exception type that is not sufficiently specific and should never be raised by user code. If this exception instance might be thrown, use a different exception type.</Resolution>
+   </Rule>
+   <Rule TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709">
+    <Resolution Name="Member">Correct the casing of '{0}' in member name {1} by changing it to '{2}'.</Resolution>
+   </Rule>
+   <Rule TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704">
+    <Resolution Name="Member">Correct the spelling of '{0}' in member name {1} or remove it entirely if it represents any sort of Hungarian notation.</Resolution>
+   </Rule>
+   <Rule TypeName="MarkAssembliesWithClsCompliant" Category="Microsoft.Design" CheckId="CA1014">
+    <Resolution Name="Default">Mark {0} with CLSCompliant(true) because it exposes externally visible types.</Resolution>
+   </Rule>
+   <Rule TypeName="MarkAssembliesWithNeutralResourcesLanguage" Category="Microsoft.Performance" CheckId="CA1824">
+    <Resolution Name="Default">Because assembly {0} contains a ResX-based resource file, mark it with the NeutralResourcesLanguage attribute, specifying the language of the resources within the assembly. This could improve lookup performance the first time a resource is retrieved.</Resolution>
+   </Rule>
+   <Rule TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822">
+    <Resolution Name="Default">The 'this' parameter (or 'Me' in Visual Basic) of {0} is never used. Mark the member as static (or Shared in Visual Basic) or use 'this'/'Me' in the method body or at least one property accessor, if appropriate.</Resolution>
+   </Rule>
+   <Rule TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801">
+    <Resolution Name="Default">Parameter {0} of {1} is never used. Remove the parameter or use it in the method body.</Resolution>
+   </Rule>
+  </Rules>
+ </FxCopReport>
+</FxCopProject>

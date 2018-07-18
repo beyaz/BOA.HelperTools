@@ -1,0 +1,19 @@
+﻿        /// <summary>
+        ///     Lütfen doldurunuz.
+        /// </summary>
+        public GenericResponse<int> InsertCustomerMemo(IReadOnlyCustomerMemoContract contract)
+        {
+            var command = DBLayer.GetDBCommand(Databases.Boa, "DBT.ins_CustomerMemo");
+
+            // Parameters
+            DBLayer.AddInParameter(command, "AccountNumber", SqlDbType.Int, contract.AccountNumber);
+            DBLayer.AddInParameter(command, "CardNumber", SqlDbType.VarChar, contract.CardNumber);
+            DBLayer.AddInParameter(command, "Memo", SqlDbType.VarChar, contract.Memo);
+            DBLayer.AddInParameter(command, "State", SqlDbType.VarChar, contract.State);
+            DBLayer.AddInParameter(command, "ChannelId", SqlDbType.SmallInt, Context.ApplicationContext.Authentication.Channel);
+            DBLayer.AddInParameter(command, "Subject", SqlDbType.VarChar, contract.Subject);
+            DBLayer.AddInParameter(command, "UserName", SqlDbType.VarChar, Context.ApplicationContext.Authentication.UserName);
+            DBLayer.AddInParameter(command, "HostName", SqlDbType.VarChar, Context.ApplicationContext.Authentication.MachineName);
+
+            return DBLayer.ExecuteScalar<int>(command);
+        }

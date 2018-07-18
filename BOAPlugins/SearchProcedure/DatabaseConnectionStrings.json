@@ -1,0 +1,52 @@
+﻿
+[
+	{
+		"DatabaseName"		:"Boa",
+		"ConnectionStringDev"	:"server=srvdev\\ATLAS;database =BOA;integrated security=true",
+		"ConnectionStringPrep":"server=srvprep\\ATLAS;database=BOA;integrated security=true"
+	}
+	,
+	{
+		"DatabaseName"		:"BOADWH",
+		"ConnectionStringDev"	:"server=srvdev\\ATLAS;database =BOADWH;integrated security=true",
+		"ConnectionStringPrep":"server=srvprep\\ATLAS;database=BOADWH;integrated security=true"
+	}
+	,
+	{
+		"DatabaseName"		:"BoaStats",
+		"ConnectionStringDev"	:"server=srvdev\\ATLAS;database =BoaStats;integrated security=true",
+		"ConnectionStringPrep":"server=srvprep\\ATLAS;database=BoaStats;integrated security=true"
+	}
+	,
+	{
+		"DatabaseName"		:"BanksoftATM",
+		"ConnectionStringDev"	:"Data Source=SRVATMDBDEV;Initial Catalog=BireyselATM;Min Pool Size=10; Max Pool Size=100;Application Name=BireyselATM;Integrated Security=true",
+		"ConnectionStringPrep":"Data Source=SRVXPREP\\srvatmdb;Application Name=BireyselATM;Integrated Security=true"
+	}
+	,
+	{
+		"DatabaseName"		:"BanksoftCC",
+		"ConnectionStringDev"	:"Data Source=srvkkdbdev;Initial Catalog=KrediKuveyt;Min Pool Size=10; Max Pool Size=100;Application Name=BanksoftCreditCard;Integrated Security=true",
+		"ConnectionStringPrep":"Data Source=SRVXPREP\\SRVKKDB;Initial Catalog=KrediKuveyt;Min Pool Size=10; Max Pool Size=100;Application Name=BanksoftCreditCard;Integrated Security=true"
+	}
+	,
+	{
+		"DatabaseName"		:"BDSKuveyt",
+		"ConnectionStringDev"	:"Data Source=srvkkdbdev;Initial Catalog=BDSKuveyt;Min Pool Size=10; Max Pool Size=100;Application Name=BDSKuveyt;Integrated Security=true",
+		"ConnectionStringPrep":"Data Source=SRVXPREP\\SRVKKDB;Initial Catalog=BDSKuveyt;Min Pool Size=10; Max Pool Size=100;Application Name=BDSKuveyt;Integrated Security=true"
+	}
+	,
+	{
+		"DatabaseName"		:"Boa",
+		"ConnectionStringDev"	:"server=srvdedb;database =BOA;integrated security=true",
+		"ConnectionStringPrep":"server=srvdedb;database =BOA;integrated security=true"
+	}
+	,
+	{
+		"DatabaseName"		:"BOACRM",
+		"ConnectionStringDev"	:"server=srvdev\\ATLAS;database =BOACRM;integrated security=true",
+		"ConnectionStringPrep":"server=srvprep\\ATLAS;database=BOACRM;integrated security=true"
+	}
+]
+
+

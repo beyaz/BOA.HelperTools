@@ -1,0 +1,23 @@
+﻿		/// <summary>
+        ///     Inserts new record into table 'DBT.Bkm3DSecureNotify'
+        /// </summary>
+        public GenericResponse<int> InsertBkm3DSecureNotifyRecord(Bkm3DSecureContract contract)
+        {
+            var command = DBLayer.GetDBCommand(Databases.Boa, "DBT.ins_Bkm3DSecureNotifyRecord");
+
+            // Parameters
+            DBLayer.AddInParameter(command, "CardNumber", SqlDbType.VarChar, contract.CardNumber);
+            DBLayer.AddInParameter(command, "CustomerId", SqlDbType.Int, contract.CustomerId);
+            DBLayer.AddInParameter(command, "EmbossName", SqlDbType.VarChar, contract.EmbossName);
+            DBLayer.AddInParameter(command, "FileName", SqlDbType.VarChar, contract.FileName);
+            DBLayer.AddInParameter(command, "LastFileName", SqlDbType.VarChar, contract.LastFileName);
+            DBLayer.AddInParameter(command, "DESKey", SqlDbType.VarChar, contract.DESKey);
+            DBLayer.AddInParameter(command, "ReasonCode", SqlDbType.TinyInt, contract.ReasonCode);
+            DBLayer.AddInParameter(command, "Status", SqlDbType.TinyInt, contract.Status);
+            DBLayer.AddInParameter(command, "ResultCode", SqlDbType.TinyInt, contract.ResultCode);
+            DBLayer.AddInParameter(command, "UserName", SqlDbType.VarChar, Context.ApplicationContext.Authentication.UserName);
+            DBLayer.AddInParameter(command, "HostName", SqlDbType.VarChar, Context.ApplicationContext.Authentication.MachineName);
+            DBLayer.AddInParameter(command, "IsOnlineNotify", SqlDbType.Int, contract.IsOnlineNotify);
+
+            return DBLayer.ExecuteScalar<int>(command);
+        }

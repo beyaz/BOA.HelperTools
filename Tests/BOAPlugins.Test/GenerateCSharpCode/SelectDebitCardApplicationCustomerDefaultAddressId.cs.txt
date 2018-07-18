@@ -1,0 +1,31 @@
+﻿        /// <summary>
+        ///     Selects DebitCardApplication Customer Default AddressId.
+        /// </summary>
+        public GenericResponse<IList<int>> SelectDebitCardApplicationCustomerDefaultAddressId(int accountNumber)
+        {
+            var returnObject = CreateResponse<IList<int>>();
+
+            var command = DBLayer.GetDBCommand(Databases.Boa, "DBT.sel_DebitCardApplicationCustomerDefaultAddressId");
+
+            // Parameters
+            DBLayer.AddInParameter(command, "accountNumber", SqlDbType.Int, accountNumber);
+
+            var sp = DBLayer.ExecuteReader(command);
+            if (!sp.Success)
+            {
+                return returnObject.Add(sp);
+            }
+
+            var list = new List<int>();
+
+            var reader = sp.Value;
+            while (reader.Read())
+            {
+                list.Add(SQLDBHelper.GetInt32Value(reader["Addressid"]));
+            }
+            reader.Close();
+
+            returnObject.Value = list;
+
+            return returnObject;
+        }

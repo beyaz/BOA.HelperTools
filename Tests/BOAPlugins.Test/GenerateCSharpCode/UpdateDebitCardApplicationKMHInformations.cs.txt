@@ -1,0 +1,25 @@
+﻿        /// <summary>
+        ///     Updates KMH informations of record by using 'ID'.
+        /// </summary>
+		public GenericResponse<int> UpdateDebitCardApplicationKMHInformations(DebitCardApplicationContract contract)
+        {
+            var command = DBLayer.GetDBCommand(Databases.Boa, "DBT.upd_DebitCardApplicationKMHInformations");
+
+            // Parameters
+
+            DBLayer.AddInParameter(command, "ID", SqlDbType.Int, contract.ID);
+            DBLayer.AddInParameter(command, "UpdateUserName", SqlDbType.VarChar, Context.ApplicationContext.Authentication.UserName);
+            DBLayer.AddInParameter(command, "UpdateHostName", SqlDbType.VarChar, Context.ApplicationContext.Authentication.MachineName);
+            DBLayer.AddInParameter(command, "UpdateSystemDate", SqlDbType.DateTime, DateTime.Now);
+            DBLayer.AddInParameter(command, "MinimumBalance", SqlDbType.Decimal, contract.MinimumBalance);
+            DBLayer.AddInParameter(command, "KMHPackageId", SqlDbType.Int, contract.KMHPackageId);
+            DBLayer.AddInParameter(command, "UnitId", SqlDbType.Int, contract.UnitId);
+            DBLayer.AddInParameter(command, "IsKMHUsing", SqlDbType.Bit, contract.IsKMHUsing);
+            DBLayer.AddInParameter(command, "EmploymentType", SqlDbType.SmallInt, contract.EmploymentType);
+            DBLayer.AddInParameter(command, "MonthlyNetIncome", SqlDbType.Decimal, contract.MonthlyNetIncome);
+            DBLayer.AddInParameter(command, "MonthlyCertificatedIncome", SqlDbType.Decimal, contract.MonthlyCertificatedIncome);
+            DBLayer.AddInParameter(command, "SGKPremiumDayCount", SqlDbType.Int, contract.SGKPremiumDayCount);
+            DBLayer.AddInParameter(command, "SGKTurnoverCountWithinLastTwoYear", SqlDbType.Int, contract.SGKTurnoverCountWithinLastTwoYear);
+
+            return DBLayer.ExecuteNonQuery(command);
+        }

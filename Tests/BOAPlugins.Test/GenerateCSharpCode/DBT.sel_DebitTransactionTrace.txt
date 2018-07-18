@@ -1,0 +1,60 @@
+﻿        /// <summary>
+        ///     Select records by given parameters with using LIKE operator.
+        /// </summary>
+        public GenericResponse<List<CommunicationInfoSearchContract>> SelectDebitTransactionTrace(CommunicationInfoSearchContract contract)
+        {
+            var returnObject = CreateResponse<List<CommunicationInfoSearchContract>>();
+
+            var command = DBLayer.GetDBCommand(Databases.BoaStats, "DBT.sel_DebitTransactionTrace");
+
+            // Parameters
+            DBLayer.AddInParameter(command, "Guid", SqlDbType.VarChar, contract.Guid == Guid.Empty ? null : contract.Guid.ToString());
+            DBLayer.AddInParameter(command, "IncomingMessageTimeBegin", SqlDbType.DateTime, contract.IncomingMessageTimeBegin);
+            DBLayer.AddInParameter(command, "IncomingMessageTimeEnd", SqlDbType.DateTime, contract.IncomingMessageTimeEnd);
+            DBLayer.AddInParameter(command, "IncomingMessage", SqlDbType.VarChar, contract.IncomingMessage);
+            DBLayer.AddInParameter(command, "IncomingMessageReceiveError", SqlDbType.VarChar, contract.IncomingMessageReceiveError);
+            DBLayer.AddInParameter(command, "OutgoingMessageTimeBegin", SqlDbType.DateTime, contract.OutgoingMessageTimeBegin);
+            DBLayer.AddInParameter(command, "OutgoingMessageTimeEnd", SqlDbType.DateTime, contract.OutgoingMessageTimeEnd);
+            DBLayer.AddInParameter(command, "OutgoingMessage", SqlDbType.VarChar, contract.OutgoingMessage);
+            DBLayer.AddInParameter(command, "OutgoingMessageSendingError", SqlDbType.VarChar, contract.OutgoingMessageSendingError);
+            DBLayer.AddInParameter(command, "SendingToBOATimeBegin", SqlDbType.DateTime, contract.SendingToBOATimeBegin);
+            DBLayer.AddInParameter(command, "SendingToBOATimeEnd", SqlDbType.DateTime, contract.SendingToBOATimeEnd);
+            DBLayer.AddInParameter(command, "ErrorWhenSendingToBOA", SqlDbType.VarChar, contract.ErrorWhenSendingToBOA);
+            DBLayer.AddInParameter(command, "BOAErrorResultMessage", SqlDbType.VarChar, contract.BOAErrorResultMessage);
+            DBLayer.AddInParameter(command, "UserName", SqlDbType.VarChar, Context.ApplicationContext.Authentication.UserName);
+            DBLayer.AddInParameter(command, "HostName", SqlDbType.VarChar, Context.ApplicationContext.Authentication.MachineName);
+
+            var sp = DBLayer.ExecuteReader(command);
+            if (!sp.Success)
+            {
+                return returnObject.Add(sp);
+            }
+
+            var listOfDataContract = new List<CommunicationInfoSearchContract>();
+
+            var reader = sp.Value;
+            while (reader.Read())
+            {
+var                 dataContract = new CommunicationInfoSearchContract();
+                dataContract.DebitTransactionTraceId = SQLDBHelper.GetInt32Value(reader["DebitTransactionTraceId"]);
+                dataContract.Guid = string.IsNullOrWhiteSpace(reader["Guid"] +"") ? Guid.Empty : Guid.Parse(reader["Guid"].ToString());
+                dataContract.IncomingMessageTime = SQLDBHelper.GetDateTimeNullableValue(reader["IncomingMessageTime"]);
+                dataContract.IncomingMessage = SQLDBHelper.GetStringValue(reader["IncomingMessage"]);
+                dataContract.IncomingMessageReceiveError = SQLDBHelper.GetStringValue(reader["IncomingMessageReceiveError"]);
+                dataContract.OutgoingMessageTime = SQLDBHelper.GetDateTimeNullableValue(reader["OutgoingMessageTime"]);
+                dataContract.OutgoingMessage = SQLDBHelper.GetStringValue(reader["OutgoingMessage"]);
+                dataContract.OutgoingMessageSendingError = SQLDBHelper.GetStringValue(reader["OutgoingMessageSendingError"]);
+                dataContract.SendingToBOATime = SQLDBHelper.GetDateTimeNullableValue(reader["SendingToBOATime"]);
+                dataContract.ErrorWhenSendingToBOA = SQLDBHelper.GetStringValue(reader["ErrorWhenSendingToBOA"]);
+                dataContract.BOAErrorResultMessage = SQLDBHelper.GetStringValue(reader["BOAErrorResultMessage"]);
+                dataContract.UserName = SQLDBHelper.GetStringValue(reader["UserName"]);
+                dataContract.HostName = SQLDBHelper.GetStringValue(reader["HostName"]);
+                dataContract.SystemDate = SQLDBHelper.GetStringValue(reader["SystemDate"]);
+                listOfDataContract.Add(dataContract);
+            }
+            reader.Close();
+
+            returnObject.Value = listOfDataContract;
+
+            return returnObject;
+        }

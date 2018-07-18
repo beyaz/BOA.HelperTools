@@ -1,0 +1,15 @@
+﻿        /// <summary>
+        ///     Updates CardInUsePin column of DBT.CardInfo
+        /// </summary>
+        public GenericResponse<int> UpdateCardInUsePin(string cardNumber, string cardInUsePin)
+        {
+            var command = DBLayer.GetDBCommand(Databases.Boa, "DBT.upd_CardInUsePin");
+
+            // Parameters
+            DBLayer.AddInParameter(command, "CardNumber", SqlDbType.VarChar, cardNumber);
+            DBLayer.AddInParameter(command, "CardInUsePin", SqlDbType.VarChar, cardInUsePin);
+            DBLayer.AddInParameter(command, "UpdateUserName", SqlDbType.VarChar, Context.ApplicationContext.Authentication.UserName);
+            DBLayer.AddInParameter(command, "UpdateHostName", SqlDbType.VarChar, Context.ApplicationContext.Authentication.MachineName);
+
+            return DBLayer.ExecuteNonQuery(command);
+        }

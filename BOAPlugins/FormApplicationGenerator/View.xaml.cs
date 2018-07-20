@@ -278,21 +278,20 @@ INNER JOIN sys.types  ty ON c.user_type_id = ty.user_type_id
                 CommandText = sqlCommandText
             };
 
-            List<ColumnInfo> columnInfos = null;
 
             try
             {
-                columnInfos = sql.ExecuteReader().ToList<ColumnInfo>().ToList();
+                var columnInfos = sql.ExecuteReader().ToList<ColumnInfo>().ToList();
+
+                FormDataFields = new ObservableCollection<FieldInfo>(columnInfos.ConvertAll(ConvertFrom));
+
+                NamingHelper.InitializeFieldComponentTypes(FormDataFields.ToList());
             }
             catch (Exception exception)
             {
                 MessageBox.Show(exception.ToString());
                 return;
             }
-
-            FormDataFields = new ObservableCollection<FieldInfo>(columnInfos.ConvertAll(ConvertFrom));
-
-            NamingHelper.InitializeFieldComponentTypes(FormDataFields.ToList());
 
             Dispatcher.BeginInvoke((Action) (() => _tabControl.SelectedIndex = 1));
         }

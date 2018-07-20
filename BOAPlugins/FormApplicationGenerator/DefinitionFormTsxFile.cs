@@ -62,7 +62,7 @@ class " + Model.FormName + @"Form extends TransactionPage
 
     evaluateActionStates()
     {
-        if (this.assistant.isOpenByWorkflow())
+        if (this.state.pageParams.data)
         {
             this.disableAction(CommandName.New);
         }

@@ -37,7 +37,7 @@ namespace " + Model.NamespaceNameForOrch + @"
         /// <summary>
         ///     Saves the specified request.
         /// </summary>
-        public WorkflowResponse<VisaAcquirerFormRequest> Save(VisaAcquirerFormRequest request, ObjectHelper objectHelper)
+        public WorkflowResponse<" + Model.RequestNameForDefinition + @"> Save(" + Model.RequestNameForDefinition + @" request, ObjectHelper objectHelper)
         {
             return GetService(request, objectHelper).Save();
         }
@@ -111,7 +111,7 @@ namespace " + Model.NamespaceNameForOrch + @"
             /// <summary>
             ///     Saves this instance.
             /// </summary>
-            public WorkflowResponse<VisaAcquirerFormRequest> Save()
+            public WorkflowResponse<" + Model.RequestNameForDefinition + @"> Save()
             {
                 var returnObject = CreateWorkflowResponse(Request);
 

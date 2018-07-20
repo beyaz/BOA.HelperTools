@@ -35,6 +35,7 @@ import " + Model.RequestNameForDefinition + @" = " + Model.NamespaceNameForType 
 
 class CommandName
 {
+    static readonly New    = ""New"";
     static readonly Save    = ""Save"";
     static readonly Approve = ""Approve"";
     static readonly Reject  = ""Reject"";
@@ -67,6 +68,13 @@ class " + Model.FormName + @"Form extends TransactionPage
 
         switch (command.commandName)
         {
+
+            case CommandName.New:
+            {
+                this.assistant.evaluateInitialState();
+                break;
+            }
+
             case CommandName.Save:
             {
                 this.assistant.sendWindowRequest(CommandName.Save);

@@ -33,6 +33,14 @@ namespace " + Model.NamespaceNameForOrch + @"
         {
             return GetService(request, objectHelper).EvaluateInitialState();
         }
+
+        /// <summary>
+        ///     Saves the specified request.
+        /// </summary>
+        public WorkflowResponse<VisaAcquirerFormRequest> Save(VisaAcquirerFormRequest request, ObjectHelper objectHelper)
+        {
+            return GetService(request, objectHelper).Save();
+        }
         
         #endregion
 
@@ -98,7 +106,25 @@ namespace " + Model.NamespaceNameForOrch + @"
                 #endregion
             
                 return returnObject;
-            }            
+            }
+
+            /// <summary>
+            ///     Saves this instance.
+            /// </summary>
+            public WorkflowResponse<VisaAcquirerFormRequest> Save()
+            {
+                var returnObject = CreateWorkflowResponse(Request);
+
+                #region TODO: Expects code
+                // ?
+                #endregion
+
+                Request.State.StatusMessage = Message.TransactionSaved;
+
+                return returnObject;
+            }
+
+
             #endregion
 
            

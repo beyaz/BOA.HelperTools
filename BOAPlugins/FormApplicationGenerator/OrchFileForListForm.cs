@@ -11,6 +11,7 @@ namespace BOAPlugins.FormApplicationGenerator
             var resultGridColumnNames = string.Join(","+Environment.NewLine , Model.FormDataClassFields.Select(fieldInfo => $"nameof({Model.DefinitionFormDataClassName}.{fieldInfo.Name})"));
 
             return @"
+using System.Collections.Generic;
 using BOA.Base;
 using BOA.Common.Extensions;
 using BOA.Common.Types;

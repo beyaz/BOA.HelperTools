@@ -31,7 +31,7 @@ namespace BOAPlugins.FormApplicationGenerator
         {
             var typesFolder      = Path.GetDirectoryName(Model.SolutionFilePath) + Path.DirectorySeparatorChar + Model.NamespaceNameForType + Path.DirectorySeparatorChar;
             var orchFolder       = Path.GetDirectoryName(Model.SolutionFilePath) + Path.DirectorySeparatorChar + Model.NamespaceNameForOrch + Path.DirectorySeparatorChar;
-            var oneProjectFolder = Path.GetDirectoryName(Model.SolutionFilePath) + Path.DirectorySeparatorChar + @"One\BOA.One." + Model.NamespaceName + Path.DirectorySeparatorChar;
+            var oneProjectFolder = Path.GetDirectoryName(Model.SolutionFilePath) + Path.DirectorySeparatorChar + @"One\BOA.One.Office." + Model.NamespaceName + Path.DirectorySeparatorChar;
 
             Util.WriteFileIfContentNotEqual(typesFolder + Model.FormName + "ListForm.cs", TypeFileForListForm.GenerateCode(Model));
             Util.WriteFileIfContentNotEqual(typesFolder + Model.FormName + "Form.cs", TypeFileForDefinitionForm.GenerateCode(Model));

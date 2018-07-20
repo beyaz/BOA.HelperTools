@@ -60,6 +60,14 @@ class " + Model.FormName + @"Form extends TransactionPage
         this.assistant = FormAssistant.create(this, """ + Model.NamespaceNameForType + @"." + Model.RequestNameForDefinition + @""");
     }
 
+    evaluateActionStates()
+    {
+        if (this.assistant.isOpenByWorkflow())
+        {
+            this.disableAction(CommandName.New);
+        }
+    }
+
     onActionClick(command: Common.ResourceActionContract, executeWorkFlow: () => void)
     {
         let isCompleted = false;

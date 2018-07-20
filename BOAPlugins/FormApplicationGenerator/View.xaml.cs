@@ -164,7 +164,7 @@ LEFT OUTER JOIN kkVISATCR4 WITH(NOLOCK) ON vaAcqNo = vtIssAcqNo and vtIssAcq = '
 	
 	SELECT c.name AS ColumnName , ty.name AS DataType 
 	  FROM tempdb.sys.columns  c 
-INNER JOIN sys.types  ty ON c.system_type_id = ty.system_type_id
+INNER JOIN sys.types  ty ON c.user_type_id = ty.user_type_id
      WHERE [object_id] = OBJECT_ID(N'tempdb..#tmp')
 	
 

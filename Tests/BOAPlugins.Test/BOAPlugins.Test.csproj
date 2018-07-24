@@ -87,6 +87,7 @@
     <Compile Include="BoaCodeGenerator\Util\TFSUndoHelperTest.cs" />
     <Compile Include="ExportingModel\ExporterTest.cs" />
     <Compile Include="ExportingModel\HandlerTest.cs" />
+    <Compile Include="FormApplicationGenerator\VisaFee.cs" />
     <Compile Include="GenerateCSharpCode\BOATypeDataProviderTest.cs" />
     <Compile Include="GenerateCSharpCode\HandlerTest.cs" />
     <Compile Include="GenerateEntityContract\HandlerTest.cs" />
@@ -166,9 +167,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="FormApplicationGenerator\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="ExportingModel\ExampleConfig.json" />
     <None Include="packages.config" />

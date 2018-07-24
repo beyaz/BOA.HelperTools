@@ -88,6 +88,17 @@ namespace BOAPlugins.FormApplicationGenerator
     [Serializable]
     public class FieldInfo
     {
+        public FieldInfo()
+        {
+            
+        }
+
+        public FieldInfo(Enum name, DotNetTypeName dotNetTypeName,Enum groupBoxTitle)
+        {
+            Name = name.ToString();
+            TypeName = dotNetTypeName;
+            GroupBoxTitle = groupBoxTitle?.ToString();
+        }
         #region Public Properties
         public ComponentName? ComponentName { get; set; } = FormApplicationGenerator.ComponentName.BInput;
         public string         GroupBoxTitle { get; set; }

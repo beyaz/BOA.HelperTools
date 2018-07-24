@@ -69,17 +69,6 @@ namespace BOAPlugins.VSIntegration
 
             Process.Start(DirectoryHelper.PluginDirectory);
         }
-
-        void GenerateForm(object sender, RoutedEventArgs e)
-        {
-            Close();
-
-            var view = new FormApplicationGenerator.View
-            {
-                VisualStudio = VisualStudio
-            };
-            view.ShowDialog();
-        }
         
 
         void Reload_Config_File(object sender, RoutedEventArgs e)

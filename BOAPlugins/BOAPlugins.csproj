@@ -104,9 +104,6 @@
     <Compile Include="FormApplicationGenerator\TypeFileForListForm.cs" />
     <Compile Include="FormApplicationGenerator\OrchFileForListForm.cs" />
     <Compile Include="FormApplicationGenerator\Model.cs" />
-    <Compile Include="FormApplicationGenerator\View.xaml.cs">
-      <DependentUpon>View.xaml</DependentUpon>
-    </Compile>
     <Compile Include="BOAPlugins.VSIntegration\Command.cs" />
     <Compile Include="BOAPlugins.VSIntegration\MainForm.xaml.cs">
       <DependentUpon>MainForm.xaml</DependentUpon>
@@ -187,10 +184,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="BOA.Tools.Translator\UI.TranslateHelper\View.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="FormApplicationGenerator\View.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

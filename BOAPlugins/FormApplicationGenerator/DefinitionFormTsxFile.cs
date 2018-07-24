@@ -1,11 +1,15 @@
-﻿namespace BOAPlugins.FormApplicationGenerator
+﻿using System;
+
+namespace BOAPlugins.FormApplicationGenerator
 {
     static class DefinitionFormTsxFile
     {
         #region Public Methods
         public static string GenerateCode(Model Model)
         {
-            var tsxCodeInfo = TsxCodeGeneration.EvaluateTSCodeInfo(Model.Cards, Model.FormDataClassFields,true);
+            var tsxCodeInfo = TsxCodeGeneration.EvaluateTSCodeInfo(Model,true);
+
+            var tabFormdecleration = Model.IsTabForm ? Environment.NewLine+"this.tabEnabled = true;" : "";
 
             return @"
 
@@ -58,6 +62,7 @@ class " + Model.FormName + @"Form extends TransactionPage
         this.connect(this);
 
         this.assistant = FormAssistant.create(this, """ + Model.NamespaceNameForType + @"." + Model.RequestNameForDefinition + @""");
+        " + tabFormdecleration + @"
     }
 
     evaluateActionStates()
@@ -115,11 +120,11 @@ class " + Model.FormName + @"Form extends TransactionPage
         return this.assistant.receiveResponse(proxyResponse);
     }
 
-    render()
+    " + (Model.IsTabForm ? "renderTab" : "render") + @"()
     {
         if (!this.assistant.isReadyToRender())
         {
-            return <div/>;
+            return  " + (Model.IsTabForm ? "[]" : "<div/>") + @";
         }
 
         const state = this.state;
@@ -130,9 +135,9 @@ class " + Model.FormName + @"Form extends TransactionPage
 
         const data = windowRequest.data;
 
-        return (
+        return " + (Model.IsTabForm ? "(" : "[") + @"
             " + tsxCodeInfo.RenderCodeForJsx + @"
-        );
+        " + (Model.IsTabForm ? "]" : ")") + @";
     }
 }
 

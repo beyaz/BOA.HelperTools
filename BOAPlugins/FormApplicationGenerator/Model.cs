@@ -37,11 +37,13 @@ namespace BOAPlugins.FormApplicationGenerator
 
         #region Public Properties
         public IReadOnlyCollection<BCard> Cards                       { get; set; } = new List<BCard>();
+        public IReadOnlyCollection<BTab> Tabs { get; set; } = new List<BTab>();
         public string                     DefinitionFormDataClassName { get; }
 
         public IReadOnlyCollection<BField> FormDataClassFields => Cards.GetAllFields();
 
         public string                      FormName                 { get; }
+        public bool                        IsTabForm                { get; set; }
         public IReadOnlyCollection<BField> ListFormSearchFields     { get; set; } = new List<BField>();
         public string                      NamespaceName            { get; }
         public string                      NamespaceNameForOrch     { get; }
@@ -71,10 +73,33 @@ namespace BOAPlugins.FormApplicationGenerator
     }
 
     [Serializable]
+    public class BTab
+    {
+        #region Constructors
+        public BTab(string title, IReadOnlyCollection<BCard> cards)
+        {
+            Cards = cards;
+            Title  = title;
+        }
+
+        public BTab(string title, IReadOnlyCollection<BField> fields)
+        {
+            Cards = new[] {new BCard(null, fields)};
+            Title = title;
+        }
+        #endregion
+
+        #region Public Properties
+        public IReadOnlyCollection<BCard> Cards { get; }
+        public string                      Title  { get; }
+        #endregion
+    }
+
+    [Serializable]
     public class BField
     {
         #region Constructors
-        public BField(Enum name, DotNetType dotNetType)
+        public BField(DotNetType dotNetType, Enum name)
         {
             Name       = name.ToString();
             DotNetType = dotNetType;

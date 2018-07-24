@@ -5,7 +5,7 @@
         #region Public Methods
         public static string GenerateCode(Model Model)
         {
-            var tsxCode = TsxCodeGeneration.EvaluateTSCodeInfo(Model.Cards, Model.ListFormSearchFields,false);
+            var tsxCode = TsxCodeGeneration.EvaluateTSCodeInfo(Model,false);
 
             return @"
 

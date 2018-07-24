@@ -18,8 +18,11 @@ namespace BOAPlugins.FormApplicationGenerator
     static class TsxCodeGeneration
     {
         #region Public Methods
-        public static TsxCodeInfo EvaluateTSCodeInfo(IReadOnlyCollection<BCard> cards, IReadOnlyCollection<BField> fields, bool isDefinitionForm)
+        public static TsxCodeInfo EvaluateTSCodeInfo(Model model, bool isDefinitionForm)
         {
+
+            IReadOnlyCollection<BField> fields = isDefinitionForm ? model.FormDataClassFields : model.ListFormSearchFields;
+
             NamingHelper.InitializeFieldComponentTypes(fields);
 
             var snapDecleration = "";
@@ -51,7 +54,7 @@ namespace BOAPlugins.FormApplicationGenerator
                     HasSnap          = hasSnap,
                     SnapDecleration  = snapDecleration,
                     SnapDefinition   = snapDefinition.ToString(),
-                    RenderCodeForJsx = GetJSXElementForRenderDefinitionPage(cards)
+                    RenderCodeForJsx = GetJSXElementForRenderDefinitionPage(model)
                 };
             }
 
@@ -95,17 +98,64 @@ namespace BOAPlugins.FormApplicationGenerator
             return renderCodes.ToString();
         }
 
-        static string GetJSXElementForRenderDefinitionPage(IReadOnlyCollection<BCard> cards)
+        static string GetJSXElementForRenderDefinitionPage( Model model)
         {
+
+
             var renderCodes = new PaddedStringBuilder
             {
                 PaddingLength = 4,
                 PaddingCount  = 3
             };
 
-            renderCodes.AppendLine("<BCardSection context={context} thresholdColumnCount={3}>");
+            if (model.IsTabForm)
+            {
+                
+                foreach (var tab in model.Tabs)
+                {
+                    renderCodes.AppendLine("{");
 
-            var columnIndex = 0;
+                    renderCodes.PaddingCount++;
+                    renderCodes.AppendLine("text: Message."+tab.Title+",");
+                    renderCodes.AppendLine("content:");
+                    RenderCards(renderCodes, tab.Cards);
+                    renderCodes.PaddingCount--;
+
+                    renderCodes.AppendLine("}");
+                }
+
+               
+            }
+            else
+            {
+                RenderCards(renderCodes, model.Cards);
+            }
+
+
+
+
+
+
+          
+
+
+
+
+
+            return renderCodes.ToString();
+        }
+
+        static void RenderCards(PaddedStringBuilder renderCodes, IReadOnlyCollection<BCard> cards)
+        {
+            var thresholdColumnCount = "";
+            if (cards.Count == 1)
+            {
+                thresholdColumnCount = " thresholdColumnCount={3}";
+            }
+
+            renderCodes.AppendLine("<BCardSection context={context}"+ thresholdColumnCount + ">");
+
+            int? columnIndex = 0;
 
             foreach (var card in cards)
             {
@@ -114,26 +164,41 @@ namespace BOAPlugins.FormApplicationGenerator
                     columnIndex = 0;
                 }
 
-                renderCodes.AppendLine("<BCard context={context} title={Message." + card.Title + "} column={" + columnIndex++ + "}>");
-
-                renderCodes.PaddingCount++;
-                foreach (var dataField in card.Fields)
+                if (cards.Count ==1)
                 {
-                    renderCodes.PaddingCount++;
-
-                    RenderComponent(renderCodes, dataField);
-
-                    renderCodes.PaddingCount--;
+                    columnIndex = null;
                 }
 
-                renderCodes.PaddingCount--;
+                RenderCard(renderCodes, card, columnIndex);
 
-                renderCodes.AppendLine("</BCard>");
+                columnIndex++;
+
             }
 
             renderCodes.AppendLine("</BCardSection>");
+        }
 
-            return renderCodes.ToString();
+        static void RenderCard(PaddedStringBuilder renderCodes, BCard card, int? columnIndex)
+        {
+            var titpeAttribute = card.Title.HasValue() ? " title={Message." + card.Title + "}" : "";
+            var columnIndexAttribute = columnIndex.HasValue ? " column={" + columnIndex + "}" : "";
+
+
+            renderCodes.AppendLine("<BCard context={context}" + titpeAttribute + columnIndexAttribute +">");
+
+            renderCodes.PaddingCount++;
+            foreach (var dataField in card.Fields)
+            {
+                renderCodes.PaddingCount++;
+
+                RenderComponent(renderCodes, dataField);
+
+                renderCodes.PaddingCount--;
+            }
+
+            renderCodes.PaddingCount--;
+
+            renderCodes.AppendLine("</BCard>");
         }
 
         static void RenderComponent(PaddedStringBuilder output, BField dataBField)

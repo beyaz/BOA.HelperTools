@@ -12,48 +12,65 @@
         #region Constructors
         public VisaFee() : base(SolutionFile.CardPaymentSystem_Clearing, nameof(VisaFee))
         {
-            Cards = new[]
+            IsTabForm = true;
+
+            Tabs = new[]
             {
-                new BCard(FieldName.Amounts.ToString(), new[]
+                new BTab(FieldName.Amounts.ToString(), new[]
                 {
-                    new BField(FieldName.TransactionDate, DateTime),
-                    new BField(FieldName.FeeAmount, Decimal),
-                    new BField(FieldName.FeeAmountCurrency, Int32),
-                    new BField(FieldName.SourceAmount, Decimal),
-                    new BField(FieldName.SourceAmountCurrency, Int32)
+                    new BField(DateTime, FieldName.TransactionDate),
+                    new BField(Decimal, FieldName.FeeAmount),
+                    new BField(Int32, FieldName.FeeAmountCurrency),
+                    new BField(Decimal, FieldName.SourceAmount),
+                    new BField(Int32, FieldName.SourceAmountCurrency)
+                }), 
+
+                new BTab(FieldName.GeneralInformation.ToString(), new[]
+                {
+                    new BField(String, FieldName.TransactionCode)
+                    {
+                        ComponentType = ComponentType.BParameterComponent
+                    },
+                    new BField(String, FieldName.UsageCode)
+                    {
+                        ComponentType = ComponentType.BParameterComponent
+                    },
+                    new BField(String, FieldName.CardTye)
+                    {
+                        ComponentType = ComponentType.BParameterComponent
+                    },
+                    new BField(String, FieldName.SourceBIN),
+                    new BField(String, FieldName.DestinationBIN),
+                    new BField(String, FieldName.Direction),
+                    new BField(String, FieldName.CardNumber),
+                    new BField(DateTime, FieldName.TranDate),
+                    new BField(DateTime, FieldName.ClearingDate),
+                    new BField(String, FieldName.ClearingStatus)
                 }),
 
-                new BCard(FieldName.GeneralInformation.ToString(), new[]
+                new BTab(FieldName.ReasonInformation.ToString(), new[]
                 {
-                    new BField(FieldName.TransactionCode, String)
-                    {
-                        ComponentType = ComponentType.BParameterComponent
-                    },
-                    new BField(FieldName.UsageCode, String)
-                    {
-                        ComponentType = ComponentType.BParameterComponent
-                    },
-                    new BField(FieldName.CardTye, String)
-                    {
-                        ComponentType = ComponentType.BParameterComponent
-                    },
-                    new BField(FieldName.SourceBIN, String),
-                    new BField(FieldName.DestinationBIN, String),
-                    new BField(FieldName.Direction, String),
-                    new BField(FieldName.CardNumber, String),
-                    new BField(FieldName.TranDate, DateTime),
-                    new BField(FieldName.ClearingDate, DateTime),
-                    new BField(FieldName.ClearingStatus, String)
+                    new BField(Int32, FieldName.ReasonCode),
+                    new BField(Int32, FieldName.CountrCode),
+                    new BField(DateTime, FieldName.Message)
                 }),
 
-                new BCard(FieldName.ReasonInformation.ToString(), new[]
+                new BTab(FieldName.Status.ToString(), new[]
                 {
-                    new BField(FieldName.ReasonCode, Int32),
-                    new BField(FieldName.CountrCode, Int32),
-                    new BField(FieldName.Message, DateTime)
+                    new BField(Boolean, FieldName.Incoming),
+                    new BField(Boolean, FieldName.Outgoing),
+                    new BField(String, FieldName.SettlementFlag),
+                    new BField(String, FieldName.Reimbursement),
+                    new BField(String, FieldName.EndOfDay),
+                    new BField(String, FieldName.Validation),
+                    new BField(String, FieldName.ValidationDefinition),
+                    new BField(String, FieldName.CPDate),
+                    new BField(String, FieldName.Case)
                 })
             };
         }
+
+        
         #endregion
     }
 
@@ -90,6 +107,8 @@
         CPDate,
         Case,
         ClearingDateBegin,
-        ClearingDateEnd
+        ClearingDateEnd,
+
+        Status
     }
 }

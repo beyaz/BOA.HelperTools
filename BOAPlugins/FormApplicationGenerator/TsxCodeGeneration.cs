@@ -75,101 +75,7 @@ namespace BOAPlugins.FormApplicationGenerator
 
                 renderCodes.PaddingCount++;
 
-                var valueAccessPath = Exporter.GetResolvedPropertyName(dataField.Name);
-
-                if (dataField.ComponentName == ComponentName.BDateTimePicker)
-                {
-                    renderCodes.AppendLine("<BDateTimePicker format = \"DDMMYYYY\"");
-                    renderCodes.AppendLine("                 value = {data." + valueAccessPath + "}");
-                    renderCodes.AppendLine("                 dateOnChange = {(e: any, value: Date) => data." + valueAccessPath + " = value}");
-                    renderCodes.AppendLine("                 floatingLabelTextDate = {Message." + dataField.Name + "}");
-                    renderCodes.AppendLine("                 context = {context}/>");
-                }
-                else if (dataField.ComponentName == ComponentName.BInput)
-                {
-                    renderCodes.AppendLine("<BInput value = {data." + valueAccessPath + "}");
-                    renderCodes.AppendLine("        onChange = {(e: any, value: string) => data." + valueAccessPath + " = value}");
-                    renderCodes.AppendLine("        floatingLabelText = {Message." + dataField.Name + "}");
-                    renderCodes.AppendLine("        context = {context}/>");
-                }
-                else if (dataField.ComponentName == ComponentName.BInputNumeric)
-                {
-                    renderCodes.AppendLine("<BInputNumeric value = {data." + valueAccessPath + "}");
-                    renderCodes.AppendLine("               onChange = {(e: any, value: any) => data." + valueAccessPath + " = value}");
-                    renderCodes.AppendLine("               floatingLabelText = {Message." + dataField.Name + "}");
-                    if (dataField.TypeName == DotNetTypeName.Decimal)
-                    {
-                        renderCodes.AppendLine("               format = {\"D\"}");
-                        renderCodes.AppendLine("               maxLength = {22}");
-                    }
-                    else
-                    {
-                        renderCodes.AppendLine("               maxLength = {10}");
-                    }
-
-                    renderCodes.AppendLine("               context = {context}/>");
-                }
-                else if (dataField.ComponentName == ComponentName.BAccountComponent)
-                {
-                    renderCodes.AppendLine("<BAccountComponent accountNumber = {data." + valueAccessPath + "}");
-                    renderCodes.AppendLine("                   onAccountSelect = {(selectedAccount: any) => data." + valueAccessPath + " = selectedAccount ? selectedAccount.accountNumber : null}");
-                    renderCodes.AppendLine("                   isVisibleBalance={false}");
-                    renderCodes.AppendLine("                   isVisibleAccountSuffix={false}");
-                    renderCodes.AppendLine("                   enableShowDialogMessagesInCallback={false}");
-                    renderCodes.AppendLine("                   isVisibleIBAN={false}");
-                    renderCodes.AppendLine("                   ref={(r: any) => this.snaps." + dataField.GetSnapName() + " = r}");
-                    renderCodes.AppendLine("                   context = {context}/>");
-                }
-                else if (dataField.ComponentName == ComponentName.BCheckBox)
-                {
-                    renderCodes.AppendLine("<BCheckBox checked = {data." + valueAccessPath + "}");
-                    renderCodes.AppendLine("           onCheck = {(e: Object, isChecked: boolean) => data." + valueAccessPath + " = isChecked}");
-                    renderCodes.AppendLine("           label   = {Message." + dataField.Name + "}");
-                    renderCodes.AppendLine("           context = {context}/>");
-                }
-
-                else if (dataField.ComponentName == ComponentName.BParameterComponent)
-                {
-                    if (dataField.TypeName == DotNetTypeName.Int32)
-                    {
-                        renderCodes.AppendLine("<BParameterComponent selectedParamCode = {Helper.numberToString(data." + valueAccessPath + ")}");
-                        renderCodes.AppendLine("                     onParameterSelect = {(selectedParameter: BOA.Types.Kernel.General.ParameterContract) => data." + valueAccessPath + " = selectedParameter ? Helper.stringToNumber(selectedParameter.paramCode) : null}");
-                    }
-                    else
-                    {
-                        renderCodes.AppendLine("<BParameterComponent selectedParamCode = {data." + valueAccessPath + "}");
-                        renderCodes.AppendLine("                     onParameterSelect = {(selectedParameter: BOA.Types.Kernel.General.ParameterContract) => data." + valueAccessPath + " = selectedParameter ? selectedParameter.paramCode : null}");
-                    }
-
-                    if (dataField.ParamType.IsNullOrWhiteSpace())
-                    {
-                        renderCodes.AppendLine("                     paramType=\"GENDER\"");
-                    }
-                    else
-                    {
-                        renderCodes.AppendLine("                     paramType=\"" + dataField.ParamType + "\"");
-                    }
-
-                    renderCodes.AppendLine("                     hintText = {Message." + dataField.Name + "}");
-                    renderCodes.AppendLine("                     labelText = {Message." + dataField.Name + "}");
-                    renderCodes.AppendLine("                     isAllOptionIncluded={true}");
-                    renderCodes.AppendLine("                     paramColumns={[");
-                    renderCodes.AppendLine("                            { name: \"paramCode\",        header: Message.Code,        visible: false },");
-                    renderCodes.AppendLine("                            { name: \"paramDescription\", header: Message.Description, width:   200 }");
-                    renderCodes.AppendLine("                     ]}");
-                    renderCodes.AppendLine("                     ref={(r: any) => this.snaps." + dataField.GetSnapName() + " = r}");
-                    renderCodes.AppendLine("                     context = {context}/>");
-                }
-
-                else if (dataField.ComponentName == ComponentName.BBranchComponent)
-                {
-                    renderCodes.AppendLine("<BBranchComponent selectedBranchId = {data." + valueAccessPath + "}");
-                    renderCodes.AppendLine("                  onBranchSelect = {(selectedBranch: BOA.Common.Types.BranchContract) => data." + valueAccessPath + " = selectedBranch ? selectedBranch.branchId : null}");
-                    renderCodes.AppendLine("                  mode={\"horizontal\"}");
-                    renderCodes.AppendLine("                  labelText = {Message." + dataField.Name + "}");
-                    renderCodes.AppendLine("                  sortOption={BBranchComponent.name}");
-                    renderCodes.AppendLine("                  context = {context}/>");
-                }
+                RenderComponent(renderCodes, dataField);
 
                 renderCodes.PaddingCount--;
 
@@ -198,6 +104,117 @@ namespace BOAPlugins.FormApplicationGenerator
                 DefinitionCode          = DefinitionCode,
                 RenderCodeForJsx        = renderCodes.ToString()
             };
+        }
+        #endregion
+
+        #region Methods
+        static void RenderComponent(PaddedStringBuilder output, FieldInfo dataField)
+        {
+            var valueAccessPath = Exporter.GetResolvedPropertyName(dataField.Name);
+
+            if (dataField.ComponentName == ComponentName.BDateTimePicker)
+            {
+                output.AppendLine("<BDateTimePicker format = \"DDMMYYYY\"");
+                output.AppendLine("                 value = {data." + valueAccessPath + "}");
+                output.AppendLine("                 dateOnChange = {(e: any, value: Date) => data." + valueAccessPath + " = value}");
+                output.AppendLine("                 floatingLabelTextDate = {Message." + dataField.Name + "}");
+                output.AppendLine("                 context = {context}/>");
+                return;
+            }
+
+            if (dataField.ComponentName == ComponentName.BInput)
+            {
+                output.AppendLine("<BInput value = {data." + valueAccessPath + "}");
+                output.AppendLine("        onChange = {(e: any, value: string) => data." + valueAccessPath + " = value}");
+                output.AppendLine("        floatingLabelText = {Message." + dataField.Name + "}");
+                output.AppendLine("        context = {context}/>");
+                return;
+            }
+
+            if (dataField.ComponentName == ComponentName.BInputNumeric)
+            {
+                output.AppendLine("<BInputNumeric value = {data." + valueAccessPath + "}");
+                output.AppendLine("               onChange = {(e: any, value: any) => data." + valueAccessPath + " = value}");
+                output.AppendLine("               floatingLabelText = {Message." + dataField.Name + "}");
+                if (dataField.TypeName == DotNetTypeName.Decimal)
+                {
+                    output.AppendLine("               format = {\"D\"}");
+                    output.AppendLine("               maxLength = {22}");
+                }
+                else
+                {
+                    output.AppendLine("               maxLength = {10}");
+                }
+
+                output.AppendLine("               context = {context}/>");
+                return;
+            }
+
+            if (dataField.ComponentName == ComponentName.BAccountComponent)
+            {
+                output.AppendLine("<BAccountComponent accountNumber = {data." + valueAccessPath + "}");
+                output.AppendLine("                   onAccountSelect = {(selectedAccount: any) => data." + valueAccessPath + " = selectedAccount ? selectedAccount.accountNumber : null}");
+                output.AppendLine("                   isVisibleBalance={false}");
+                output.AppendLine("                   isVisibleAccountSuffix={false}");
+                output.AppendLine("                   enableShowDialogMessagesInCallback={false}");
+                output.AppendLine("                   isVisibleIBAN={false}");
+                output.AppendLine("                   ref={(r: any) => this.snaps." + dataField.GetSnapName() + " = r}");
+                output.AppendLine("                   context = {context}/>");
+                return;
+            }
+
+            if (dataField.ComponentName == ComponentName.BCheckBox)
+            {
+                output.AppendLine("<BCheckBox checked = {data." + valueAccessPath + "}");
+                output.AppendLine("           onCheck = {(e: Object, isChecked: boolean) => data." + valueAccessPath + " = isChecked}");
+                output.AppendLine("           label   = {Message." + dataField.Name + "}");
+                output.AppendLine("           context = {context}/>");
+                return;
+            }
+
+            if (dataField.ComponentName == ComponentName.BParameterComponent)
+            {
+                if (dataField.TypeName == DotNetTypeName.Int32)
+                {
+                    output.AppendLine("<BParameterComponent selectedParamCode = {Helper.numberToString(data." + valueAccessPath + ")}");
+                    output.AppendLine("                     onParameterSelect = {(selectedParameter: BOA.Types.Kernel.General.ParameterContract) => data." + valueAccessPath + " = selectedParameter ? Helper.stringToNumber(selectedParameter.paramCode) : null}");
+                }
+                else
+                {
+                    output.AppendLine("<BParameterComponent selectedParamCode = {data." + valueAccessPath + "}");
+                    output.AppendLine("                     onParameterSelect = {(selectedParameter: BOA.Types.Kernel.General.ParameterContract) => data." + valueAccessPath + " = selectedParameter ? selectedParameter.paramCode : null}");
+                }
+
+                if (dataField.ParamType.IsNullOrWhiteSpace())
+                {
+                    output.AppendLine("                     paramType=\"GENDER\"");
+                }
+                else
+                {
+                    output.AppendLine("                     paramType=\"" + dataField.ParamType + "\"");
+                }
+
+                output.AppendLine("                     hintText = {Message." + dataField.Name + "}");
+                output.AppendLine("                     labelText = {Message." + dataField.Name + "}");
+                output.AppendLine("                     isAllOptionIncluded={true}");
+                output.AppendLine("                     paramColumns={[");
+                output.AppendLine("                            { name: \"paramCode\",        header: Message.Code,        visible: false },");
+                output.AppendLine("                            { name: \"paramDescription\", header: Message.Description, width:   200 }");
+                output.AppendLine("                     ]}");
+                output.AppendLine("                     ref={(r: any) => this.snaps." + dataField.GetSnapName() + " = r}");
+                output.AppendLine("                     context = {context}/>");
+                return;
+            }
+
+            if (dataField.ComponentName == ComponentName.BBranchComponent)
+            {
+                output.AppendLine("<BBranchComponent selectedBranchId = {data." + valueAccessPath + "}");
+                output.AppendLine("                  onBranchSelect = {(selectedBranch: BOA.Common.Types.BranchContract) => data." + valueAccessPath + " = selectedBranch ? selectedBranch.branchId : null}");
+                output.AppendLine("                  mode={\"horizontal\"}");
+                output.AppendLine("                  labelText = {Message." + dataField.Name + "}");
+                output.AppendLine("                  sortOption={BBranchComponent.name}");
+                output.AppendLine("                  context = {context}/>");
+            }
         }
         #endregion
     }

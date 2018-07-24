@@ -23,7 +23,6 @@ namespace BOAPlugins.FormApplicationGenerator
 
             IReadOnlyCollection<BField> fields = isDefinitionForm ? model.FormDataClassFields : model.ListFormSearchFields;
 
-            NamingHelper.InitializeFieldComponentTypes(fields);
 
             var snapDecleration = "";
 

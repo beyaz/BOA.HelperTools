@@ -114,11 +114,32 @@ namespace BOAPlugins.FormApplicationGenerator
         {
             Name       = name.ToString();
             DotNetType = dotNetType;
+
+
+             if (dotNetType == DotNetType.Int32 ||
+                dotNetType == DotNetType.Decimal)
+            {
+                ComponentType = FormApplicationGenerator.ComponentType.BInputNumeric;
+            }
+
+            else if (dotNetType == DotNetType.DateTime)
+            {
+                ComponentType = FormApplicationGenerator.ComponentType.BDateTimePicker;
+            }
+
+            else if (dotNetType == DotNetType.Boolean)
+            {
+                ComponentType = FormApplicationGenerator.ComponentType.BCheckBox;
+            }
+            else
+            {
+                ComponentType = FormApplicationGenerator.ComponentType.BInput;
+            }
         }
         #endregion
 
         #region Public Properties
-        public ComponentType? ComponentType { get; set; } = FormApplicationGenerator.ComponentType.BInput;
+        public ComponentType? ComponentType { get; set; } 
         public DotNetType     DotNetType    { get; }
         public string         Name          { get; }
         public string         ParamType     { get; set; }

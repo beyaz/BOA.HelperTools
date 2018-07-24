@@ -97,7 +97,6 @@
     <Compile Include="FormApplicationGenerator\Extensions.cs" />
     <Compile Include="FormApplicationGenerator\Label.cs" />
     <Compile Include="FormApplicationGenerator\DefinitionFormTsxFile.cs" />
-    <Compile Include="FormApplicationGenerator\NamingHelper.cs" />
     <Compile Include="FormApplicationGenerator\OrchFileForDefinitionForm.cs" />
     <Compile Include="FormApplicationGenerator\TsxCodeGeneration.cs" />
     <Compile Include="FormApplicationGenerator\TypeFileForDefinitionForm.cs" />

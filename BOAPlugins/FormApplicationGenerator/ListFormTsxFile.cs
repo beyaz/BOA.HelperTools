@@ -5,7 +5,7 @@
         #region Public Methods
         public static string GenerateCode(Model Model)
         {
-            var tsxCode = TsxCodeGeneration.EvaluateTSCodeInfo(Model.ListFormSearchFields,false);
+            var tsxCode = TsxCodeGeneration.EvaluateTSCodeInfo(Model.Cards, Model.ListFormSearchFields,false);
 
             return @"
 
@@ -38,13 +38,13 @@ class CommandName
     static readonly Open    = ""Open"";
 }
 
-" + tsxCode.DefinitionCode + @"
+" + tsxCode.SnapDefinition + @"
 
 class " + Model.FormName + @"ListForm extends BrowsePage
 {
     readonly assistant: FormAssistant<" + Model.RequestNameForList + @">;
 
-    " + tsxCode.PropertyDeclerationCode + @"
+    " + tsxCode.SnapDecleration + @"
 
     constructor(props: BasePageProps)
     {

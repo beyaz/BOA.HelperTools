@@ -8,125 +8,134 @@ namespace BOAPlugins.FormApplicationGenerator
     class TsxCodeInfo
     {
         #region Public Properties
-        public string DefinitionCode          { get; set; }
-        public bool   HasSnap                 { get; set; }
-        public string PropertyDeclerationCode { get; set; }
-        public string RenderCodeForJsx        { get; set; }
+        public bool   HasSnap          { get; set; }
+        public string RenderCodeForJsx { get; set; }
+        public string SnapDecleration  { get; set; }
+        public string SnapDefinition   { get; set; }
         #endregion
     }
 
     static class TsxCodeGeneration
     {
         #region Public Methods
-        public static TsxCodeInfo EvaluateTSCodeInfo(IReadOnlyCollection<BField> FormDataClassFields, bool isDefinitionForm)
+        public static TsxCodeInfo EvaluateTSCodeInfo(IReadOnlyCollection<BCard> cards, IReadOnlyCollection<BField> fields, bool isDefinitionForm)
         {
-            NamingHelper.InitializeFieldComponentTypes(FormDataClassFields);
+            NamingHelper.InitializeFieldComponentTypes(fields);
 
-            var PropertyDeclerationCode = "";
+            var snapDecleration = "";
 
-            var snapDefinitionCode = new PaddedStringBuilder();
+            var snapDefinition = new PaddedStringBuilder();
 
-            var HasSnap = FormDataClassFields.Any(x => x.HasSnapName());
-            if (HasSnap)
+            var hasSnap = fields.Any(x => x.HasSnapName());
+            if (hasSnap)
             {
-                snapDefinitionCode.AppendLine("interface ISnaps");
-                snapDefinitionCode.AppendLine("{");
-                snapDefinitionCode.PaddingCount++;
+                snapDefinition.AppendLine("interface ISnaps");
+                snapDefinition.AppendLine("{");
+                snapDefinition.PaddingCount++;
 
-                foreach (var dataField in FormDataClassFields.Where(x => x.HasSnapName()))
+                foreach (var dataField in fields.Where(x => x.HasSnapName()))
                 {
-                    snapDefinitionCode.AppendLine($"{dataField.GetSnapName()}: {dataField.ComponentType};");
+                    snapDefinition.AppendLine($"{dataField.GetSnapName()}: {dataField.ComponentType};");
                 }
 
-                snapDefinitionCode.PaddingCount--;
-                snapDefinitionCode.AppendLine("}");
+                snapDefinition.PaddingCount--;
+                snapDefinition.AppendLine("}");
 
-                PropertyDeclerationCode = "snaps: ISnaps;";
+                snapDecleration = "snaps: ISnaps;";
             }
 
-            var DefinitionCode = snapDefinitionCode.ToString();
+            if (isDefinitionForm)
+            {
+                return new TsxCodeInfo
+                {
+                    HasSnap          = hasSnap,
+                    SnapDecleration  = snapDecleration,
+                    SnapDefinition   = snapDefinition.ToString(),
+                    RenderCodeForJsx = GetJSXElementForRenderDefinitionPage(cards)
+                };
+            }
 
+            return new TsxCodeInfo
+            {
+                HasSnap          = hasSnap,
+                SnapDecleration  = snapDecleration,
+                SnapDefinition   = snapDefinition.ToString(),
+                RenderCodeForJsx = GetJSXElementForRenderBrowsePage(fields)
+            };
+        }
+        #endregion
+
+        #region Methods
+        static string GetJSXElementForRenderBrowsePage(IReadOnlyCollection<BField> fields)
+        {
             var renderCodes = new PaddedStringBuilder
             {
                 PaddingLength = 4,
                 PaddingCount  = 3
             };
 
-            if (!isDefinitionForm)
+            renderCodes.AppendLine("<BGridSection context={context}>");
+            renderCodes.PaddingCount++;
+            foreach (var dataField in fields)
             {
-                renderCodes.AppendLine("<BGridSection context={context}>");
-                renderCodes.PaddingCount++;
-                foreach (var dataField in FormDataClassFields)
-                {
-                    renderCodes.AppendLine("<BGridRow context={context}>");
+                renderCodes.AppendLine("<BGridRow context={context}>");
 
+                renderCodes.PaddingCount++;
+
+                RenderComponent(renderCodes, dataField);
+
+                renderCodes.PaddingCount--;
+
+                renderCodes.AppendLine("</BGridRow>");
+            }
+
+            renderCodes.PaddingCount--;
+            renderCodes.AppendLine("</BGridSection>");
+
+            return renderCodes.ToString();
+        }
+
+        static string GetJSXElementForRenderDefinitionPage(IReadOnlyCollection<BCard> cards)
+        {
+            var renderCodes = new PaddedStringBuilder
+            {
+                PaddingLength = 4,
+                PaddingCount  = 3
+            };
+
+            renderCodes.AppendLine("<BCardSection context={context} thresholdColumnCount={3}>");
+
+            var columnIndex = 0;
+
+            foreach (var card in cards)
+            {
+                if (columnIndex == 3)
+                {
+                    columnIndex = 0;
+                }
+
+                renderCodes.AppendLine("<BCard context={context} title={Message." + card.Title + "} column={" + columnIndex++ + "}>");
+
+                renderCodes.PaddingCount++;
+                foreach (var dataField in card.Fields)
+                {
                     renderCodes.PaddingCount++;
 
                     RenderComponent(renderCodes, dataField);
 
                     renderCodes.PaddingCount--;
-
-                    renderCodes.AppendLine("</BGridRow>");
                 }
 
                 renderCodes.PaddingCount--;
-                renderCodes.AppendLine("</BGridSection>");
-            }
-            else
-            {
-                renderCodes.AppendLine("<BCardSection context={context} thresholdColumnCount={3}>");
 
-                foreach (var field in FormDataClassFields)
-                {
-                    if (field.GroupBoxTitle == null)
-                    {
-                        field.GroupBoxTitle = "?";
-                    }
-                }
-
-                var columnIndex = 0;
-                var fieldGroups = FormDataClassFields.ToLookup(f => f.GroupBoxTitle, f => f);
-
-                foreach (var fieldGroup in fieldGroups)
-                {
-                    if (columnIndex == 3)
-                    {
-                        columnIndex = 0;
-                    }
-
-                    var fields = fieldGroups[fieldGroup.Key];
-
-                    renderCodes.AppendLine("<BCard context={context} title={Message." + fieldGroup.Key + "} column={" + columnIndex++ + "}>");
-
-                    renderCodes.PaddingCount++;
-                    foreach (var dataField in fields)
-                    {
-                        renderCodes.PaddingCount++;
-
-                        RenderComponent(renderCodes, dataField);
-
-                        renderCodes.PaddingCount--;
-                    }
-
-                    renderCodes.PaddingCount--;
-
-                    renderCodes.AppendLine("</BCard>");
-                }
-
-                renderCodes.AppendLine("</BCardSection>");
+                renderCodes.AppendLine("</BCard>");
             }
 
-            return new TsxCodeInfo
-            {
-                HasSnap                 = HasSnap,
-                PropertyDeclerationCode = PropertyDeclerationCode,
-                DefinitionCode          = DefinitionCode,
-                RenderCodeForJsx        = renderCodes.ToString()
-            };
+            renderCodes.AppendLine("</BCardSection>");
+
+            return renderCodes.ToString();
         }
-        #endregion
 
-        #region Methods
         static void RenderComponent(PaddedStringBuilder output, BField dataBField)
         {
             var valueAccessPath = Exporter.GetResolvedPropertyName(dataBField.Name);

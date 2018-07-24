@@ -5,7 +5,7 @@
         #region Public Methods
         public static string GenerateCode(Model Model)
         {
-            var tsxCodeInfo = TsxCodeGeneration.EvaluateTSCodeInfo(Model.FormDataClassFields,true);
+            var tsxCodeInfo = TsxCodeGeneration.EvaluateTSCodeInfo(Model.Cards, Model.FormDataClassFields,true);
 
             return @"
 
@@ -41,7 +41,7 @@ class CommandName
     static readonly Reject  = ""Reject"";
 }
 
-" + tsxCodeInfo.DefinitionCode + @"
+" + tsxCodeInfo.SnapDefinition + @"
 
 class " + Model.FormName + @"Form extends TransactionPage
 {
@@ -49,7 +49,7 @@ class " + Model.FormName + @"Form extends TransactionPage
 
     executeWorkFlow: () => void;
 
-    " + tsxCodeInfo.PropertyDeclerationCode + @"
+    " + tsxCodeInfo.SnapDecleration + @"
 
     constructor(props: BasePageProps)
     {

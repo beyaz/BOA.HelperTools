@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using BOA.CodeGeneration.Generators;
@@ -12,6 +13,17 @@ namespace BOAPlugins.FormApplicationGenerator
         public static void AutoGenerateCodesAndExportFiles(this Model model)
         {
             new FileExporter(model).ExportFiles();
+        }
+        public static IReadOnlyCollection<BField> GetAllFields(this IReadOnlyCollection<BCard> cards)
+        {
+            var allFields = new List<BField>();
+
+            foreach (var card in cards)
+            {
+                allFields.AddRange(card.Fields);
+            }
+
+            return allFields;
         }
         #endregion
 

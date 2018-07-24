@@ -28,83 +28,56 @@ namespace BOAPlugins.FormApplicationGenerator
         #endregion
 
         #region Public Properties
-        public string          DefinitionFormDataClassName { get; }
-        public IReadOnlyCollection<BField> FormDataClassFields         { get; set; } = new List<BField>();
-        public string          FormName                    { get; }
-        public IReadOnlyCollection<BField> ListFormSearchFields        { get; set; } = new List<BField>();
-        public string          NamespaceName               { get; }
-        public string          NamespaceNameForOrch        { get; }
-        public string          NamespaceNameForType        { get; }
-        public string          RequestNameForDefinition    { get; }
-        public string          RequestNameForList          { get; }
-        public string          SolutionFilePath            { get; }
-        public string          TypesProjectFolder          { get; }
+        public IReadOnlyCollection<BCard> Cards                       { get; set; } = new List<BCard>();
+        public string                     DefinitionFormDataClassName { get; }
 
-        
+        public IReadOnlyCollection<BField> FormDataClassFields => Cards.GetAllFields();
 
+        public string                      FormName                 { get; }
+        public IReadOnlyCollection<BField> ListFormSearchFields     { get; set; } = new List<BField>();
+        public string                      NamespaceName            { get; }
+        public string                      NamespaceNameForOrch     { get; }
+        public string                      NamespaceNameForType     { get; }
+        public string                      RequestNameForDefinition { get; }
+        public string                      RequestNameForList       { get; }
+        public string                      SolutionFilePath         { get; }
+        public string                      TypesProjectFolder       { get; }
         #endregion
     }
 
-    static class NamingHelper
+    [Serializable]
+    public class BCard
     {
-        #region Public Methods
-        public static void InitializeFieldComponentTypes(IReadOnlyCollection<BField> FormDataClassFields)
+        #region Constructors
+        public BCard(string title, IReadOnlyCollection<BField> fields)
         {
-            foreach (var field in FormDataClassFields)
-            {
-                if (field.ComponentType != null)
-                {
-                    continue;
-                }
-
-                var fieldTypeName = field.DotNetType;
-                if (fieldTypeName == DotNetType.String)
-                {
-                    field.ComponentType = ComponentType.BInput;
-                    continue;
-                }
-
-                if (fieldTypeName == DotNetType.Int32 ||
-                    fieldTypeName == DotNetType.Decimal)
-                {
-                    field.ComponentType = ComponentType.BInputNumeric;
-                    continue;
-                }
-
-                if (fieldTypeName == DotNetType.DateTime)
-                {
-                    field.ComponentType = ComponentType.BDateTimePicker;
-                }
-
-                if (fieldTypeName == DotNetType.Boolean)
-                {
-                    field.ComponentType = ComponentType.BCheckBox;
-                }
-            }
+            Fields = fields;
+            Title  = title;
         }
+        #endregion
+
+        #region Public Properties
+        public IReadOnlyCollection<BField> Fields { get; }
+        public string                      Title  { get; }
         #endregion
     }
 
     [Serializable]
     public class BField
     {
-        public BField()
-        {
-            
-        }
-
+        #region Constructors
         public BField(Enum name, DotNetType dotNetType)
         {
-            Name = name.ToString();
+            Name       = name.ToString();
             DotNetType = dotNetType;
         }
+        #endregion
 
         #region Public Properties
         public ComponentType? ComponentType { get; set; } = FormApplicationGenerator.ComponentType.BInput;
-        public string         GroupBoxTitle { get; set; }
-        public string         Name          { get; set; }
+        public DotNetType     DotNetType    { get; }
+        public string         Name          { get; }
         public string         ParamType     { get; set; }
-        public DotNetType DotNetType      { get; set; } = DotNetType.String;
         #endregion
     }
 

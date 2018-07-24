@@ -8,6 +8,14 @@ namespace BOAPlugins.FormApplicationGenerator
     [Serializable]
     public class Model
     {
+        #region Fields
+        protected readonly DotNetType Boolean  = DotNetType.Boolean;
+        protected readonly DotNetType DateTime = DotNetType.DateTime;
+        protected readonly DotNetType Decimal  = DotNetType.Decimal;
+        protected readonly DotNetType Int32    = DotNetType.Int32;
+        protected readonly DotNetType String   = DotNetType.String;
+        #endregion
+
         #region Constructors
         public Model(string solutionFilePath, string formName)
         {

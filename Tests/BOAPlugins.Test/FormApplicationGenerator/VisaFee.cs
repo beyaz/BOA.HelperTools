@@ -16,41 +16,41 @@
             {
                 new BCard(FieldName.Amounts.ToString(), new[]
                 {
-                    new BField(FieldName.TransactionDate, DotNetType.DateTime),
-                    new BField(FieldName.FeeAmount, DotNetType.Decimal),
-                    new BField(FieldName.FeeAmountCurrency, DotNetType.Int32),
-                    new BField(FieldName.SourceAmount, DotNetType.Decimal),
-                    new BField(FieldName.SourceAmountCurrency, DotNetType.Int32)
+                    new BField(FieldName.TransactionDate, DateTime),
+                    new BField(FieldName.FeeAmount, Decimal),
+                    new BField(FieldName.FeeAmountCurrency, Int32),
+                    new BField(FieldName.SourceAmount, Decimal),
+                    new BField(FieldName.SourceAmountCurrency, Int32)
                 }),
 
                 new BCard(FieldName.GeneralInformation.ToString(), new[]
                 {
-                    new BField(FieldName.TransactionCode, DotNetType.String)
+                    new BField(FieldName.TransactionCode, String)
                     {
                         ComponentType = ComponentType.BParameterComponent
                     },
-                    new BField(FieldName.UsageCode, DotNetType.String)
+                    new BField(FieldName.UsageCode, String)
                     {
                         ComponentType = ComponentType.BParameterComponent
                     },
-                    new BField(FieldName.CardTye, DotNetType.String)
+                    new BField(FieldName.CardTye, String)
                     {
                         ComponentType = ComponentType.BParameterComponent
                     },
-                    new BField(FieldName.SourceBIN, DotNetType.String),
-                    new BField(FieldName.DestinationBIN, DotNetType.String),
-                    new BField(FieldName.Direction, DotNetType.String),
-                    new BField(FieldName.CardNumber, DotNetType.String),
-                    new BField(FieldName.TranDate, DotNetType.DateTime),
-                    new BField(FieldName.ClearingDate, DotNetType.DateTime),
-                    new BField(FieldName.ClearingStatus, DotNetType.String)
+                    new BField(FieldName.SourceBIN, String),
+                    new BField(FieldName.DestinationBIN, String),
+                    new BField(FieldName.Direction, String),
+                    new BField(FieldName.CardNumber, String),
+                    new BField(FieldName.TranDate, DateTime),
+                    new BField(FieldName.ClearingDate, DateTime),
+                    new BField(FieldName.ClearingStatus, String)
                 }),
 
                 new BCard(FieldName.ReasonInformation.ToString(), new[]
                 {
-                    new BField(FieldName.ReasonCode, DotNetType.Int32),
-                    new BField(FieldName.CountrCode, DotNetType.Int32),
-                    new BField(FieldName.Message, DotNetType.DateTime)
+                    new BField(FieldName.ReasonCode, Int32),
+                    new BField(FieldName.CountrCode, Int32),
+                    new BField(FieldName.Message, DateTime)
                 })
             };
         }

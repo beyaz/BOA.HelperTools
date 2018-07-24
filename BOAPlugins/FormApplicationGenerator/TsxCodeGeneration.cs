@@ -24,15 +24,12 @@ namespace BOAPlugins.FormApplicationGenerator
 
             NamingHelper.InitializeFieldComponentTypes(FormDataClassFields);
 
-            var result = new TsxCodeInfo
-            {
-                PropertyDeclerationCode = ""
-            };
+            var PropertyDeclerationCode = "";
 
             var snapDefinitionCode = new PaddedStringBuilder();
 
-            result.HasSnap = FormDataClassFields.Any(x => x.HasSnapName());
-            if (result.HasSnap)
+            var HasSnap = FormDataClassFields.Any(x => x.HasSnapName());
+            if (HasSnap)
             {
                 snapDefinitionCode.AppendLine("interface ISnaps");
                 snapDefinitionCode.AppendLine("{");
@@ -46,10 +43,10 @@ namespace BOAPlugins.FormApplicationGenerator
                 snapDefinitionCode.PaddingCount--;
                 snapDefinitionCode.AppendLine("}");
 
-                result.PropertyDeclerationCode = "snaps: ISnaps;";
+                PropertyDeclerationCode = "snaps: ISnaps;";
             }
 
-            result.DefinitionCode = snapDefinitionCode.ToString();
+            var DefinitionCode = snapDefinitionCode.ToString();
 
             var renderCodes = new PaddedStringBuilder
             {
@@ -194,9 +191,13 @@ namespace BOAPlugins.FormApplicationGenerator
                 renderCodes.AppendLine("</BGridSection>");
             }
 
-            result.RenderCodeForJsx = renderCodes.ToString();
-
-            return result;
+            return new TsxCodeInfo
+            {
+                HasSnap                 = HasSnap,
+                PropertyDeclerationCode = PropertyDeclerationCode,
+                DefinitionCode          = DefinitionCode,
+                RenderCodeForJsx        = renderCodes.ToString()
+            };
         }
         #endregion
     }

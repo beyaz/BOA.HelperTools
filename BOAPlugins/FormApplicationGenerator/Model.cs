@@ -87,10 +87,10 @@ namespace BOAPlugins.FormApplicationGenerator
     {
         #region Public Properties
         public ComponentName? ComponentName { get; set; } = FormApplicationGenerator.ComponentName.BInput;
+        public string         GroupBoxTitle { get; set; }
         public string         Name          { get; set; }
-
-        public string         ParamType { get; set; }
-        public DotNetTypeName TypeName  { get; set; } = DotNetTypeName.String;
+        public string         ParamType     { get; set; }
+        public DotNetTypeName TypeName      { get; set; } = DotNetTypeName.String;
         #endregion
     }
 

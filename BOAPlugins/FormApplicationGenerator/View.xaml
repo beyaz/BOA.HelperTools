@@ -8,7 +8,7 @@
         x:Name = "CodeBehind"
         DataContext = "{Binding ElementName=CodeBehind}"
 
-        Width = "800"
+        Width = "1000"
         Title = "Close - ESC"
         Height = "Auto" >
 
@@ -110,6 +110,7 @@
 
 
 
+                            <DataGridTextColumn Header = "GroupBox Title"   Binding = "{Binding GroupBoxTitle}" />
                             <DataGridTextColumn Header = "Param Type (Only for Parameter Component)"   Binding = "{Binding ParamType}" />
 
                         </DataGrid.Columns>

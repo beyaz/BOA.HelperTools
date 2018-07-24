@@ -18,7 +18,7 @@ namespace BOAPlugins.FormApplicationGenerator
     static class TsxCodeGeneration
     {
         #region Public Methods
-        public static TsxCodeInfo EvaluateTSCodeInfo(List<BField> FormDataClassFields, bool isDefinitionForm)
+        public static TsxCodeInfo EvaluateTSCodeInfo(IReadOnlyCollection<BField> FormDataClassFields, bool isDefinitionForm)
         {
             NamingHelper.InitializeFieldComponentTypes(FormDataClassFields);
 

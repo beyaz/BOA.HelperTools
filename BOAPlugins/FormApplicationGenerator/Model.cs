@@ -29,9 +29,9 @@ namespace BOAPlugins.FormApplicationGenerator
 
         #region Public Properties
         public string          DefinitionFormDataClassName { get; }
-        public List<BField> FormDataClassFields         { get; set; } = new List<BField>();
+        public IReadOnlyCollection<BField> FormDataClassFields         { get; set; } = new List<BField>();
         public string          FormName                    { get; }
-        public List<BField> ListFormSearchFields        { get; set; } = new List<BField>();
+        public IReadOnlyCollection<BField> ListFormSearchFields        { get; set; } = new List<BField>();
         public string          NamespaceName               { get; }
         public string          NamespaceNameForOrch        { get; }
         public string          NamespaceNameForType        { get; }
@@ -48,7 +48,7 @@ namespace BOAPlugins.FormApplicationGenerator
     static class NamingHelper
     {
         #region Public Methods
-        public static void InitializeFieldComponentTypes(List<BField> FormDataClassFields)
+        public static void InitializeFieldComponentTypes(IReadOnlyCollection<BField> FormDataClassFields)
         {
             foreach (var field in FormDataClassFields)
             {

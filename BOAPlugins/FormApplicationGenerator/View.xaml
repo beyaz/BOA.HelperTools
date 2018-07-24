@@ -17,14 +17,14 @@
         <ObjectDataProvider x:Key = "componentNames"
                             MethodName = "GetValues" ObjectType = "{x:Type system:Enum}" >
             <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName = "local:ComponentName" />
+                <x:Type TypeName = "local:ComponentType" />
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
 
         <ObjectDataProvider x:Key = "DotNetTypeName"
                             MethodName = "GetValues" ObjectType = "{x:Type system:Enum}" >
             <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName = "local:DotNetTypeName" />
+                <x:Type TypeName = "local:DotNetType" />
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
 
@@ -100,13 +100,13 @@
 
                             <DataGridComboBoxColumn Header = ".Net Type Name"
                                         ItemsSource = "{Binding Source={StaticResource DotNetTypeName}}"
-                                        SelectedValueBinding = "{Binding TypeName}" />
+                                        SelectedValueBinding = "{Binding DotNetType}" />
 
 
                             <DataGridTextColumn Header = "Property Name" Binding = "{Binding Name}" />
                             <DataGridComboBoxColumn Header = "Component Name"
                                         ItemsSource = "{Binding Source={StaticResource componentNames}}"
-                                        SelectedValueBinding = "{Binding ComponentName}" />
+                                        SelectedValueBinding = "{Binding ComponentType}" />
 
 
 
@@ -137,13 +137,13 @@
 
                             <DataGridComboBoxColumn Header = ".Net Type Name"
                                         ItemsSource = "{Binding Source={StaticResource DotNetTypeName}}"
-                                        SelectedValueBinding = "{Binding TypeName}" />
+                                        SelectedValueBinding = "{Binding DotNetType}" />
 
 
                             <DataGridTextColumn Header = "Property Name" Binding = "{Binding Name}" />
                             <DataGridComboBoxColumn Header = "Component Name"
                                         ItemsSource = "{Binding Source={StaticResource componentNames}}"
-                                        SelectedValueBinding = "{Binding ComponentName}" />
+                                        SelectedValueBinding = "{Binding ComponentType}" />
 
 
                             <DataGridTextColumn Header = "Param Type (Only for Parameter Component)"   Binding = "{Binding ParamType}" />

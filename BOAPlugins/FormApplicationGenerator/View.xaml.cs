@@ -21,13 +21,13 @@ namespace BOAPlugins.FormApplicationGenerator
     public partial class View
     {
         #region Static Fields
-        public static readonly DependencyProperty FormDataFieldsProperty = DependencyProperty.Register("FormDataFields", typeof(ObservableCollection<FieldInfo>), typeof(View), new PropertyMetadata(default(ObservableCollection<FieldInfo>)));
+        public static readonly DependencyProperty FormDataFieldsProperty = DependencyProperty.Register("FormDataFields", typeof(ObservableCollection<BField>), typeof(View), new PropertyMetadata(default(ObservableCollection<BField>)));
         public static readonly DependencyProperty FormNameProperty       = DependencyProperty.Register("FormName", typeof(string), typeof(View), new PropertyMetadata(default(string), OnFormNameChanged));
 
         public static readonly DependencyProperty ConnectionStringProperty = DependencyProperty.Register(
                                                                                                          "ConnectionString", typeof(string), typeof(View), new PropertyMetadata(default(string)));
 
-        public static readonly DependencyProperty ListFormSearchFieldsProperty = DependencyProperty.Register("ListFormSearchFields", typeof(ObservableCollection<FieldInfo>), typeof(View), new PropertyMetadata(default(ObservableCollection<FieldInfo>)));
+        public static readonly DependencyProperty ListFormSearchFieldsProperty = DependencyProperty.Register("ListFormSearchFields", typeof(ObservableCollection<BField>), typeof(View), new PropertyMetadata(default(ObservableCollection<BField>)));
         #endregion
 
         #region Fields
@@ -49,70 +49,70 @@ namespace BOAPlugins.FormApplicationGenerator
                 }
             };
 
-            FormDataFields = new ObservableCollection<FieldInfo>
+            FormDataFields = new ObservableCollection<BField>
             {
-                new FieldInfo
+                new BField
                 {
-                    TypeName      = DotNetTypeName.Int32,
+                    DotNetType      = DotNetType.Int32,
                     Name          = "AccountNumber",
-                    ComponentName = ComponentName.BAccountComponent
+                    ComponentType = ComponentType.BAccountComponent
                 },
-                new FieldInfo
+                new BField
                 {
-                    TypeName = DotNetTypeName.String,
+                    DotNetType = DotNetType.String,
                     Name     = "CardNumber"
                 },
-                new FieldInfo
+                new BField
                 {
-                    TypeName      = DotNetTypeName.DateTime,
+                    DotNetType      = DotNetType.DateTime,
                     Name          = "TranDate",
-                    ComponentName = ComponentName.BDateTimePicker
+                    ComponentType = ComponentType.BDateTimePicker
                 },
-                new FieldInfo
+                new BField
                 {
-                    TypeName      = DotNetTypeName.Decimal,
+                    DotNetType      = DotNetType.Decimal,
                     Name          = "Amount",
-                    ComponentName = ComponentName.BInputNumeric
+                    ComponentType = ComponentType.BInputNumeric
                 },
-                new FieldInfo
+                new BField
                 {
-                    TypeName      = DotNetTypeName.Int32,
+                    DotNetType      = DotNetType.Int32,
                     Name          = "GenderCode",
-                    ComponentName = ComponentName.BParameterComponent
+                    ComponentType = ComponentType.BParameterComponent
                 }
             };
 
-            ListFormSearchFields = new ObservableCollection<FieldInfo>
+            ListFormSearchFields = new ObservableCollection<BField>
             {
-                new FieldInfo
+                new BField
                 {
-                    TypeName      = DotNetTypeName.Int32,
+                    DotNetType      = DotNetType.Int32,
                     Name          = "AccountNumber",
-                    ComponentName = ComponentName.BAccountComponent
+                    ComponentType = ComponentType.BAccountComponent
                 },
-                new FieldInfo
+                new BField
                 {
-                    TypeName      = DotNetTypeName.String,
+                    DotNetType      = DotNetType.String,
                     Name          = "CardNumber",
-                    ComponentName = ComponentName.BInput
+                    ComponentType = ComponentType.BInput
                 },
-                new FieldInfo
+                new BField
                 {
-                    TypeName      = DotNetTypeName.DateTime,
+                    DotNetType      = DotNetType.DateTime,
                     Name          = "BeginDate",
-                    ComponentName = ComponentName.BDateTimePicker
+                    ComponentType = ComponentType.BDateTimePicker
                 },
-                new FieldInfo
+                new BField
                 {
-                    TypeName      = DotNetTypeName.DateTime,
+                    DotNetType      = DotNetType.DateTime,
                     Name          = "EndDate",
-                    ComponentName = ComponentName.BDateTimePicker
+                    ComponentType = ComponentType.BDateTimePicker
                 },
-                new FieldInfo
+                new BField
                 {
-                    TypeName      = DotNetTypeName.Int32,
+                    DotNetType      = DotNetType.Int32,
                     Name          = "BranchId",
-                    ComponentName = ComponentName.BBranchComponent
+                    ComponentType = ComponentType.BBranchComponent
                 }
             };
 
@@ -162,9 +162,9 @@ INNER JOIN sys.types  ty ON c.user_type_id = ty.user_type_id
             set { SetValue(ConnectionStringProperty, value); }
         }
 
-        public ObservableCollection<FieldInfo> FormDataFields
+        public ObservableCollection<BField> FormDataFields
         {
-            get { return (ObservableCollection<FieldInfo>) GetValue(FormDataFieldsProperty); }
+            get { return (ObservableCollection<BField>) GetValue(FormDataFieldsProperty); }
             set { SetValue(FormDataFieldsProperty, value); }
         }
 
@@ -174,9 +174,9 @@ INNER JOIN sys.types  ty ON c.user_type_id = ty.user_type_id
             set { SetValue(FormNameProperty, value); }
         }
 
-        public ObservableCollection<FieldInfo> ListFormSearchFields
+        public ObservableCollection<BField> ListFormSearchFields
         {
-            get { return (ObservableCollection<FieldInfo>) GetValue(ListFormSearchFieldsProperty); }
+            get { return (ObservableCollection<BField>) GetValue(ListFormSearchFieldsProperty); }
             set { SetValue(ListFormSearchFieldsProperty, value); }
         }
 
@@ -191,36 +191,36 @@ INNER JOIN sys.types  ty ON c.user_type_id = ty.user_type_id
         #endregion
 
         #region Methods
-        static FieldInfo ConvertFrom(ColumnInfo x)
+        static BField ConvertFrom(ColumnInfo x)
         {
-            var fi       = new FieldInfo();
+            var fi       = new BField();
             var dataType = x.DataType.ToUpperEN();
 
             var dotNetType = SqlDataType.GetDotNetType(dataType, false);
             if (dotNetType == Names.DotNetStringName)
             {
-                fi.TypeName = DotNetTypeName.String;
+                fi.DotNetType = DotNetType.String;
             }
             else if (dotNetType == Names.DotNetDecimal)
             {
-                fi.TypeName = DotNetTypeName.Decimal;
+                fi.DotNetType = DotNetType.Decimal;
             }
             else if (dotNetType == Names.DotNetInt32 ||
                      dotNetType == Names.DotNetInt16)
             {
-                fi.TypeName = DotNetTypeName.Int32;
+                fi.DotNetType = DotNetType.Int32;
             }
             else if (dotNetType == Names.DotNetDateTime)
             {
-                fi.TypeName = DotNetTypeName.DateTime;
+                fi.DotNetType = DotNetType.DateTime;
             }
             else if (dotNetType == Names.DotNetBool)
             {
-                fi.TypeName = DotNetTypeName.Boolean;
+                fi.DotNetType = DotNetType.Boolean;
             }
 
             fi.Name          = x.ColumnName;
-            fi.ComponentName = null;
+            fi.ComponentType = null;
 
             return fi;
         }
@@ -238,8 +238,8 @@ INNER JOIN sys.types  ty ON c.user_type_id = ty.user_type_id
             {
                 view._model = cachedModel;
 
-                view.FormDataFields       = new ObservableCollection<FieldInfo>(cachedModel.FormDataClassFields);
-                view.ListFormSearchFields = new ObservableCollection<FieldInfo>(cachedModel.ListFormSearchFields);
+                view.FormDataFields       = new ObservableCollection<BField>(cachedModel.FormDataClassFields);
+                view.ListFormSearchFields = new ObservableCollection<BField>(cachedModel.ListFormSearchFields);
             }
         }
 
@@ -269,7 +269,7 @@ INNER JOIN sys.types  ty ON c.user_type_id = ty.user_type_id
             {
                 var columnInfos = sql.ExecuteReader().ToList<ColumnInfo>().ToList();
 
-                FormDataFields = new ObservableCollection<FieldInfo>(columnInfos.ConvertAll(ConvertFrom));
+                FormDataFields = new ObservableCollection<BField>(columnInfos.ConvertAll(ConvertFrom));
 
                 NamingHelper.InitializeFieldComponentTypes(FormDataFields.ToList());
             }

@@ -8,7 +8,7 @@ namespace BOAPlugins.FormApplicationGenerator
         #region Public Methods
         public static string GenerateCode(Model Model)
         {
-            var searchFields = string.Join(Environment.NewLine, Model.ListFormSearchFields.Select(fieldInfo => $"        public {fieldInfo.TypeName.ToCSharp()} {fieldInfo.Name} " + " { get; set; }"));
+            var searchFields = string.Join(Environment.NewLine, Model.ListFormSearchFields.Select(fieldInfo => $"        public {fieldInfo.DotNetType.ToCSharp()} {fieldInfo.Name} " + " { get; set; }"));
 
             return @"
 

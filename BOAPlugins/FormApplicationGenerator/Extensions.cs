@@ -16,9 +16,9 @@ namespace BOAPlugins.FormApplicationGenerator
         #endregion
 
         #region Methods
-        internal static string GetSnapName(this FieldInfo dataField)
+        internal static string GetSnapName(this BField dataBField)
         {
-            return $"{dataField.ComponentName.ToString().RemoveFromStart("B").MakeLowerCaseFirstChar()}{dataField.Name}";
+            return $"{dataBField.ComponentType.ToString().RemoveFromStart("B").MakeLowerCaseFirstChar()}{dataBField.Name}";
         }
 
         internal static string GetText(this RichTextBox richTextBox)
@@ -27,10 +27,10 @@ namespace BOAPlugins.FormApplicationGenerator
                                  richTextBox.Document.ContentEnd).Text;
         }
 
-        internal static bool HasSnapName(this FieldInfo dataField)
+        internal static bool HasSnapName(this BField dataBField)
         {
-            return dataField.ComponentName == ComponentName.BAccountComponent ||
-                   dataField.ComponentName == ComponentName.BParameterComponent;
+            return dataBField.ComponentType == ComponentType.BAccountComponent ||
+                   dataBField.ComponentType == ComponentType.BParameterComponent;
         }
 
         internal static void SetText(this RichTextBox richTextBox, string text)
@@ -39,29 +39,29 @@ namespace BOAPlugins.FormApplicationGenerator
             richTextBox.Document.Blocks.Add(new Paragraph(new Run(text)));
         }
 
-        internal static string ToCSharp(this DotNetTypeName name)
+        internal static string ToCSharp(this DotNetType name)
         {
-            if (name == DotNetTypeName.Boolean)
+            if (name == DotNetType.Boolean)
             {
                 return "bool?";
             }
 
-            if (name == DotNetTypeName.DateTime)
+            if (name == DotNetType.DateTime)
             {
                 return "DateTime?";
             }
 
-            if (name == DotNetTypeName.Decimal)
+            if (name == DotNetType.Decimal)
             {
                 return "decimal?";
             }
 
-            if (name == DotNetTypeName.Int32)
+            if (name == DotNetType.Int32)
             {
                 return "int?";
             }
 
-            if (name == DotNetTypeName.String)
+            if (name == DotNetType.String)
             {
                 return "string";
             }

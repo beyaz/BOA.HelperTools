@@ -9,15 +9,15 @@ namespace BOAPlugins.FormApplicationGenerator
         #endregion
     }
 
-    class GroupBoxInfo
+    class BCard
     {
-        public GroupBoxInfo(string title, IReadOnlyCollection<FieldInfo> fields)
+        public BCard(string title, IReadOnlyCollection<BField> fields)
         {
             Fields = fields;
             Title = title;
         }
 
-        public IReadOnlyCollection<FieldInfo> Fields { get; set; }
+        public IReadOnlyCollection<BField> Fields { get; set; }
         public string Title { get; set; }
     }
 
@@ -25,45 +25,45 @@ namespace BOAPlugins.FormApplicationGenerator
 
     public class VisaFee : Model
     {
-        IReadOnlyCollection<GroupBoxInfo> GroupBoxes = new []
+        IReadOnlyCollection<BCard> GroupBoxes = new []
         {
-            new GroupBoxInfo(FieldName.Amounts.ToString(),new []
+            new BCard(FieldName.Amounts.ToString(),new []
             {
-                new FieldInfo(FieldName.TransactionDate, DotNetTypeName.DateTime),
-                new FieldInfo(FieldName.FeeAmount, DotNetTypeName.Decimal),
-                new FieldInfo(FieldName.FeeAmountCurrency, DotNetTypeName.Int32),
-                new FieldInfo(FieldName.SourceAmount, DotNetTypeName.Decimal),
-                new FieldInfo(FieldName.SourceAmountCurrency, DotNetTypeName.Int32),
+                new BField(FieldName.TransactionDate, DotNetType.DateTime),
+                new BField(FieldName.FeeAmount, DotNetType.Decimal),
+                new BField(FieldName.FeeAmountCurrency, DotNetType.Int32),
+                new BField(FieldName.SourceAmount, DotNetType.Decimal),
+                new BField(FieldName.SourceAmountCurrency, DotNetType.Int32),
             }),
 
-            new GroupBoxInfo(FieldName.GeneralInformation.ToString(),new []
+            new BCard(FieldName.GeneralInformation.ToString(),new []
             {
-                new FieldInfo(FieldName.TransactionCode, DotNetTypeName.String)
+                new BField(FieldName.TransactionCode, DotNetType.String)
                 {
-                    ComponentName =  ComponentName.BParameterComponent
+                    ComponentType =  ComponentType.BParameterComponent
                 },
-                new FieldInfo(FieldName.UsageCode, DotNetTypeName.String)
+                new BField(FieldName.UsageCode, DotNetType.String)
                 {
-                    ComponentName =  ComponentName.BParameterComponent
+                    ComponentType =  ComponentType.BParameterComponent
                 },
-                new FieldInfo(FieldName.CardTye, DotNetTypeName.String)
+                new BField(FieldName.CardTye, DotNetType.String)
                 {
-                    ComponentName =  ComponentName.BParameterComponent
+                    ComponentType =  ComponentType.BParameterComponent
                 },
-                new FieldInfo(FieldName.SourceBIN, DotNetTypeName.String),
-                new FieldInfo(FieldName.DestinationBIN, DotNetTypeName.String),
-                new FieldInfo(FieldName.Direction, DotNetTypeName.String),
-                new FieldInfo(FieldName.CardNumber, DotNetTypeName.String),
-                new FieldInfo(FieldName.TranDate, DotNetTypeName.DateTime),
-                new FieldInfo(FieldName.ClearingDate, DotNetTypeName.DateTime),
-                new FieldInfo(FieldName.ClearingStatus, DotNetTypeName.String),
+                new BField(FieldName.SourceBIN, DotNetType.String),
+                new BField(FieldName.DestinationBIN, DotNetType.String),
+                new BField(FieldName.Direction, DotNetType.String),
+                new BField(FieldName.CardNumber, DotNetType.String),
+                new BField(FieldName.TranDate, DotNetType.DateTime),
+                new BField(FieldName.ClearingDate, DotNetType.DateTime),
+                new BField(FieldName.ClearingStatus, DotNetType.String),
             }),
 
-            new GroupBoxInfo(FieldName.ReasonInformation.ToString(),new []
+            new BCard(FieldName.ReasonInformation.ToString(),new []
             {
-                new FieldInfo(FieldName.ReasonCode, DotNetTypeName.Int32),
-                new FieldInfo(FieldName.CountrCode, DotNetTypeName.Int32),
-                new FieldInfo(FieldName.Message, DotNetTypeName.DateTime)
+                new BField(FieldName.ReasonCode, DotNetType.Int32),
+                new BField(FieldName.CountrCode, DotNetType.Int32),
+                new BField(FieldName.Message, DotNetType.DateTime)
             }),
         };
 

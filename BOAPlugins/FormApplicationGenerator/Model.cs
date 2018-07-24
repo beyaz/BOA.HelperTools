@@ -29,9 +29,9 @@ namespace BOAPlugins.FormApplicationGenerator
 
         #region Public Properties
         public string          DefinitionFormDataClassName { get; }
-        public List<FieldInfo> FormDataClassFields         { get; set; } = new List<FieldInfo>();
+        public List<BField> FormDataClassFields         { get; set; } = new List<BField>();
         public string          FormName                    { get; }
-        public List<FieldInfo> ListFormSearchFields        { get; set; } = new List<FieldInfo>();
+        public List<BField> ListFormSearchFields        { get; set; } = new List<BField>();
         public string          NamespaceName               { get; }
         public string          NamespaceNameForOrch        { get; }
         public string          NamespaceNameForType        { get; }
@@ -48,37 +48,37 @@ namespace BOAPlugins.FormApplicationGenerator
     static class NamingHelper
     {
         #region Public Methods
-        public static void InitializeFieldComponentTypes(List<FieldInfo> FormDataClassFields)
+        public static void InitializeFieldComponentTypes(List<BField> FormDataClassFields)
         {
             foreach (var field in FormDataClassFields)
             {
-                if (field.ComponentName != null)
+                if (field.ComponentType != null)
                 {
                     continue;
                 }
 
-                var fieldTypeName = field.TypeName;
-                if (fieldTypeName == DotNetTypeName.String)
+                var fieldTypeName = field.DotNetType;
+                if (fieldTypeName == DotNetType.String)
                 {
-                    field.ComponentName = ComponentName.BInput;
+                    field.ComponentType = ComponentType.BInput;
                     continue;
                 }
 
-                if (fieldTypeName == DotNetTypeName.Int32 ||
-                    fieldTypeName == DotNetTypeName.Decimal)
+                if (fieldTypeName == DotNetType.Int32 ||
+                    fieldTypeName == DotNetType.Decimal)
                 {
-                    field.ComponentName = ComponentName.BInputNumeric;
+                    field.ComponentType = ComponentType.BInputNumeric;
                     continue;
                 }
 
-                if (fieldTypeName == DotNetTypeName.DateTime)
+                if (fieldTypeName == DotNetType.DateTime)
                 {
-                    field.ComponentName = ComponentName.BDateTimePicker;
+                    field.ComponentType = ComponentType.BDateTimePicker;
                 }
 
-                if (fieldTypeName == DotNetTypeName.Boolean)
+                if (fieldTypeName == DotNetType.Boolean)
                 {
-                    field.ComponentName = ComponentName.BCheckBox;
+                    field.ComponentType = ComponentType.BCheckBox;
                 }
             }
         }
@@ -86,29 +86,30 @@ namespace BOAPlugins.FormApplicationGenerator
     }
 
     [Serializable]
-    public class FieldInfo
+    public class BField
     {
-        public FieldInfo()
+        public BField()
         {
             
         }
 
-        public FieldInfo(Enum name, DotNetTypeName dotNetTypeName)
+        public BField(Enum name, DotNetType dotNetType)
         {
             Name = name.ToString();
-            TypeName = dotNetTypeName;
+            DotNetType = dotNetType;
         }
+
         #region Public Properties
-        public ComponentName? ComponentName { get; set; } = FormApplicationGenerator.ComponentName.BInput;
+        public ComponentType? ComponentType { get; set; } = FormApplicationGenerator.ComponentType.BInput;
         public string         GroupBoxTitle { get; set; }
         public string         Name          { get; set; }
         public string         ParamType     { get; set; }
-        public DotNetTypeName TypeName      { get; set; } = DotNetTypeName.String;
+        public DotNetType DotNetType      { get; set; } = DotNetType.String;
         #endregion
     }
 
     [Serializable]
-    public enum ComponentName
+    public enum ComponentType
     {
         BAccountComponent,
         BDateTimePicker,
@@ -120,7 +121,7 @@ namespace BOAPlugins.FormApplicationGenerator
     }
 
     [Serializable]
-    public enum DotNetTypeName
+    public enum DotNetType
     {
         Int32,
         String,

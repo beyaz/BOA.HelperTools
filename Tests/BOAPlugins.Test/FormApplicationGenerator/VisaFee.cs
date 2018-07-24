@@ -1,4 +1,6 @@
-﻿namespace BOAPlugins.FormApplicationGenerator
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace BOAPlugins.FormApplicationGenerator
 {
     static class SolutionFile
     {
@@ -23,7 +25,7 @@
                     new BField(Int32, FieldName.FeeAmountCurrency),
                     new BField(Decimal, FieldName.SourceAmount),
                     new BField(Int32, FieldName.SourceAmountCurrency)
-                }), 
+                }),
 
                 new BTab(FieldName.GeneralInformation.ToString(), new[]
                 {
@@ -69,8 +71,18 @@
                 })
             };
         }
+        #endregion
+    }
 
-        
+    [TestClass]
+    public class TestGenerate
+    {
+        #region Public Methods
+        [TestMethod]
+        public void T1()
+        {
+            new VisaFee().AutoGenerateCodesAndExportFiles();
+        }
         #endregion
     }
 

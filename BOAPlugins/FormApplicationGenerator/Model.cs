@@ -39,6 +39,9 @@ namespace BOAPlugins.FormApplicationGenerator
         public string          RequestNameForList          { get; }
         public string          SolutionFilePath            { get; }
         public string          TypesProjectFolder          { get; }
+
+        
+
         #endregion
     }
 

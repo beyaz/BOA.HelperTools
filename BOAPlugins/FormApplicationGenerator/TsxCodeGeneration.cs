@@ -54,47 +54,45 @@ namespace BOAPlugins.FormApplicationGenerator
                 PaddingCount  = 3
             };
 
-            if (renderInGroupBox)
+            if (!isDefinitionForm)
+            {
+                renderCodes.AppendLine("<BGridSection context={context}>");
+                renderCodes.PaddingCount++;
+                foreach (var dataField in FormDataClassFields)
+                {
+                    renderCodes.AppendLine("<BGridRow context={context}>");
+
+                    renderCodes.PaddingCount++;
+
+                    RenderComponent(renderCodes, dataField);
+
+                    renderCodes.PaddingCount--;
+
+                    renderCodes.AppendLine("</BGridRow>");
+                }
+
+                renderCodes.PaddingCount--;
+                renderCodes.AppendLine("</BGridSection>");
+            }
+            else
             {
                 renderCodes.AppendLine("<BCardSection context={context} thresholdColumnCount={3}>");
                 renderCodes.AppendLine("<BCard context={context} title={Message.?} column={0}>");
-            }
-            else
-            {
-                renderCodes.AppendLine("<BGridSection context={context}>");
-            }
-
-            renderCodes.PaddingCount++;
-
-            foreach (var dataField in FormDataClassFields)
-            {
-                if (!renderInGroupBox)
-                {
-                    renderCodes.AppendLine("<BGridRow context={context}>");
-                }
 
                 renderCodes.PaddingCount++;
+                foreach (var dataField in FormDataClassFields)
+                {
+                    renderCodes.PaddingCount++;
 
-                RenderComponent(renderCodes, dataField);
+                    RenderComponent(renderCodes, dataField);
+
+                    renderCodes.PaddingCount--;
+                }
 
                 renderCodes.PaddingCount--;
 
-                if (!renderInGroupBox)
-                {
-                    renderCodes.AppendLine("</BGridRow>");
-                }
-            }
-
-            renderCodes.PaddingCount--;
-
-            if (renderInGroupBox)
-            {
                 renderCodes.AppendLine("</BCard>");
                 renderCodes.AppendLine("</BCardSection>");
-            }
-            else
-            {
-                renderCodes.AppendLine("</BGridSection>");
             }
 
             return new TsxCodeInfo

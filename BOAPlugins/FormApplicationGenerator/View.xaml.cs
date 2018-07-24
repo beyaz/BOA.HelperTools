@@ -247,7 +247,7 @@ INNER JOIN sys.types  ty ON c.user_type_id = ty.user_type_id
         static void OnFormNameChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var view        = (View) d;
-            var cachedModel = view.GetCachedModel();
+            var cachedModel = view.GetCachedModel(view.Controller.Model);
             if (cachedModel != null)
             {
                 view.Controller.Model = cachedModel;
@@ -321,7 +321,7 @@ INNER JOIN sys.types  ty ON c.user_type_id = ty.user_type_id
 
                 VisualStudio.UpdateStatusbarText("Files generated successfully. Include files into project.");
 
-                SaveModelToCache();
+                SaveModelToCache(Controller.Model);
 
                 Close();
             }
@@ -331,9 +331,9 @@ INNER JOIN sys.types  ty ON c.user_type_id = ty.user_type_id
             }
         }
 
-        Model GetCachedModel()
+        Model GetCachedModel(Model model)
         {
-            var cacheFilePath = Path.GetDirectoryName(SolutionFilePath) + Path.DirectorySeparatorChar + ".vs" + Path.DirectorySeparatorChar + FormName + ".json";
+            var cacheFilePath = GetCacheFilePath(model);
             if (File.Exists(cacheFilePath))
             {
                 return JsonHelper.Deserialize<Model>(File.ReadAllText(cacheFilePath));
@@ -342,10 +342,16 @@ INNER JOIN sys.types  ty ON c.user_type_id = ty.user_type_id
             return null;
         }
 
-        void SaveModelToCache()
+        static string GetCacheFilePath(Model model)
         {
-            var cacheFilePath = Path.GetDirectoryName(SolutionFilePath) + Path.DirectorySeparatorChar + ".vs" + Path.DirectorySeparatorChar + FormName + ".json";
-            FileHelper.WriteAllText(cacheFilePath, JsonHelper.Serialize(Controller.Model));
+            return  model.TypesProjectFolder + model.FormName + ".json";
+        }
+
+        void SaveModelToCache(Model model)
+        {
+            var cacheFilePath = GetCacheFilePath(model);
+
+            Util.WriteFileIfContentNotEqual(cacheFilePath, JsonHelper.Serialize(model));
         }
         #endregion
 

@@ -21,6 +21,7 @@ namespace BOAPlugins.FormApplicationGenerator
         public string          RequestNameForDefinition              { get; set; }
         public string          RequestNameForList                    { get; set; }
         public string          SolutionFilePath                      { get; set; }
+        public string TypesProjectFolder { get; set; }
         #endregion
     }
 
@@ -54,12 +55,20 @@ namespace BOAPlugins.FormApplicationGenerator
                 {
                     field.ComponentName = ComponentName.BDateTimePicker;
                 }
+
+
+                if (fieldTypeName == DotNetTypeName.Boolean)
+                {
+                    field.ComponentName = ComponentName.BCheckBox;
+                }
             }
         }
 
         public static void InitializeNames(this Model Model)
         {
-            var fileName      = Path.GetFileName(Model.SolutionFilePath);
+            var solutionFilePath = Model.SolutionFilePath;
+
+            var fileName      = Path.GetFileName(solutionFilePath);
             var namespaceName = fileName.RemoveFromStart("BOA.").RemoveFromEnd(".sln");
 
             Model.NamespaceName               = namespaceName;
@@ -68,6 +77,9 @@ namespace BOAPlugins.FormApplicationGenerator
             Model.NamespaceNameForType        = "BOA.Types." + Model.NamespaceName;
             Model.NamespaceNameForOrch        = "BOA.Orchestration." + Model.NamespaceName;
             Model.DefinitionFormDataClassName = Model.FormName + "FormData";
+            Model.TypesProjectFolder = Path.GetDirectoryName(solutionFilePath) + Path.DirectorySeparatorChar + Model.NamespaceNameForType + Path.DirectorySeparatorChar;
+
+
         }
         #endregion
     }

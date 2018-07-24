@@ -28,7 +28,7 @@ namespace BOAPlugins.FormApplicationGenerator
 
         public void ExportFiles()
         {
-            var typesFolder      = Path.GetDirectoryName(Model.SolutionFilePath) + Path.DirectorySeparatorChar + Model.NamespaceNameForType + Path.DirectorySeparatorChar;
+            var typesFolder = Model.TypesProjectFolder;
             var orchFolder       = Path.GetDirectoryName(Model.SolutionFilePath) + Path.DirectorySeparatorChar + Model.NamespaceNameForOrch + Path.DirectorySeparatorChar;
             var oneProjectFolder = GetOneProjectFolder(Model.SolutionFilePath, Model.NamespaceName);
 

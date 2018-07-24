@@ -13,7 +13,6 @@ namespace BOAPlugins.FormApplicationGenerator
             return @"
 using System.Collections.Generic;
 using BOA.Base;
-using BOA.Common.Extensions;
 using BOA.Common.Types;
 using BOA.Common.Helpers;
 using " + Model.NamespaceNameForType + @";

@@ -37,7 +37,7 @@ namespace BOAPlugins.FormApplicationGenerator
                     {
                         ComponentType = ComponentType.BParameterComponent
                     },
-                    new BField(String, FieldName.CardTye)
+                    new BField(String, FieldName.CardType)
                     {
                         ComponentType = ComponentType.BParameterComponent
                     },
@@ -85,7 +85,7 @@ namespace BOAPlugins.FormApplicationGenerator
                 {
                     ComponentType = ComponentType.BParameterComponent
                 },
-                new BField(String, FieldName.CardTye)
+                new BField(String, FieldName.CardType)
                 {
                     ComponentType = ComponentType.BParameterComponent
                 },
@@ -125,7 +125,7 @@ namespace BOAPlugins.FormApplicationGenerator
         SourceAmountCurrency,
         TransactionCode,
         UsageCode,
-        CardTye,
+        CardType,
         SourceBIN,
         DestinationBIN,
         Direction,

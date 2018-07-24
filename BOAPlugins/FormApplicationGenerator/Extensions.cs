@@ -8,6 +8,13 @@ namespace BOAPlugins.FormApplicationGenerator
 {
     public static class Extensions
     {
+        #region Public Methods
+        public static void AutoGenerateCodesAndExportFiles(this Model model)
+        {
+            new FileExporter(model).ExportFiles();
+        }
+        #endregion
+
         #region Methods
         internal static string GetSnapName(this FieldInfo dataField)
         {

@@ -135,8 +135,8 @@ class " + Model.FormName + @"Form extends TransactionPage
 
         const data = windowRequest.data;
 
-        return " + (Model.IsTabForm ? "(" : "[") + @"
-            " + tsxCodeInfo.RenderCodeForJsx + @"
+        return " + (Model.IsTabForm ? "[" : "(") + @"
+" + tsxCodeInfo.RenderCodeForJsx + @"
         " + (Model.IsTabForm ? "]" : ")") + @";
     }
 }

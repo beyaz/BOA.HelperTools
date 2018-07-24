@@ -45,7 +45,7 @@ namespace BOAPlugins.FormApplicationGenerator
                     new BField(String, FieldName.DestinationBIN),
                     new BField(String, FieldName.Direction),
                     new BField(String, FieldName.CardNumber),
-                    new BField(DateTime, FieldName.TranDate),
+                    
                     new BField(DateTime, FieldName.ClearingDate),
                     new BField(String, FieldName.ClearingStatus)
                     {
@@ -56,7 +56,7 @@ namespace BOAPlugins.FormApplicationGenerator
                 new BTab(FieldName.ReasonInformation.ToString(), new[]
                 {
                     new BField(Int32, FieldName.ReasonCode),
-                    new BField(Int32, FieldName.CountrCode),
+                    new BField(Int32, FieldName.CountryCode),
                     new BField(DateTime, FieldName.Message)
                 }),
 
@@ -130,11 +130,10 @@ namespace BOAPlugins.FormApplicationGenerator
         DestinationBIN,
         Direction,
         CardNumber,
-        TranDate,
         ClearingDate,
         ClearingStatus,
         ReasonCode,
-        CountrCode,
+        CountryCode,
         Message,
         Incoming,
         Outgoing,

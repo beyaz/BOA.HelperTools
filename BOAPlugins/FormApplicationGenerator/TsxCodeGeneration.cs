@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BOA.Common.Helpers;
 using BOAPlugins.ExportingModel;
@@ -109,15 +110,28 @@ namespace BOAPlugins.FormApplicationGenerator
 
             if (model.IsTabForm)
             {
-                
+                var isFirst = true;
                 foreach (var tab in model.Tabs)
                 {
+                    if (isFirst)
+                    {
+                        isFirst = false;
+
+                    }
+                    else
+                    {
+                        renderCodes.AppendLine(",");
+                    }
                     renderCodes.AppendLine("{");
 
                     renderCodes.PaddingCount++;
                     renderCodes.AppendLine("text: Message."+tab.Title+",");
-                    renderCodes.AppendLine("content:");
+                    renderCodes.AppendWithPadding("content:");
+
+                    renderCodes.PaddingCount++;
                     RenderCards(renderCodes, tab.Cards);
+                    renderCodes.PaddingCount--;
+
                     renderCodes.PaddingCount--;
 
                     renderCodes.AppendLine("}");
@@ -127,6 +141,7 @@ namespace BOAPlugins.FormApplicationGenerator
             }
             else
             {
+                renderCodes.AppendWithPadding("");
                 RenderCards(renderCodes, model.Cards);
             }
 
@@ -147,12 +162,13 @@ namespace BOAPlugins.FormApplicationGenerator
         static void RenderCards(PaddedStringBuilder renderCodes, IReadOnlyCollection<BCard> cards)
         {
             var thresholdColumnCount = "";
-            if (cards.Count == 1)
+            if (cards.Count > 1 )
             {
                 thresholdColumnCount = " thresholdColumnCount={3}";
             }
 
-            renderCodes.AppendLine("<BCardSection context={context}"+ thresholdColumnCount + ">");
+            renderCodes.Append("<BCardSection context={context}"+ thresholdColumnCount + ">"+Environment.NewLine);
+            renderCodes.PaddingCount++;
 
             int? columnIndex = 0;
 
@@ -174,6 +190,7 @@ namespace BOAPlugins.FormApplicationGenerator
 
             }
 
+            renderCodes.PaddingCount--;
             renderCodes.AppendLine("</BCardSection>");
         }
 
@@ -189,6 +206,8 @@ namespace BOAPlugins.FormApplicationGenerator
             foreach (var dataField in card.Fields)
             {
                 renderCodes.PaddingCount++;
+
+                renderCodes.AppendLine("");
 
                 RenderComponent(renderCodes, dataField);
 

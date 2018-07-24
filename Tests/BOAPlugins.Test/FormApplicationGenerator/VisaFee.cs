@@ -9,54 +9,69 @@ namespace BOAPlugins.FormApplicationGenerator
         #endregion
     }
 
+    class GroupBoxInfo
+    {
+        public GroupBoxInfo(string title, IReadOnlyCollection<FieldInfo> fields)
+        {
+            Fields = fields;
+            Title = title;
+        }
+
+        public IReadOnlyCollection<FieldInfo> Fields { get; set; }
+        public string Title { get; set; }
+    }
+
+
+
     public class VisaFee : Model
     {
+        IReadOnlyCollection<GroupBoxInfo> GroupBoxes = new []
+        {
+            new GroupBoxInfo(FieldName.Amounts.ToString(),new []
+            {
+                new FieldInfo(FieldName.TransactionDate, DotNetTypeName.DateTime),
+                new FieldInfo(FieldName.FeeAmount, DotNetTypeName.Decimal),
+                new FieldInfo(FieldName.FeeAmountCurrency, DotNetTypeName.Int32),
+                new FieldInfo(FieldName.SourceAmount, DotNetTypeName.Decimal),
+                new FieldInfo(FieldName.SourceAmountCurrency, DotNetTypeName.Int32),
+            }),
+
+            new GroupBoxInfo(FieldName.GeneralInformation.ToString(),new []
+            {
+                new FieldInfo(FieldName.TransactionCode, DotNetTypeName.String)
+                {
+                    ComponentName =  ComponentName.BParameterComponent
+                },
+                new FieldInfo(FieldName.UsageCode, DotNetTypeName.String)
+                {
+                    ComponentName =  ComponentName.BParameterComponent
+                },
+                new FieldInfo(FieldName.CardTye, DotNetTypeName.String)
+                {
+                    ComponentName =  ComponentName.BParameterComponent
+                },
+                new FieldInfo(FieldName.SourceBIN, DotNetTypeName.String),
+                new FieldInfo(FieldName.DestinationBIN, DotNetTypeName.String),
+                new FieldInfo(FieldName.Direction, DotNetTypeName.String),
+                new FieldInfo(FieldName.CardNumber, DotNetTypeName.String),
+                new FieldInfo(FieldName.TranDate, DotNetTypeName.DateTime),
+                new FieldInfo(FieldName.ClearingDate, DotNetTypeName.DateTime),
+                new FieldInfo(FieldName.ClearingStatus, DotNetTypeName.String),
+            }),
+
+            new GroupBoxInfo(FieldName.ReasonInformation.ToString(),new []
+            {
+                new FieldInfo(FieldName.ReasonCode, DotNetTypeName.Int32),
+                new FieldInfo(FieldName.CountrCode, DotNetTypeName.Int32),
+                new FieldInfo(FieldName.Message, DotNetTypeName.DateTime)
+            }),
+        };
+
         #region Constructors
         public VisaFee() : base(SolutionFile.CardPaymentSystem_Clearing, "VisaFee")
         {
-            FormDataClassFields = new List<FieldInfo>
-            {
-                new FieldInfo(FieldName.TransactionDate, DotNetTypeName.DateTime, FieldName.Amounts),
-                new FieldInfo(FieldName.FeeAmount, DotNetTypeName.Decimal, FieldName.Amounts),
-                new FieldInfo(FieldName.FeeAmountCurrency, DotNetTypeName.Int32, FieldName.Amounts),
-                new FieldInfo(FieldName.SourceAmount, DotNetTypeName.Decimal, FieldName.Amounts),
-                new FieldInfo(FieldName.SourceAmountCurrency, DotNetTypeName.Int32, FieldName.Amounts),
-
-                new FieldInfo(FieldName.TransactionCode, DotNetTypeName.String, FieldName.GeneralInformation)
-                {
-                    ComponentName =  ComponentName.BParameterComponent
-                },
-                new FieldInfo(FieldName.UsageCode, DotNetTypeName.String, FieldName.GeneralInformation)
-                {
-                    ComponentName =  ComponentName.BParameterComponent
-                },
-                new FieldInfo(FieldName.CardTye, DotNetTypeName.String, FieldName.GeneralInformation)
-                {
-                    ComponentName =  ComponentName.BParameterComponent
-                },
-                new FieldInfo(FieldName.SourceBIN, DotNetTypeName.String, FieldName.GeneralInformation),
-                new FieldInfo(FieldName.DestinationBIN, DotNetTypeName.String, FieldName.GeneralInformation),
-                new FieldInfo(FieldName.Direction, DotNetTypeName.String, FieldName.GeneralInformation),
-                new FieldInfo(FieldName.CardNumber, DotNetTypeName.String, FieldName.GeneralInformation),
-                new FieldInfo(FieldName.TranDate, DotNetTypeName.DateTime, FieldName.GeneralInformation),
-                new FieldInfo(FieldName.ClearingDate, DotNetTypeName.DateTime, FieldName.GeneralInformation),
-                new FieldInfo(FieldName.ClearingStatus, DotNetTypeName.String, FieldName.GeneralInformation),
-
-                new FieldInfo(FieldName.ReasonCode, DotNetTypeName.Int32, FieldName.ReasonInformation),
-                new FieldInfo(FieldName.CountrCode, DotNetTypeName.Int32, FieldName.ReasonInformation),
-                new FieldInfo(FieldName.Message, DotNetTypeName.DateTime, FieldName.ReasonInformation),
-
-                new FieldInfo(FieldName.TransactionDate, DotNetTypeName.DateTime, FieldName.Amounts),
-                new FieldInfo(FieldName.TransactionDate, DotNetTypeName.DateTime, FieldName.Amounts),
-                new FieldInfo(FieldName.TransactionDate, DotNetTypeName.DateTime, FieldName.Amounts),
-                new FieldInfo(FieldName.TransactionDate, DotNetTypeName.DateTime, FieldName.Amounts),
-                new FieldInfo(FieldName.TransactionDate, DotNetTypeName.DateTime, FieldName.Amounts),
-                new FieldInfo(FieldName.TransactionDate, DotNetTypeName.DateTime, FieldName.Amounts),
-                new FieldInfo(FieldName.TransactionDate, DotNetTypeName.DateTime, FieldName.Amounts),
-                new FieldInfo(FieldName.TransactionDate, DotNetTypeName.DateTime, FieldName.Amounts),
-                new FieldInfo(FieldName.TransactionDate, DotNetTypeName.DateTime, FieldName.Amounts),
-                new FieldInfo(FieldName.TransactionDate, DotNetTypeName.DateTime, FieldName.Amounts)
-            };
+            
+            
         }
         #endregion
     }

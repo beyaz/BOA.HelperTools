@@ -93,7 +93,8 @@
     <Compile Include="BOA.Tools.Translator\UI.TranslateHelper\View.xaml.cs">
       <DependentUpon>View.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FormApplicationGenerator\Controller.cs" />
+    <Compile Include="FormApplicationGenerator\Ext.cs" />
+    <Compile Include="FormApplicationGenerator\FileExporter.cs" />
     <Compile Include="FormApplicationGenerator\Extensions.cs" />
     <Compile Include="FormApplicationGenerator\Label.cs" />
     <Compile Include="FormApplicationGenerator\DefinitionFormTsxFile.cs" />

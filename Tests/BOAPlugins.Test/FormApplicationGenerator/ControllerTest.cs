@@ -11,9 +11,10 @@ namespace BOAPlugins.FormApplicationGenerator
         {
             var solutionPath = @"D:\work\BOA.BusinessModules\Dev\BOA.CardGeneral.DebitCard\BOA.CardGeneral.DebitCard.sln";
 
-            var controller = new Controller();
+            var model = new Model(solutionPath, "BOAReverseQueue");
+            var controller = new FileExporter(model);
 
-            var model = controller.CreateModel(solutionPath, "BOAReverseQueue");
+            
 
             model.FormDataClassFields.Add(new FieldInfo
             {

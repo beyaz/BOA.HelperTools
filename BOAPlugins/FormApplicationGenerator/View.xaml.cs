@@ -4,8 +4,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
 using BOA.CodeGeneration.Common;
 using BOA.Common.Helpers;
@@ -17,23 +15,6 @@ using WhiteStone.Helpers;
 
 namespace BOAPlugins.FormApplicationGenerator
 {
-    public static class Ext
-    {
-        #region Public Methods
-        public static string GetText(this RichTextBox richTextBox)
-        {
-            return new TextRange(richTextBox.Document.ContentStart,
-                                 richTextBox.Document.ContentEnd).Text;
-        }
-
-        public static void SetText(this RichTextBox richTextBox, string text)
-        {
-            richTextBox.Document.Blocks.Clear();
-            richTextBox.Document.Blocks.Add(new Paragraph(new Run(text)));
-        }
-        #endregion
-    }
-
     /// <summary>
     ///     Interaction logic for MainForm.xaml
     /// </summary>
@@ -50,7 +31,7 @@ namespace BOAPlugins.FormApplicationGenerator
         #endregion
 
         #region Fields
-        readonly Controller Controller = new Controller();
+        Model _model;
         #endregion
 
         #region Constructors
@@ -247,10 +228,15 @@ INNER JOIN sys.types  ty ON c.user_type_id = ty.user_type_id
         static void OnFormNameChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var view        = (View) d;
-            var cachedModel = view.GetCachedModel(view.Controller.Model);
+            if (view._model == null)
+            {
+                return;
+            }
+
+            var cachedModel = view.GetCachedModel(view._model);
             if (cachedModel != null)
             {
-                view.Controller.Model = cachedModel;
+                view._model = cachedModel;
 
                 view.FormDataFields       = new ObservableCollection<FieldInfo>(cachedModel.FormDataClassFields);
                 view.ListFormSearchFields = new ObservableCollection<FieldInfo>(cachedModel.ListFormSearchFields);
@@ -312,16 +298,18 @@ INNER JOIN sys.types  ty ON c.user_type_id = ty.user_type_id
                     return;
                 }
 
-                Controller.CreateModel(SolutionFilePath, FormName);
+                _model = new Model(SolutionFilePath, FormName)
+                {
+                    FormDataClassFields  = FormDataFields.ToList(),
+                    ListFormSearchFields = ListFormSearchFields.ToList()
+                };
 
-                Controller.Model.FormDataClassFields  = FormDataFields.ToList();
-                Controller.Model.ListFormSearchFields = ListFormSearchFields.ToList();
 
-                Controller.ExportFiles();
+                new FileExporter(_model).ExportFiles();
 
                 VisualStudio.UpdateStatusbarText("Files generated successfully. Include files into project.");
 
-                SaveModelToCache(Controller.Model);
+                SaveModelToCache(_model);
 
                 Close();
             }
@@ -333,6 +321,7 @@ INNER JOIN sys.types  ty ON c.user_type_id = ty.user_type_id
 
         Model GetCachedModel(Model model)
         {
+            
             var cacheFilePath = GetCacheFilePath(model);
             if (File.Exists(cacheFilePath))
             {

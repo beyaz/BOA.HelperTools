@@ -6,29 +6,23 @@ using BOAPlugins.ExportingModel;
 
 namespace BOAPlugins.FormApplicationGenerator
 {
-    class Controller
+    class FileExporter
     {
-        #region Public Properties
-        public Model Model { get; set; }
+        #region Constructors
+        public FileExporter(Model model)
+        {
+            Model = model;
+        }
+        #endregion
+
+        #region Properties
+        Model Model { get; }
         #endregion
 
         #region Public Methods
-        public Model CreateModel(string solutionFilePath, string formName)
-        {
-            Model = new Model
-            {
-                SolutionFilePath = solutionFilePath,
-                FormName         = formName
-            };
-
-            Model.InitializeNames();
-
-            return Model;
-        }
-
         public void ExportFiles()
         {
-            var typesFolder = Model.TypesProjectFolder;
+            var typesFolder      = Model.TypesProjectFolder;
             var orchFolder       = Path.GetDirectoryName(Model.SolutionFilePath) + Path.DirectorySeparatorChar + Model.NamespaceNameForOrch + Path.DirectorySeparatorChar;
             var oneProjectFolder = GetOneProjectFolder(Model.SolutionFilePath, Model.NamespaceName);
 

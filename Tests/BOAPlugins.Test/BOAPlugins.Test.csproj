@@ -85,7 +85,6 @@
     <Compile Include="BOA.Tools.Translator\GoogleTranslatorTest.cs" />
     <Compile Include="BoaCodeGenerator\Util\TFSAccessForBOATest.cs" />
     <Compile Include="BoaCodeGenerator\Util\TFSUndoHelperTest.cs" />
-    <Compile Include="FormApplicationGenerator\ControllerTest.cs" />
     <Compile Include="ExportingModel\ExporterTest.cs" />
     <Compile Include="ExportingModel\HandlerTest.cs" />
     <Compile Include="GenerateCSharpCode\BOATypeDataProviderTest.cs" />
@@ -167,7 +166,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="FormApplicationGenerator\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="ExportingModel\ExampleConfig.json" />
     <None Include="packages.config" />

@@ -48,6 +48,9 @@ namespace BOAPlugins.FormApplicationGenerator
                     new BField(DateTime, FieldName.TranDate),
                     new BField(DateTime, FieldName.ClearingDate),
                     new BField(String, FieldName.ClearingStatus)
+                    {
+                        ComponentType = ComponentType.BParameterComponent
+                    }
                 }),
 
                 new BTab(FieldName.ReasonInformation.ToString(), new[]
@@ -69,6 +72,30 @@ namespace BOAPlugins.FormApplicationGenerator
                     new BField(String, FieldName.CPDate),
                     new BField(String, FieldName.Case)
                 })
+            };
+
+            ListFormSearchFields = new[]
+            {
+                new BField(String, FieldName.CardNumber),
+                new BField(String, FieldName.TransactionCode)
+                {
+                    ComponentType = ComponentType.BParameterComponent
+                },
+                new BField(String, FieldName.UsageCode)
+                {
+                    ComponentType = ComponentType.BParameterComponent
+                },
+                new BField(String, FieldName.CardTye)
+                {
+                    ComponentType = ComponentType.BParameterComponent
+                },
+                new BField(String, FieldName.Validation),
+                new BField(String, FieldName.ClearingStatus)
+                {
+                    ComponentType = ComponentType.BParameterComponent
+                },
+                new BField(DateTime, FieldName.ClearingDateBegin),
+                new BField(DateTime, FieldName.ClearingDateEnd)
             };
         }
         #endregion

@@ -25,6 +25,19 @@ namespace BOAPlugins.FormApplicationGenerator
 
             return allFields;
         }
+
+        public static IReadOnlyCollection<BField> GetAllFields(this IReadOnlyCollection<BTab> tabs)
+        {
+            var allFields = new List<BField>();
+
+            foreach (var tab in tabs)
+            {
+                allFields.AddRange(tab.Cards.GetAllFields());
+            }
+
+            return allFields;
+        }
+
         #endregion
 
         #region Methods

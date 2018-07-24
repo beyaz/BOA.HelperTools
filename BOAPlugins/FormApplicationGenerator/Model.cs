@@ -37,10 +37,20 @@ namespace BOAPlugins.FormApplicationGenerator
 
         #region Public Properties
         public IReadOnlyCollection<BCard> Cards                       { get; set; } = new List<BCard>();
-        public IReadOnlyCollection<BTab> Tabs { get; set; } = new List<BTab>();
         public string                     DefinitionFormDataClassName { get; }
 
-        public IReadOnlyCollection<BField> FormDataClassFields => Cards.GetAllFields();
+        public IReadOnlyCollection<BField> FormDataClassFields
+        {
+            get
+            {
+                if (IsTabForm)
+                {
+                    return Tabs.GetAllFields();
+                }
+
+                return Cards.GetAllFields();
+            }
+        }
 
         public string                      FormName                 { get; }
         public bool                        IsTabForm                { get; set; }
@@ -51,6 +61,7 @@ namespace BOAPlugins.FormApplicationGenerator
         public string                      RequestNameForDefinition { get; }
         public string                      RequestNameForList       { get; }
         public string                      SolutionFilePath         { get; }
+        public IReadOnlyCollection<BTab>   Tabs                     { get; set; } = new List<BTab>();
         public string                      TypesProjectFolder       { get; }
         #endregion
     }
@@ -79,7 +90,7 @@ namespace BOAPlugins.FormApplicationGenerator
         public BTab(string title, IReadOnlyCollection<BCard> cards)
         {
             Cards = cards;
-            Title  = title;
+            Title = title;
         }
 
         public BTab(string title, IReadOnlyCollection<BField> fields)
@@ -91,7 +102,7 @@ namespace BOAPlugins.FormApplicationGenerator
 
         #region Public Properties
         public IReadOnlyCollection<BCard> Cards { get; }
-        public string                      Title  { get; }
+        public string                     Title { get; }
         #endregion
     }
 

@@ -20,8 +20,6 @@ namespace BOAPlugins.FormApplicationGenerator
         #region Public Methods
         public static TsxCodeInfo EvaluateTSCodeInfo(List<FieldInfo> FormDataClassFields, bool isDefinitionForm)
         {
-            var renderInGroupBox = isDefinitionForm;
-
             NamingHelper.InitializeFieldComponentTypes(FormDataClassFields);
 
             var PropertyDeclerationCode = "";
@@ -77,21 +75,44 @@ namespace BOAPlugins.FormApplicationGenerator
             else
             {
                 renderCodes.AppendLine("<BCardSection context={context} thresholdColumnCount={3}>");
-                renderCodes.AppendLine("<BCard context={context} title={Message.?} column={0}>");
 
-                renderCodes.PaddingCount++;
-                foreach (var dataField in FormDataClassFields)
+                foreach (var field in FormDataClassFields)
                 {
-                    renderCodes.PaddingCount++;
-
-                    RenderComponent(renderCodes, dataField);
-
-                    renderCodes.PaddingCount--;
+                    if (field.GroupBoxTitle == null)
+                    {
+                        field.GroupBoxTitle = "?";
+                    }
                 }
 
-                renderCodes.PaddingCount--;
+                var columnIndex = 0;
+                var fieldGroups = FormDataClassFields.ToLookup(f => f.GroupBoxTitle, f => f);
 
-                renderCodes.AppendLine("</BCard>");
+                foreach (var fieldGroup in fieldGroups)
+                {
+                    if (columnIndex == 3)
+                    {
+                        columnIndex = 0;
+                    }
+
+                    var fields = fieldGroups[fieldGroup.Key];
+
+                    renderCodes.AppendLine("<BCard context={context} title={Message." + fieldGroup.Key + "} column={" + columnIndex++ + "}>");
+
+                    renderCodes.PaddingCount++;
+                    foreach (var dataField in fields)
+                    {
+                        renderCodes.PaddingCount++;
+
+                        RenderComponent(renderCodes, dataField);
+
+                        renderCodes.PaddingCount--;
+                    }
+
+                    renderCodes.PaddingCount--;
+
+                    renderCodes.AppendLine("</BCard>");
+                }
+
                 renderCodes.AppendLine("</BCardSection>");
             }
 

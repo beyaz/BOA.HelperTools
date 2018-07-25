@@ -67,7 +67,10 @@
         BatchFileTrailer,
         FileHeader,
         BatchTrailer,
-        FileTrailer
+        FileTrailer,
+        ForwardSlash,
+        Text,
+        ToBeSent
 
 
 

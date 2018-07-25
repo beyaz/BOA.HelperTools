@@ -1,75 +1,75 @@
-﻿namespace BOAPlugins.FormApplicationGenerator
+﻿using static BOAPlugins.FormApplicationGenerator.FieldName;
+
+namespace BOAPlugins.FormApplicationGenerator
 {
     public class Outgoing : Model
     {
         #region Constructors
         public Outgoing() : base(SolutionFile.CardPaymentSystem_Clearing, nameof(Outgoing))
         {
-
             Cards = new[]
             {
-                new BCard(FieldName.Amounts.ToString(), new[]
+                new BCard(Draft.ToString(), new[]
                 {
-                    new BField(DateTime, FieldName.TransactionDate),
-                    new BField(Decimal, FieldName.FeeAmount),
-                    new BField(Int32, FieldName.FeeAmountCurrency),
-                    new BField(Decimal, FieldName.SourceAmount),
-                    new BField(Int32, FieldName.SourceAmountCurrency)
+                    new BField(Decimal, DraftSelling),
+                    new BField(Decimal, DraftWithdrawal),
+                    new BField(Decimal, DraftRefund)
                 }),
 
-                new BCard(FieldName.GeneralInformation.ToString(), new[]
+                new BCard(Chargeback.ToString(), new[]
                 {
-                    new BField(String, FieldName.TransactionCode)
-                    {
-                        ComponentType = ComponentType.BParameterComponent
-                    },
-                    new BField(String, FieldName.UsageCode)
-                    {
-                        ComponentType = ComponentType.BParameterComponent
-                    },
-                    new BField(String, FieldName.CardType)
-                    {
-                        ComponentType = ComponentType.BParameterComponent
-                    },
-                    new BField(String, FieldName.SourceBIN),
-                    new BField(String, FieldName.DestinationBIN),
-                    new BField(String, FieldName.Direction),
-                    new BField(String, FieldName.CardNumber),
-
-                    new BField(DateTime, FieldName.ClearingDate),
-                    new BField(String, FieldName.ClearingStatus)
-                    {
-                        ComponentType = ComponentType.BParameterComponent
-                    }
+                    new BField(Decimal, ChargebackSelling),
+                    new BField(Decimal, ChargebackWithdrawal),
+                    new BField(Decimal, ChargebackRefund)
                 }),
 
-                
+                new BCard(Fee + "" + ForwardSlash + Fund, new[]
+                {
+                    new BField(Decimal, FeeCollect),
+                    new BField(Decimal, FundDistribution)
+                }),
+
+                new BCard(Fraud + "" + ForwardSlash + Text, new[]
+                {
+                    new BField(String, Fraud),
+                    new BField(String, TextData)
+                }),
+
+                new BCard(Reversal.ToString(), new[]
+                {
+                    new BField(Decimal, ReversalSelling),
+                    new BField(Decimal, ReversalWithdrawal),
+                    new BField(Decimal, ReversalRefund)
+                }),
+                new BCard(ChargebackReversal.ToString(), new[]
+                {
+                    new BField(Decimal, ChargebackReversalSelling),
+                    new BField(Decimal, ChargebackReversalWithdrawal),
+                    new BField(Decimal, ChargebackReversalRefund)
+                }),
+
+                new BCard(Document.ToString(), new[]
+                {
+                    new BField(String, OriginalRequest),
+                    new BField(String, CopyRequest),
+                    new BField(String, Confirm)
+                }),
+
+                new BCard(BatchFileTrailer + "", new[]
+                {
+                    new BField(String, FileHeader),
+                    new BField(String, BatchTrailer),
+                    new BField(String, FileTrailer)
+                })
             };
-
-
 
             ListFormSearchFields = new[]
             {
-                new BField(String, FieldName.CardNumber),
-                new BField(String, FieldName.TransactionCode)
-                {
-                    ComponentType = ComponentType.BParameterComponent
-                },
-                new BField(String, FieldName.UsageCode)
-                {
-                    ComponentType = ComponentType.BParameterComponent
-                },
-                new BField(String, FieldName.CardType)
-                {
-                    ComponentType = ComponentType.BParameterComponent
-                },
-                new BField(String, FieldName.Validation),
-                new BField(String, FieldName.ClearingStatus)
-                {
-                    ComponentType = ComponentType.BParameterComponent
-                },
-                new BField(DateTime, FieldName.ClearingDateBegin),
-                new BField(DateTime, FieldName.ClearingDateEnd)
+                new BField(String, CardNumber),
+                new BField(DateTime, ClearingDateBegin),
+                new BField(DateTime, ClearingDateEnd),
+                new BField(String, TransactionCode),
+                new BField(Boolean, ToBeSent)
             };
         }
         #endregion

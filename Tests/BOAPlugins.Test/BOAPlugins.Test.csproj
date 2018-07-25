@@ -87,6 +87,8 @@
     <Compile Include="BoaCodeGenerator\Util\TFSUndoHelperTest.cs" />
     <Compile Include="ExportingModel\ExporterTest.cs" />
     <Compile Include="ExportingModel\HandlerTest.cs" />
+    <Compile Include="FormApplicationGenerator\FieldName.cs" />
+    <Compile Include="FormApplicationGenerator\Outgoing.cs" />
     <Compile Include="FormApplicationGenerator\VisaFee.cs" />
     <Compile Include="GenerateCSharpCode\BOATypeDataProviderTest.cs" />
     <Compile Include="GenerateCSharpCode\HandlerTest.cs" />

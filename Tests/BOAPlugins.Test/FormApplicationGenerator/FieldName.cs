@@ -1,0 +1,75 @@
+﻿namespace BOAPlugins.FormApplicationGenerator
+{
+    public enum FieldName
+    {
+        ReasonInformation,
+        GeneralInformation,
+        TransactionDate,
+        Amounts,
+        FeeAmount,
+        FeeAmountCurrency,
+        SourceAmount,
+        SourceAmountCurrency,
+        TransactionCode,
+        UsageCode,
+        CardType,
+        SourceBIN,
+        DestinationBIN,
+        Direction,
+        CardNumber,
+        ClearingDate,
+        ClearingStatus,
+        ReasonCode,
+        CountryCode,
+        Message,
+        Incoming,
+        Outgoing,
+        SettlementFlag,
+        Reimbursement,
+        EndOfDay,
+        Validation,
+        ValidationDefinition,
+        CPDate,
+        Case,
+        ClearingDateBegin,
+        ClearingDateEnd,
+
+        Status,
+
+        Draft,
+        DraftSelling,
+        DraftWithdrawal,
+        DraftRefund,
+
+        Chargeback,
+        ChargebackSelling,
+        ChargebackWithdrawal,
+        ChargebackRefund,
+        Fee,
+        Fund,
+        FeeCollect,
+        FundDistribution,
+        Fraud,
+        TextData,
+        Reversal,
+        ReversalSelling,
+        ReversalWithdrawal,
+        ReversalRefund,
+
+        ChargebackReversal,
+        ChargebackReversalSelling,
+        ChargebackReversalWithdrawal,
+        ChargebackReversalRefund,
+        Document,
+        OriginalRequest,
+        CopyRequest,
+        Confirm,
+        BatchFileTrailer,
+        FileHeader,
+        BatchTrailer,
+        FileTrailer
+
+
+
+    }
+}

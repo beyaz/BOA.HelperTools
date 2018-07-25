@@ -70,7 +70,8 @@
         FileTrailer,
         ForwardSlash,
         Text,
-        ToBeSent
+        ToBeSent,
+        ProcessType
 
 
 

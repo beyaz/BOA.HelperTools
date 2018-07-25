@@ -69,7 +69,7 @@ namespace BOAPlugins.FormApplicationGenerator
                 new BField(String, CardNumber),
                 new BField(DateTime, ClearingDateBegin),
                 new BField(DateTime, ClearingDateEnd),
-                new BField(String, TransactionCode),
+                new BField(String, ProcessType),
                 new BField(Boolean, ToBeSent)
             };
         }

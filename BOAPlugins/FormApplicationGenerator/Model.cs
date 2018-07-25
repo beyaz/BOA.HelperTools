@@ -63,6 +63,8 @@ namespace BOAPlugins.FormApplicationGenerator
         public string                      SolutionFilePath         { get; }
         public IReadOnlyCollection<BTab>   Tabs                     { get; set; } = new List<BTab>();
         public string                      TypesProjectFolder       { get; }
+
+        
         #endregion
     }
 

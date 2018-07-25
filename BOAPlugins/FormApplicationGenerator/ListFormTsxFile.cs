@@ -96,10 +96,9 @@ class " + Model.FormName + @"ListForm extends BrowsePage
                     return;
                 }
 
-                const resourceCode = ""?""; // TODO: definition form resource code expects here.
                 const data = this.getSelectedRows()[0];
 
-                BFormManager.show(resourceCode, data, /*showAsNewPage*/true);
+                BFormManager.show(ResourceCode." + Model.FormName + @"Form, data, /*showAsNewPage*/true);
 
                 break;
             }

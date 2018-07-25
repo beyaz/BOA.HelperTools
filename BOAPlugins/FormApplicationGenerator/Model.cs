@@ -96,7 +96,7 @@ namespace BOAPlugins.FormApplicationGenerator
 
         public BTab(string title, IReadOnlyCollection<BField> fields)
         {
-            Cards = new[] {new BCard(null, fields)};
+            Cards = new[] {new BCard("", fields)};
             Title = title;
         }
         public BTab(Enum title, IReadOnlyCollection<BField> fields):this(title.ToString(),fields)

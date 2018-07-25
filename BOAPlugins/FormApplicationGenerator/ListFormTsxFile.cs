@@ -23,6 +23,7 @@ import { BBranchComponent } from ""b-branch-component""
 import { BParameterComponent } from ""b-parameter-component""
 import { BInputNumeric } from ""b-input-numeric"";
 import { Helper } from ""../utils/Helper"";
+import { ResourceCode } from ""../utils/ResourceCode"";
 import { FormAssistant } from ""../utils/FormAssistant"";
 import { Message } from ""../utils/Message"";
 import { BFormManager } from ""b-form-manager""

@@ -68,7 +68,7 @@ namespace BOAPlugins.ExportingModel
                     return data;
                 }
 
-                // find types
+                var typeDefinitions = new List<TypeDefinition>();
                 foreach (var className in info.ExportClassNames)
                 {
                     var typeDefinition = FindType(assemblyDefinition, className);
@@ -79,6 +79,11 @@ namespace BOAPlugins.ExportingModel
                         return data;
                     }
 
+                    typeDefinitions.Add(typeDefinition);
+                }
+
+                foreach (var typeDefinition in typeDefinitions)
+                {
                     GenerateType(typeDefinition, sb);
                 }
             }

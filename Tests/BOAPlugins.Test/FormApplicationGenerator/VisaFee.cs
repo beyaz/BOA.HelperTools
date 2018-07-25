@@ -5,12 +5,6 @@ namespace BOAPlugins.FormApplicationGenerator
 {
     public class VisaFee : Model
     {
-
-
-
-       
-
-
         #region Constructors
         public VisaFee() : base(SolutionFile.CardPaymentSystem_Clearing, nameof(VisaFee))
         {

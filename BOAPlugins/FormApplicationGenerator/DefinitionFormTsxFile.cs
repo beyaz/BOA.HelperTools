@@ -127,13 +127,13 @@ class " + Model.FormName + @"Form extends TransactionPage
             return  " + (Model.IsTabForm ? "[]" : "<div/>") + @";
         }
 
-        const state = this.state;
-
-        const context = state.context;
+        const context = this.state.context;
 
         const windowRequest = this.assistant.getWindowRequest();
 
-        const data = windowRequest.data;
+        const data       = windowRequest.data;
+        const dataSource = windowRequest.dataSource;
+        const state      = windowRequest.state;
 
         return " + (Model.IsTabForm ? "[" : "(") + @"
 " + tsxCodeInfo.RenderCodeForJsx + @"

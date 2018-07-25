@@ -1,14 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using static BOAPlugins.FormApplicationGenerator.FieldName;
 
 namespace BOAPlugins.FormApplicationGenerator
 {
-    static class SolutionFile
-    {
-        #region Constants
-        public const string CardPaymentSystem_Clearing = @"D:\work\BOA.BusinessModules\Dev\BOA.CardPaymentSystem.Clearing\BOA.CardPaymentSystem.Clearing.sln";
-        #endregion
-    }
-
     public class VisaFee : Model
     {
         #region Constructors
@@ -18,97 +11,85 @@ namespace BOAPlugins.FormApplicationGenerator
 
             Tabs = new[]
             {
-                new BTab(FieldName.Amounts.ToString(), new[]
+                new BTab(Amounts.ToString(), new[]
                 {
-                    new BField(DateTime, FieldName.TransactionDate),
-                    new BField(Decimal, FieldName.FeeAmount),
-                    new BField(Int32, FieldName.FeeAmountCurrency),
-                    new BField(Decimal, FieldName.SourceAmount),
-                    new BField(Int32, FieldName.SourceAmountCurrency)
+                    new BField(DateTime, TransactionDate),
+                    new BField(Decimal, FeeAmount),
+                    new BField(Int32, FeeAmountCurrency),
+                    new BField(Decimal, SourceAmount),
+                    new BField(Int32, SourceAmountCurrency)
                 }),
 
-                new BTab(FieldName.GeneralInformation.ToString(), new[]
+                new BTab(GeneralInformation.ToString(), new[]
                 {
-                    new BField(String, FieldName.TransactionCode)
+                    new BField(String, TransactionCode)
                     {
                         ComponentType = ComponentType.BParameterComponent
                     },
-                    new BField(String, FieldName.UsageCode)
+                    new BField(String, UsageCode)
                     {
                         ComponentType = ComponentType.BParameterComponent
                     },
-                    new BField(String, FieldName.CardType)
+                    new BField(String, CardType)
                     {
                         ComponentType = ComponentType.BParameterComponent
                     },
-                    new BField(String, FieldName.SourceBIN),
-                    new BField(String, FieldName.DestinationBIN),
-                    new BField(String, FieldName.Direction),
-                    new BField(String, FieldName.CardNumber),
-                    
-                    new BField(DateTime, FieldName.ClearingDate),
-                    new BField(String, FieldName.ClearingStatus)
+                    new BField(String, SourceBIN),
+                    new BField(String, DestinationBIN),
+                    new BField(String, Direction),
+                    new BField(String, CardNumber),
+
+                    new BField(DateTime, ClearingDate),
+                    new BField(String, ClearingStatus)
                     {
                         ComponentType = ComponentType.BParameterComponent
                     }
                 }),
 
-                new BTab(FieldName.ReasonInformation.ToString(), new[]
+                new BTab(ReasonInformation.ToString(), new[]
                 {
-                    new BField(Int32, FieldName.ReasonCode),
-                    new BField(Int32, FieldName.CountryCode),
-                    new BField(DateTime, FieldName.Message)
+                    new BField(Int32, ReasonCode),
+                    new BField(Int32, CountryCode),
+                    new BField(DateTime, Message)
                 }),
 
-                new BTab(FieldName.Status.ToString(), new[]
+                new BTab(Status.ToString(), new[]
                 {
-                    new BField(Boolean, FieldName.Incoming),
+                    new BField(Boolean, Incoming),
                     new BField(Boolean, FieldName.Outgoing),
-                    new BField(String, FieldName.SettlementFlag),
-                    new BField(String, FieldName.Reimbursement),
-                    new BField(String, FieldName.EndOfDay),
-                    new BField(String, FieldName.Validation),
-                    new BField(String, FieldName.ValidationDefinition),
-                    new BField(String, FieldName.CPDate),
-                    new BField(String, FieldName.Case)
+                    new BField(String, SettlementFlag),
+                    new BField(String, Reimbursement),
+                    new BField(String, EndOfDay),
+                    new BField(String, Validation),
+                    new BField(String, ValidationDefinition),
+                    new BField(String, CPDate),
+                    new BField(String, Case)
                 })
             };
 
             ListFormSearchFields = new[]
             {
-                new BField(String, FieldName.CardNumber),
-                new BField(String, FieldName.TransactionCode)
+                new BField(String, CardNumber),
+                new BField(String, TransactionCode)
                 {
                     ComponentType = ComponentType.BParameterComponent
                 },
-                new BField(String, FieldName.UsageCode)
+                new BField(String, UsageCode)
                 {
                     ComponentType = ComponentType.BParameterComponent
                 },
-                new BField(String, FieldName.CardType)
+                new BField(String, CardType)
                 {
                     ComponentType = ComponentType.BParameterComponent
                 },
-                new BField(String, FieldName.Validation),
-                new BField(String, FieldName.ClearingStatus)
+                new BField(String, Validation),
+                new BField(String, ClearingStatus)
                 {
                     ComponentType = ComponentType.BParameterComponent
                 },
-                new BField(DateTime, FieldName.ClearingDateBegin),
-                new BField(DateTime, FieldName.ClearingDateEnd)
+                new BField(DateTime, ClearingDateBegin),
+                new BField(DateTime, ClearingDateEnd)
             };
-        }
-        #endregion
-    }
-
-    [TestClass]
-    public class TestGenerate
-    {
-        #region Public Methods
-        [TestMethod]
-        public void T1()
-        {
-            new VisaFee().AutoGenerateCodesAndExportFiles();
         }
         #endregion
     }

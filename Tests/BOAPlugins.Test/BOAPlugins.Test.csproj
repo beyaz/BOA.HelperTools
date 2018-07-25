@@ -89,6 +89,8 @@
     <Compile Include="ExportingModel\HandlerTest.cs" />
     <Compile Include="FormApplicationGenerator\FieldName.cs" />
     <Compile Include="FormApplicationGenerator\Outgoing.cs" />
+    <Compile Include="FormApplicationGenerator\SolutionFile.cs" />
+    <Compile Include="FormApplicationGenerator\TestGenerate.cs" />
     <Compile Include="FormApplicationGenerator\VisaFee.cs" />
     <Compile Include="GenerateCSharpCode\BOATypeDataProviderTest.cs" />
     <Compile Include="GenerateCSharpCode\HandlerTest.cs" />

@@ -59,6 +59,9 @@ namespace BOAPlugins.ExportingModel
         {
             var sb = new PaddedStringBuilder();
 
+
+            var typeDefinitions = new List<TypeDefinition>();
+
             foreach (var info in data.ExportInfoList)
             {
                 var assemblyDefinition = AssemblyDefinition.ReadAssembly(@"d:\boa\server\bin\" + info.Assembly);
@@ -68,7 +71,7 @@ namespace BOAPlugins.ExportingModel
                     return data;
                 }
 
-                var typeDefinitions = new List<TypeDefinition>();
+                
                 foreach (var className in info.ExportClassNames)
                 {
                     var typeDefinition = FindType(assemblyDefinition, className);
@@ -82,10 +85,27 @@ namespace BOAPlugins.ExportingModel
                     typeDefinitions.Add(typeDefinition);
                 }
 
-                foreach (var typeDefinition in typeDefinitions)
+                
+
+                
+            }
+
+            var groupBy = typeDefinitions.GroupBy(x => x.Namespace, p => p);
+            foreach (var ns in groupBy)
+            {
+                sb.AppendLine($"namespace {ns.Key}");
+                sb.AppendLine("{");
+                sb.PaddingCount++;
+
+                var types = typeDefinitions.Where(t => t.Namespace == ns.Key);
+                foreach (var typeDefinition in types)
                 {
                     GenerateType(typeDefinition, sb);
                 }
+
+                sb.PaddingCount--;
+                sb.AppendLine("}");
+
             }
 
             data.GeneratedTSCode = sb.ToString();
@@ -110,10 +130,8 @@ namespace BOAPlugins.ExportingModel
 
         static void GenerateType(TypeDefinition typeDefinition, PaddedStringBuilder sb)
         {
-            var containerNamespace = typeDefinition.Namespace;
-            sb.AppendLine($"namespace {containerNamespace}");
-            sb.AppendLine("{");
-            sb.PaddingCount++;
+            
+            
 
             if (typeDefinition.IsEnum)
             {
@@ -128,7 +146,7 @@ namespace BOAPlugins.ExportingModel
                 }
                 else
                 {
-                    extends += GetTypeNameInContainerNamespace(typeDefinition.BaseType.FullName, containerNamespace);
+                    extends += GetTypeNameInContainerNamespace(typeDefinition.BaseType.FullName, typeDefinition.Namespace);
                 }
 
                 sb.AppendLine($"export interface {typeDefinition.Name}" + extends);
@@ -163,7 +181,7 @@ namespace BOAPlugins.ExportingModel
             {
                 foreach (var propertyDefinition in typeDefinition.Properties)
                 {
-                    var typeName = GetTSTypeName(propertyDefinition.PropertyType, containerNamespace);
+                    var typeName = GetTSTypeName(propertyDefinition.PropertyType, typeDefinition.Namespace);
 
                     var name = GetResolvedPropertyName(propertyDefinition.Name);
                     // if (IsNullableType(propertyDefinition.DeclaringType))
@@ -178,8 +196,7 @@ namespace BOAPlugins.ExportingModel
             sb.PaddingCount--;
             sb.AppendLine("}");
 
-            sb.PaddingCount--;
-            sb.AppendLine("}");
+         
         }
 
         static string GetTSTypeName(TypeReference typeReference, string containerNamespace)

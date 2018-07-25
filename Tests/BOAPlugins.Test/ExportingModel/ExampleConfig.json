@@ -16,7 +16,7 @@
       "ExportClassNames": [
         "BOA.UI.CardGeneral.DebitCard.CardTransactionListScreen.Model",
         "BOA.Types.CardGeneral.DebitCard.CardTransactionRequest",
-        "BOA.Types.CardGeneral.DebitCard.DataGridColumnInfoContract",
+        "BOA.Types.CardGeneral.DebitCard.DataGridColumnInfo",
         "BOA.Types.CardGeneral.DebitCard.DataGridColumnDataType"
       ]
     }

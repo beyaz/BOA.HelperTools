@@ -9,7 +9,7 @@ namespace BOAPlugins.ExportingModel
         [TestMethod]
         public void GenerateType()
         {
-            var path   = @"D:\work\BOA.Retired\Dev\BOA.Kernel.DataAccess\Tests\BOAPlugins.Test\ExportingModel\ExampleConfig.json";
+            var path   = @"D:\github\BOA.HelperTools\Tests\BOAPlugins.Test\ExportingModel\ExampleConfig.json";
             var result = Exporter.Export(path);
         }
 

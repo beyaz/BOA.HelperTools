@@ -1,4 +1,5 @@
 ﻿using static BOAPlugins.FormApplicationGenerator.FieldName;
+using static BOAPlugins.FormApplicationGenerator.DotNetType;
 
 namespace BOAPlugins.FormApplicationGenerator
 {
@@ -9,14 +10,14 @@ namespace BOAPlugins.FormApplicationGenerator
         {
             Cards = new[]
             {
-                new BCard(Draft.ToString(), new[]
+                new BCard(Draft, new[]
                 {
                     new BField(Decimal, DraftSelling),
                     new BField(Decimal, DraftWithdrawal),
                     new BField(Decimal, DraftRefund)
                 }),
 
-                new BCard(Chargeback.ToString(), new[]
+                new BCard(Chargeback, new[]
                 {
                     new BField(Decimal, ChargebackSelling),
                     new BField(Decimal, ChargebackWithdrawal),
@@ -35,27 +36,27 @@ namespace BOAPlugins.FormApplicationGenerator
                     new BField(String, TextData)
                 }),
 
-                new BCard(Reversal.ToString(), new[]
+                new BCard(Reversal, new[]
                 {
                     new BField(Decimal, ReversalSelling),
                     new BField(Decimal, ReversalWithdrawal),
                     new BField(Decimal, ReversalRefund)
                 }),
-                new BCard(ChargebackReversal.ToString(), new[]
+                new BCard(ChargebackReversal, new[]
                 {
                     new BField(Decimal, ChargebackReversalSelling),
                     new BField(Decimal, ChargebackReversalWithdrawal),
                     new BField(Decimal, ChargebackReversalRefund)
                 }),
 
-                new BCard(Document.ToString(), new[]
+                new BCard(Document, new[]
                 {
                     new BField(String, OriginalRequest),
                     new BField(String, CopyRequest),
                     new BField(String, Confirm)
                 }),
 
-                new BCard(BatchFileTrailer + "", new[]
+                new BCard(BatchFileTrailer, new[]
                 {
                     new BField(String, FileHeader),
                     new BField(String, BatchTrailer),

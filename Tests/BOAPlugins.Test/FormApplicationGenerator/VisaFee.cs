@@ -1,9 +1,16 @@
 ﻿using static BOAPlugins.FormApplicationGenerator.FieldName;
+using static BOAPlugins.FormApplicationGenerator.DotNetType;
 
 namespace BOAPlugins.FormApplicationGenerator
 {
     public class VisaFee : Model
     {
+
+
+
+       
+
+
         #region Constructors
         public VisaFee() : base(SolutionFile.CardPaymentSystem_Clearing, nameof(VisaFee))
         {
@@ -11,7 +18,7 @@ namespace BOAPlugins.FormApplicationGenerator
 
             Tabs = new[]
             {
-                new BTab(Amounts.ToString(), new[]
+                new BTab(Amounts, new[]
                 {
                     new BField(DateTime, TransactionDate),
                     new BField(Decimal, FeeAmount),
@@ -20,7 +27,7 @@ namespace BOAPlugins.FormApplicationGenerator
                     new BField(Int32, SourceAmountCurrency)
                 }),
 
-                new BTab(GeneralInformation.ToString(), new[]
+                new BTab(GeneralInformation, new[]
                 {
                     new BField(String, TransactionCode)
                     {
@@ -46,14 +53,14 @@ namespace BOAPlugins.FormApplicationGenerator
                     }
                 }),
 
-                new BTab(ReasonInformation.ToString(), new[]
+                new BTab(ReasonInformation, new[]
                 {
                     new BField(Int32, ReasonCode),
                     new BField(Int32, CountryCode),
                     new BField(DateTime, Message)
                 }),
 
-                new BTab(Status.ToString(), new[]
+                new BTab(Status, new[]
                 {
                     new BField(Boolean, Incoming),
                     new BField(Boolean, FieldName.Outgoing),

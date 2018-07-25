@@ -8,13 +8,7 @@ namespace BOAPlugins.FormApplicationGenerator
     [Serializable]
     public class Model
     {
-        #region Fields
-        protected readonly DotNetType Boolean  = DotNetType.Boolean;
-        protected readonly DotNetType DateTime = DotNetType.DateTime;
-        protected readonly DotNetType Decimal  = DotNetType.Decimal;
-        protected readonly DotNetType Int32    = DotNetType.Int32;
-        protected readonly DotNetType String   = DotNetType.String;
-        #endregion
+        
 
         #region Constructors
         public Model(string solutionFilePath, string formName)
@@ -77,6 +71,11 @@ namespace BOAPlugins.FormApplicationGenerator
             Fields = fields;
             Title  = title;
         }
+
+        public BCard(Enum title, IReadOnlyCollection<BField> fields) : this(title.ToString(), fields)
+        {
+
+        }
         #endregion
 
         #region Public Properties
@@ -99,6 +98,10 @@ namespace BOAPlugins.FormApplicationGenerator
         {
             Cards = new[] {new BCard(null, fields)};
             Title = title;
+        }
+        public BTab(Enum title, IReadOnlyCollection<BField> fields):this(title.ToString(),fields)
+        {
+      
         }
         #endregion
 

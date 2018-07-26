@@ -99,30 +99,12 @@ namespace BOAPlugins.ExportingModel
 
             foreach (var item in propertyNames)
             {
-                var comment = new StringBuilder();
 
-                if (item.TR_Description.HasValue() || item.EN_Description.HasValue())
+
+                var comment = GetComment(item);
+                if (comment.HasValue())
                 {
-
-                    var hasTR = false;
-                    if (item.TR_Description?.Trim()?.HasValue() == true)
-                    {
-                        hasTR = true;
-                        comment.Append(item.TR_Description.Replace(Environment.NewLine, "").Trim());
-                    }
-
-                    if (item.EN_Description?.Trim()?.HasValue() == true)
-                    {
-                        if (hasTR)
-                        {
-                            comment.Append(" | ");
-                        }
-
-                        comment.Append(item.EN_Description.Replace(Environment.NewLine, "").Trim());
-                    }
-
-
-                    if (comment.ToString().Contains('/'))
+                    if (comment.Contains('/'))
                     {
                         builder.AppendLine($"/**'{comment}'*/");
                     }
@@ -130,10 +112,8 @@ namespace BOAPlugins.ExportingModel
                     {
                         builder.AppendLine($"/**{comment}*/");
                     }
-
-                    
-
                 }
+                
 
                 var propertyName = item.PropertyName;
                
@@ -148,6 +128,40 @@ namespace BOAPlugins.ExportingModel
         }
         #endregion
 
+        static string GetComment(PropertyInfo item)
+        {
+            var comment = new StringBuilder();
+
+            if (item.TR_Description.HasValue() || item.EN_Description.HasValue())
+            {
+
+                var hasTR = false;
+                if (item.TR_Description?.Trim()?.HasValue() == true)
+                {
+                    hasTR = true;
+                    comment.Append(item.TR_Description.Replace(Environment.NewLine, "").Trim());
+                }
+
+                if (item.EN_Description?.Trim()?.HasValue() == true)
+                {
+                    if (hasTR)
+                    {
+                        comment.Append(" | ");
+                    }
+
+                    comment.Append(item.EN_Description.Replace(Environment.NewLine, "").Trim());
+                }
+
+
+
+                return comment.ToString();
+
+
+
+            }
+
+            return null;
+        }
         #region Methods
         static string ExportAsCSharpCode(string groupName, string namespaceFullName)
         {
@@ -162,6 +176,7 @@ namespace BOAPlugins.ExportingModel
 
             builder.AppendLine($"// GroupName: {groupName} , NamespaceName: {namespaceFullName}");
             builder.AppendLine("");
+            builder.AppendLine("using BOA.Messaging;");
             builder.AppendLine($"namespace {namespaceFullName}");
             builder.AppendLine("{");
             builder.PaddingCount++;
@@ -174,35 +189,20 @@ namespace BOAPlugins.ExportingModel
             builder.AppendLine("///     Gets the message from property name.");
             builder.AppendLine("/// </summary>");
             builder.AppendLine("static string M(string propertyName)");
-            builder.AppendLine("    return BOA.Messaging.MessagingHelper.GetMessage(\"" + groupName + "\", propertyName);");
+            builder.AppendLine("{");
+            builder.AppendLine("    return MessagingHelper.GetMessage(\"" + groupName + "\", propertyName);");
             builder.AppendLine("}");
 
             foreach (var item in propertyNames)
             {
                 var propertyName = item.PropertyName;
 
-                if (item.TR_Description.HasValue() || item.EN_Description.HasValue())
+                var comment = GetComment(item);
+                if (comment.HasValue())
                 {
-                    builder.AppendLine("/// <summary>");
-
-                    if (item.TR_Description.HasValue())
-                    {
-                        var suffix = "";
-                        if (item.EN_Description.HasValue())
-                        {
-                            suffix = "<para></para>";
-                        }
-
-                        builder.AppendLine("///     TR: " + item.TR_Description.Replace(Environment.NewLine, "") + suffix);
-                    }
-
-                    if (item.EN_Description.HasValue())
-                    {
-                        builder.AppendLine("///     EN: " + item.EN_Description.Replace(Environment.NewLine, ""));
-                    }
-
-                    builder.AppendLine("/// </summary>");
+                    builder.AppendLine($"/// <summary>{comment}</summary>");
                 }
+
 
                 builder.AppendLine($"public static string {propertyName} => M(nameof({propertyName}));");
             }

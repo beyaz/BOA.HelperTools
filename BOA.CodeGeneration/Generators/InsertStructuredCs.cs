@@ -87,13 +87,16 @@ namespace BOA.CodeGeneration.Generators
             WriteLine("var dt = new DataTable();");
             foreach (var c in columns)
             {
+                var dataColumnName = $"nameof({Context.Naming.ContractName}.{c.ColumnName})";
+
                 if (c.IsNullable)
                 {
-                    WriteLine("dt.Columns.Add(new DataColumn(\"" + c.ColumnName + "\", typeof(" + c.DotNetType.RemoveFromEnd("?") + ")) { AllowDBNull = true});");
+                    
+                    WriteLine("dt.Columns.Add(new DataColumn(" + dataColumnName + ", typeof(" + c.DotNetType.RemoveFromEnd("?") + ")) { AllowDBNull = true});");
                 }
                 else
                 {
-                    WriteLine("dt.Columns.Add(\"{0}\", typeof({1}));", c.ColumnName, c.DotNetType);
+                    WriteLine("dt.Columns.Add({0}, typeof({1}));", dataColumnName, c.DotNetType);
                 }
             }
 
@@ -108,19 +111,20 @@ namespace BOA.CodeGeneration.Generators
             foreach (var c in columns)
             {
                 var propertyName = c.ColumnName;
+                var dataColumnName = $"nameof({Context.Naming.ContractName}.{c.ColumnName})";
 
                 if (c.IsNullable)
                 {
                     WriteLine("if (contract.{0} != null)", propertyName);
                     WriteLine("{");
                     Padding++;
-                    WriteLine("dataRow[\"{0}\"] = contract.{0};", propertyName);
+                    WriteLine($"dataRow[{dataColumnName}] = contract.{propertyName};");
                     Padding--;
                     WriteLine("}");
                 }
                 else
                 {
-                    WriteLine("dataRow[\"{0}\"] = contract.{0};", propertyName);
+                    WriteLine($"dataRow[{dataColumnName}] = contract.{propertyName};");
                 }
             }
 

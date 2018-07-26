@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using BOA.Common.Helpers;
 
 namespace BOAPlugins.ExportingModel
@@ -76,9 +77,6 @@ namespace BOAPlugins.ExportingModel
             };
         }
 
-        #endregion
-
-
         public static string ExportGroupAsTypeScriptCode(string groupName)
         {
             var builder = new PaddedStringBuilder();
@@ -89,41 +87,58 @@ namespace BOAPlugins.ExportingModel
 
             builder.AppendLine("import { getMessage } from \"b-framework\"");
             builder.AppendLine("");
+
+            builder.AppendLine("function M(propertyName : string) : string");
+            builder.AppendLine("{");
+            builder.AppendLine("    return getMessage(\"" + groupName + "\", propertyName);");
+            builder.AppendLine("}");
+
             builder.AppendLine($"export class Message");
             builder.AppendLine("{");
             builder.PaddingCount++;
 
             foreach (var item in propertyNames)
             {
+                var comment = new StringBuilder();
 
                 if (item.TR_Description.HasValue() || item.EN_Description.HasValue())
                 {
-                    builder.AppendLine("/**");
 
-                    if (item.TR_Description.HasValue())
+                    var hasTR = false;
+                    if (item.TR_Description?.Trim()?.HasValue() == true)
                     {
-                        builder.AppendLine("*     TR: " + item.TR_Description.Replace(Environment.NewLine, ""));
+                        hasTR = true;
+                        comment.Append(item.TR_Description.Replace(Environment.NewLine, "").Trim());
                     }
 
-                    if (item.EN_Description.HasValue())
+                    if (item.EN_Description?.Trim()?.HasValue() == true)
                     {
-                        builder.AppendLine("*     EN: " + item.EN_Description.Replace(Environment.NewLine, ""));
+                        if (hasTR)
+                        {
+                            comment.Append(" | ");
+                        }
+
+                        comment.Append(item.EN_Description.Replace(Environment.NewLine, "").Trim());
                     }
 
-                    builder.AppendLine("*/");
+
+                    if (comment.ToString().Contains('/'))
+                    {
+                        builder.AppendLine($"/**'{comment}'*/");
+                    }
+                    else
+                    {
+                        builder.AppendLine($"/**{comment}*/");
+                    }
+
+                    
+
                 }
 
-
                 var propertyName = item.PropertyName;
+               
 
-                builder.AppendLine($"static get {propertyName}() : string");
-                builder.AppendLine("{");
-                builder.PaddingCount++;
-
-                builder.AppendLine($"return getMessage(\"{groupName}\", \"{propertyName}\");");
-
-                builder.PaddingCount--;
-                builder.AppendLine("}");
+                builder.AppendLine($"static get {propertyName}():string" + "{" + $"return M(\"{propertyName}\");" + "}");
             }
 
             builder.PaddingCount--;
@@ -131,6 +146,8 @@ namespace BOAPlugins.ExportingModel
 
             return builder.ToString();
         }
+        #endregion
+
         #region Methods
         static string ExportAsCSharpCode(string groupName, string namespaceFullName)
         {
@@ -145,9 +162,6 @@ namespace BOAPlugins.ExportingModel
 
             builder.AppendLine($"// GroupName: {groupName} , NamespaceName: {namespaceFullName}");
             builder.AppendLine("");
-            builder.AppendLine("using BOA.Messaging;");
-            builder.AppendLine("using MH = BOA.Messaging.MessagingHelper;");
-            builder.AppendLine("");
             builder.AppendLine($"namespace {namespaceFullName}");
             builder.AppendLine("{");
             builder.PaddingCount++;
@@ -155,6 +169,13 @@ namespace BOAPlugins.ExportingModel
             builder.AppendLine($"public static class Message");
             builder.AppendLine("{");
             builder.PaddingCount++;
+
+            builder.AppendLine("/// <summary>");
+            builder.AppendLine("///     Gets the message from property name.");
+            builder.AppendLine("/// </summary>");
+            builder.AppendLine("static string M(string propertyName)");
+            builder.AppendLine("    return BOA.Messaging.MessagingHelper.GetMessage(\"" + groupName + "\", propertyName);");
+            builder.AppendLine("}");
 
             foreach (var item in propertyNames)
             {
@@ -164,7 +185,6 @@ namespace BOAPlugins.ExportingModel
                 {
                     builder.AppendLine("/// <summary>");
 
-                    
                     if (item.TR_Description.HasValue())
                     {
                         var suffix = "";
@@ -172,7 +192,8 @@ namespace BOAPlugins.ExportingModel
                         {
                             suffix = "<para></para>";
                         }
-                        builder.AppendLine("///     TR: " + item.TR_Description.Replace(Environment.NewLine, "")+suffix) ;
+
+                        builder.AppendLine("///     TR: " + item.TR_Description.Replace(Environment.NewLine, "") + suffix);
                     }
 
                     if (item.EN_Description.HasValue())
@@ -183,7 +204,7 @@ namespace BOAPlugins.ExportingModel
                     builder.AppendLine("/// </summary>");
                 }
 
-                builder.AppendLine($"public static string {propertyName} " + "{ get { return MH.GetMessage(\"" + groupName + "\", \"" + propertyName + "\"); " + "} }");
+                builder.AppendLine($"public static string {propertyName} => M(nameof({propertyName}));");
             }
 
             builder.PaddingCount--;

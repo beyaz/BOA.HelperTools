@@ -13,6 +13,14 @@ namespace BOAPlugins.ExportingModel
             var result = Handler.Handle(path);
 
             Assert.IsNull(result.ErrorMessage);
+
+
+            var result2 = MessagingExporter.ExportAsTypeScriptCode(path);
+            Assert.IsNull(result2.ErrorMessage);
+
+
+            result2 = MessagingExporter.ExportAsCSharpCode(path);
+            Assert.IsNull(result2.ErrorMessage);
         }
         #endregion
     }

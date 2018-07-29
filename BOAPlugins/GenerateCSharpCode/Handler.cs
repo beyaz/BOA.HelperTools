@@ -10,6 +10,9 @@ using BOAPlugins.TypeSearchView;
 
 namespace BOAPlugins.GenerateCSharpCode
 {
+    /// <summary>
+    /// The handler
+    /// </summary>
     public class Handler
     {
         #region Fields

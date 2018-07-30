@@ -6,7 +6,7 @@ using BOA.Tools.Translator.UI.TranslateHelper;
 namespace UI.ContainerHelper
 {
     /// <summary>
-    /// The program
+    ///     The program.
     /// </summary>
     class Program
     {
@@ -14,7 +14,6 @@ namespace UI.ContainerHelper
         [STAThread]
         public static void Main(string[] args)
         {
-
             // new Application().Run(new BOAPlugins.FormApplicationGenerator.View());
 
             if (args == null)
@@ -33,6 +32,7 @@ namespace UI.ContainerHelper
                 new Application().Run(BOAPlugins.PropertyGeneration.View.Create());
                 return;
             }
+
             throw new InvalidOperationException(args.First());
         }
         #endregion
